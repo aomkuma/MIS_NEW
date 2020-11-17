@@ -1,0 +1,105 @@
+<div ng-include src="'views/header.html'"></div>
+<div class="page-header">
+    <h3>บริหารจัดการข้อมูล > บริหารจัดการข้อมูลนำเข้าข้อมูลบุคลากร</h3>
+</div>
+<div class="col-lg-6 col-lg-offset-3">
+    <form name="search_form " class="text-center" >
+        <div class="row form-group">
+
+
+            <label class="col-lg-2" for="exampleInputName2"> เดือน : </label>
+            <div class="col-lg-4">
+                <select name="Month" class=" form-control " ng-model="Data.Month" ng-options="month.monthValue as month.monthText for month in MonthList" required="required">
+                    <option value="">กรุณาเลือก..</option>
+                </select>
+            </div>
+
+
+
+            <label class="col-lg-2 "> ปี: </label>
+            <div class="col-lg-4">
+                <select name="Year" class="form-control " ng-model="Data.Year" ng-options="year.yearText as year.yearValue for year in YearList" required="required">
+                    <option value="">กรุณาเลือก..</option>
+                </select>
+            </div>
+
+        </div>
+        <div class="row form-group">
+            <label class="col-lg-2 col-md-2 col-sm-12 col-xs-12 form-control-static">
+                ข้อมูล ณ วันที่
+            </label>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" >
+                <p class="input-group">
+                    <input type="text" class="form-control" ng-model="Data.date" uib-datepicker-popup="yyyy-MM-dd" is-open="popup1.opened" required="true">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </p>
+            </div>
+        </div>
+        <div class="row form-group">
+            <label class="col-lg-2 form-control-static">
+                แนบไฟล์
+            </label>
+            <div class="col-lg-6" >
+                <p class="input-group">
+                    <input type="text" readonly="true" class="form-control" ng-model="AttachFile.name" />
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" ngf-select ng-model="AttachFile" ngf-max-size="25MB"  ngf-model-invalid="AttachFile.invalidFile" >แนบไฟล์</button>
+                    </span>
+                </p>
+            </div>
+            <div class="col-lg-2">
+                <div class="file-alert" ng-show="fle.attachFile.invalidFile.$error === 'maxSize'">ขนาดไฟล์ต้องไม่เกิน : {{AttachFile.invalidFile.$errorParam}}</div>
+            </div>
+            <div class="col-lg-4">
+                <a  href="../files/files/report/เพิ่มลดจำนวนพนักงานรายเดือน.xlsx" target="_self" download="เพิ่มลดจำนวนพนักงานรายเดือน.xlsx"><span class="glyphicon glyphicon-download"></span> Template สำหรับนำเข้า</a>
+            </div>
+
+        </div>
+        <div class="row form-group">
+            <button class="btn btn-primary" ng-click="updateData(Data, AttachFile)">อัพโหลด</button>
+
+        </div>
+
+
+
+
+    </form>
+
+</div>
+<div class="col-lg-12 table-responsive" >
+    <table class="table table-bordered table-striped">
+
+        <thead style="background-color: #BD1212; color: #FFF;">
+
+            <tr>
+                <th style="text-align: center;">บันทึกข้อมูลล่าสุด</th>
+                <th style="text-align: center;">เดือน</th>
+                <th style="text-align: center;">ปี</th>
+                <th style="text-align: center;">ข้อมูล ณ วันที่</th>
+                <th style="text-align: center;">ไฟล์</th>
+
+            </tr>
+        </thead>
+        <tbody >
+            <!--<tr style="background-color: #B6CCFF; padding: 5px;">
+                    <td colspan="7">{{getRegionName(data.region_id)}}</td>
+            </tr>-->
+            <tr ng-repeat="data in List">
+
+                <td style="text-align: center;">{{data.modify}}</td>
+                <td style="text-align: center;">{{data.month}}</td>
+                <td style="text-align: center;">{{data.year}}</td>
+                <td style="text-align: center;">{{data.date}}</td>
+
+                <td><a class="pull-right" style="padding-right: 20px;" href="../{{data.file_path}}" target="_self" download="{{data.file_name}}">{{data.file_name}}</a></td>
+
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+
+

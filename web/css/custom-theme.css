@@ -1,0 +1,102 @@
+a{
+	cursor: pointer;
+	color: #000;
+}
+html {
+    position: relative;
+    min-height: 100%;
+   	
+	
+}
+caption.caption-bg{
+	background-color: #ccc;
+}
+
+.container{
+	width: 100%;
+	
+	font-size: 1.2em;
+}
+
+th{
+	text-align: center;
+	vertical-align: middle;
+}
+
+.navbar-inverse{
+	background-color: #FFFFFF;
+	color:#000;
+	border: none;
+	border-top: 5px solid #1E02BE;
+	border-bottom: 5px solid #1E02BE;
+}
+
+.navbar-inverse .navbar-nav > li > a{
+	color: #000;
+}
+.navbar-inverse .navbar-nav > li > a:hover,
+.navbar-inverse .navbar-nav > li > a:focus {
+  color: #999;
+  background-color: transparent;
+}
+
+.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover{
+	background-color: #1E02BE;
+}
+
+.navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:focus, .navbar-inverse .navbar-nav>.open>a:hover{
+	background-color: #1E02BE;
+}
+
+.navbar-nav{
+    float:none;
+    margin: 0 auto;
+    display: table;
+    table-layout: fixed;
+}
+
+.field-label{
+	padding-top: 0px;
+}
+
+.table-striped>tbody>tr:nth-of-type(odd){
+	background: #FFF;
+	color: #000;
+}
+.table-striped>tbody>tr{
+	background: #F5F5F5;
+	color: #000;
+}
+
+.graph-bg{
+	background-color: #FFF; 
+	color: #000; 
+	padding: 10px;
+	border-radius: 20px;
+	/*box-shadow: 3px 3px #000;*/
+}
+thead{
+	background-color: #1E02BE; color: #FFF;
+}
+.form-control{
+	font-size: 1em;
+}
+
+.btn{
+	/*font-size: 1em;*/
+}
+
+.dropdown-menu{
+	font-size: 1em;
+}
+
+.background_color{
+	background-color:  #1E02BE;
+}
+
+.btn-danger{
+	/*background-color: #d9534f;
+    border-color: #d43f3a;*/
+    background-color: #1E02BE;
+    border-color: #1E02BE;
+}

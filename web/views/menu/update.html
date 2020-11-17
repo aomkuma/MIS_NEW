@@ -1,0 +1,184 @@
+<div ng-include src="'views/header.html'"></div>
+
+<div class="page-header">
+	<h3>จัดการเมนู</h3>
+</div>
+
+<div class="row form-group">
+	<label class=" form-control-static col-lg-2 col-md-2 col-sm-12 col-xs-12">
+		ประเภทเมนู
+	</label>
+	<div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+		​<select class="form-control" ng-model="Menu.menu_type">
+			<option value="">กรุณาเลือก..</option>
+			<option value="PARENT">เมนูหลักประกอบด้วยเมนูย่อย (PARENT)</option>
+			<option value="PAGE">เนื้อหาข้อมูล, แนบไฟล์เพื่อดาวน์โหลด (PAGE)</option>
+			<!--<option value="INLINK"></option>-->
+			<option value="EXLINK">เมนูลิ้งค์ไปเว็บไซต์ภายนอก (EXTERNAL LINK)</option>
+		</select>
+	</div>
+</div>
+<div class="row form-group">
+	<label class="col-lg-2 col-md-2 col-sm-12 col-xs-12 form-control-static">
+		ชื่อเมนูภาษาไทย
+	</label>
+	<div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+		​<input type="text" class="form-control" ng-model="Menu.menu_name_th">
+	</div>
+</div>
+<div class="row form-group">
+	<label class="col-lg-2 col-md-2 col-sm-12 col-xs-12 form-control-static">
+		ชื่อเมนูภาษาอังกฤษ
+	</label>
+	<div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+		​<input type="text" class="form-control" ng-model="Menu.menu_name_en">
+	</div>
+</div>
+<div class="row form-group">
+	<label class=" form-control-static col-lg-2 col-md-2 col-sm-12 col-xs-12">
+		เมนูหลัก
+	</label>
+	<div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+		​<select class="form-control" ng-model="Menu.parent_menu" ng-options="item.id as item.menu_name_th for item in ParentMenuList">
+			<option value="">กรุณาเลือก..</option>
+			
+		</select>
+	</div>
+</div>
+<div class="row form-group">
+	<label class="col-lg-2 col-md-2 col-sm-12 col-xs-12 form-control-static">
+		ลำดับเมนู
+	</label>
+	<div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+		​<input type="number" class="form-control" ng-model="Menu.menu_order">
+	</div>
+</div>
+<div class="row form-group">
+	<label class="col-lg-2 col-md-2 col-sm-12 col-xs-12 form-control-static">
+		สถานะ
+	</label>
+	<div class="col-lg-10 col-md-10 col-sm-12 col-xs-12" >
+		<div class="btn-group">
+			<label class="btn btn-default btn-checkbox" ng-model="Menu.actives" uib-btn-radio="'Y'" >ใช้</label>
+            <label class="btn btn-default btn-checkbox" ng-model="Menu.actives" uib-btn-radio="'N'" >ไม่ใช้</label>
+        </div>
+	</div>
+</div>
+
+<br><br>
+
+<fieldset ng-show="Menu.menu_type == 'EXLINK'">
+	<legend>เมนูลิ้งค์ไปเว็บไซต์ภายนอก (EXTERNAL LINK)</legend>
+	<div class="row form-group">
+		<label class="col-lg-2 col-md-2 col-sm-12 col-xs-12 form-control-static">
+			URL
+		</label>
+		<div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+			<!--​<textarea class="form-control" ng-model="EXLink.link_url"></textarea>-->
+			<textarea class="form-control" ng-model="Menu.menu_url"></textarea>
+		</div>
+	</div>
+</fieldset>
+<fieldset ng-show="Menu.menu_type == 'PAGE'">
+	<legend>เนื้อหาข้อมูล, แนบไฟล์เพื่อดาวน์โหลด (PAGE)</legend>
+	<div class="row form-group">
+		<label class="col-lg-2 col-md-2 col-sm-12 col-xs-12 form-control-static">
+			หัวข้อภาษาไทย
+		</label>
+		<div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+			​<input type="text" class="form-control" ng-model="PageContent.title_th">
+		</div>
+	</div>
+	<div class="row form-group">
+		<label class="col-lg-2 col-md-2 col-sm-12 col-xs-12 form-control-static">
+			เนื้อหาภาษาไทย
+		</label>
+		<div class="col-lg-10 col-md-10 col-sm-12 col-xs-12" id="ckeditor1">
+			<textarea class="form-control" id="editor1" name="editor1" ng-model="PageContent.contents" rows="100" data-sample="40" data-sample-short="" >
+			</textarea>
+		</div>
+	</div>
+	<div class="row form-group">
+		<label class="col-lg-2 col-md-2 col-sm-12 col-xs-12 form-control-static">
+			หัวข้อภาษาอังกฤษ
+		</label>
+		<div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+			​<input type="text" class="form-control" ng-model="PageContent.title_en">
+		</div>
+	</div>
+	<div class="row form-group">
+		<label class="col-lg-2 col-md-2 col-sm-12 col-xs-12 form-control-static">
+			เนื้อหาภาษาอังกฤษ
+		</label>
+		<div class="col-lg-10 col-md-10 col-sm-12 col-xs-12" id="ckeditor2">
+			<textarea class="form-control" id="editor2" name="editor2" ng-model="PageContent.contents_en" rows="100" data-sample="40" data-sample-short="" >
+			</textarea>
+		</div>
+	</div>
+	<div class="row form-group">
+		<label class="col-lg-2 col-md-2 col-sm-12 col-xs-12 form-control-static">
+			ไฟล์แนบ / ลิ้งค์
+		</label>
+		<div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+			<div class="row form-group" ng-repeat="file in AttachFiles">
+				<div class="col-lg-12">
+					<button class="btn btn-danger btn-sm" ng-click="removeAttach('attach/delete', file.id, $index)"><span class="glyphicon glyphicon-trash"></span></button>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<a target="_self" href="{{file.file_path}}" download="{{file.file_name}}">
+						{{ (file.display_name !== null && file.display_name != ''?file.display_name:file.file_name) }}
+					</a>		
+				</div>
+			</div>
+
+			<div class="row form-group">
+				<div class="col-lg-12">
+					<button class="btn btn-primary " ng-click="addFiles()"> เพิ่มไฟล์แนบ / ลิ้งค์</button>
+				</div>
+				<div class="col-lg-12">
+					<div class="row" ng-repeat="fle in FileList">
+						
+							<div class="col-lg-12">
+								<div class="row form-group">
+									<div class="col-lg-4" >
+										<select class="form-control" ng-model="fle.page_type">
+												<option value="">กรุณาเลือกประเภท..</option>
+												<option value="file">ไฟล์แนบ</option>
+												<option value="link">ลิ้ง URL</option>
+											</select>
+									</div>
+									<div class="col-lg-2">
+										<input type="number" class="form-control" ng-model="fle.order_no" placeholder="ลำดับ">
+									</div>
+								</div>
+								<div class="row form-group">
+									<div class="col-lg-4" >
+										<p class="input-group" ng-show="fle.page_type == 'file'">
+						                  <input type="text" readonly="true" class="form-control" ng-model="fle.attachFile.name" placeholder="ไฟล์แนบ" />
+						                  <span class="input-group-btn">
+						                    <button class="btn btn-default" ngf-select ng-model="fle.attachFile" ngf-max-size="50MB"  ngf-model-invalid="fle.attachFile.invalidFile">เลือก</button>
+						                  </span>
+						                </p>
+						                <p ng-show="fle.page_type == 'link'">
+						                	<input type="text" class="form-control" ng-model="fle.file_path" placeholder="URL..">
+						                </p>
+									</div>
+									<div class="col-lg-5">
+										<input type="text" class="form-control" ng-model="fle.display_name" placeholder="ข้อความแสดง">
+									</div>
+									<div class="col-lg-3">
+										<div class="file-alert" ng-show="fle.attachFile.invalidFile.$error === 'maxSize'">ขนาดไฟล์ต้องไม่เกิน : {{fle.attachFile.invalidFile.$errorParam}}</div>
+									</div>
+								</div>
+							</div>
+					
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</fieldset>
+
+<div class="page-header text-center">
+	<button class="btn btn-info" ng-click="save('menu/update', Menu, PageContent, FileList, EXLink)">บันทึก</button>
+	<button class="btn btn-default" ng-click="cancelUpdate()">ยกเลิก</button>
+</div>

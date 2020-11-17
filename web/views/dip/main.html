@@ -1,0 +1,56 @@
+<div ng-include src="'views/header.html'"></div>
+<div class="page-header">
+	<h3>
+		บริหารจัดการข้อมูล DIP
+	</h3>
+</div>
+<div class="row form-group">
+	<div class="col-lg-12">
+		<form name="search_form" class="form-inline">
+			<div class="form-group">
+			    <label for="exampleInputName2">&nbsp; ปีงบประมาณ : </label>
+			    &nbsp; <select class="form-control" ng-model="condition.years" ng-options="data.yearText as data.yearValue for data in YearList">
+				<option value="">กรุณาเลือก..</option>
+			</select>
+		  	</div>
+		  	<button class="btn btn-primary" ng-click="loadList('dip/list')" ><span class="glyphicon glyphicon-search"></span> ค้นหา</button>
+			
+		</form>
+	</div>
+</div>
+<div class="col-lg-12 table-responsive">
+	<table class="table table-bordered table-striped">
+		<caption>
+			<button class="btn btn-danger pull-right" ng-click="goUpdate('')">
+				<span class="glyphicon glyphicon-plus"></span> 
+				เพิ่มรายการ
+			</button>
+		</caption>
+		<thead>
+			<tr>
+				<th>ปีงบประมาณ</th>
+				<th>ชื่อสหกรณ์/ฟาร์ม/เกษตรกร</th>
+				<th>วันที่เข้าร่วม</th>
+				<th>สถานะ</th>
+				<th>วันที่ผ่านการประเมิน</th>
+				<th>บริหารจัดการ</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="data in List">
+				<td>{{data.years + 543}}</td>
+				<td>{{data.dip_name}}</td>
+				<td>{{data.join_date}}</td>
+				<td>{{data.dip_status=='Y'?'ผ่าน':'ไม่ผ่าน'}}</td>
+				<td>{{data.pass_date}}</td>
+				<td>
+					<button class="btn btn-success" ng-click="goUpdate(data.id)">
+						<span class="glyphicon glyphicon-edit"></span> 
+						แก้ไข
+					</button>
+					
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

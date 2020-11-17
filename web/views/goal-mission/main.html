@@ -1,0 +1,125 @@
+<div ng-include src="'views/header.html'"></div>
+<div class="page-header">
+	<h3>
+		<span ng-repeat="data in MenuName">
+	        <span ng-show="$index > 0">></span>
+	        {{data.menu_name_th}}
+	    </span>
+	</h3>
+</div>
+<div class="row form-group">
+	<div class="col-lg-12">
+		<form name="search_form" class="form-inline">
+			<div class="form-group">
+			    <label for="exampleInputName2">&nbsp; ปีงบประมาณ : </label>
+			    &nbsp; <select name="Year" class="form-control" ng-model="condition.Year" ng-options="year.yearValue for year in YearList track by year.yearText">
+					<option value="">กรุณาเลือก</option>
+				</select>
+		  	</div>
+			<div class="form-group">
+			    <label for="exampleInputName2">&nbsp; พื้นที่ : </label>
+			    &nbsp; <select name="Year" class="form-control" ng-model="condition.Region" ng-options="region.RegionName for region in PersonRegion track by region.RegionID">
+					<option value="">กรุณาเลือก</option>
+				</select>
+		  	</div>
+		  	<div class="form-group">
+			    <label for="exampleInputName2">&nbsp; ด้านกิจการ : </label>
+			    &nbsp; <select class="form-control" ng-model="condition.goal_type" ng-change="changeGoalType(condition.goal_type)">
+				<option value="">กรุณาเลือก..</option>
+				<option value="DBI">ข้อมูลกิจการโคนม</option>
+				<option value="II">ข้อมูลอุตสาหกรรม</option>
+			</select>
+		  	</div>
+		  	<div class="form-group">
+			    <label for="exampleInputName2">&nbsp; ข้อมูล : </label>
+			    &nbsp; <select class="form-control" ng-model="condition.menu_type" ng-change="changeGoalType(condition.goal_type)" ng-options="data.value as data.name for data in MenuType">
+				<option value="">กรุณาเลือก..</option>
+			</select>
+		  	</div>
+		  	<div class="form-group">
+			    <label for="exampleInputName2">&nbsp; รายการ : </label>
+			    &nbsp; <select name="Year" class="form-control" ng-model="condition.Goal" ng-options="goal.goal_name for goal in MasterGoalList track by goal.id">
+					<option value="">กรุณาเลือก</option>
+				</select>
+		  	</div>
+			<button class="btn btn-primary" ng-click="loadList('goal-mission/list')"><span class="glyphicon glyphicon-search"></span> ค้นหา</button>
+		</form>
+	</div>
+</div>
+<div class="row form-group">
+	<div class="col-lg-12 table-responsive">
+		<table class="table table-bordered table-striped">
+			<caption>
+				<div class="row">
+					<div class="col-lg-12 text-center">
+						<span  class="glyphicon glyphicon-lock" style="color: green;"></span> รูปกุญแจสีเขียว หมายถึง สามารถแก้ไขข้อมูลได้
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<span  class="glyphicon glyphicon-lock" style="color: red;"></span> รูปกุญแจสีแดง หมายถึง ไม่สามารถแก้ไขข้อมูลได้
+						<button class="btn btn-danger pull-right" ng-click="goUpdate('')" ng-show="Maker">
+							<span class="glyphicon glyphicon-plus"></span> 
+							เพิ่มเป้าหมาย
+						</button>
+					</div>
+				</div>
+			</caption>
+			<thead>
+				<tr>
+					<th rowspan="2">Last Update</th>
+					<th rowspan="2">ปีงบประมาณ</th>
+					<th rowspan="2">สำนักงาน</th>
+					<th rowspan="2">ด้านกิจการ</th>
+					<th rowspan="2">รายการ</th>
+					<th rowspan="2">ปริมาณ / หน่วย</th>
+					<th rowspan="2">มูลค่า (บาท)</th>
+					<th colspan="3">สถานะการอนุมัติ</th>
+					<th rowspan="2">บริหารจัดการ</th>
+				</tr>
+				<tr>
+					<th>แผนก</th>
+					<th>กอง</th>
+					<th>ฝ่าย</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="data in List">
+					<td>{{data.update_date}}</td>
+					<td class="text-center">{{data.years + 543}}</td>
+					<td>{{(data.RegionName)}}</td>
+					<td>{{getGoalType(data.goal_type) + ' - ' + data.menu_type}}</td>
+					<td >{{data.goal_name}}</td><!-- bind-html-compile="getGoalName(data.goal_id)"-->
+					<td class="text-right">{{numberFormatComma(data.amount)}} {{data.unit}}</td>
+					<td class="text-right">{{numberFormatComma(data.price_value)}}</td>
+					<td align="center"><span class="glyphicon glyphicon-check" style="color: green;" ng-show="data.dep_approve_date != null && (data.dep_approve_comment == null || data.dep_approve_comment == '')"></span> 
+						<span class="glyphicon glyphicon-remove" style="color: red;" ng-show="data.dep_approve_comment != null && data.dep_approve_comment != ''"></span> 
+						<br>{{getThaiDate(data.dep_approve_date)}}</td>
+					<td align="center"><span class="glyphicon glyphicon-check" style="color: green;" ng-show="data.division_approve_date != null && (data.division_approve_comment == null || data.division_approve_comment == '')"></span> 
+						<span class="glyphicon glyphicon-remove" style="color: red;" ng-show="data.division_approve_comment != null && data.division_approve_comment != ''"></span> 
+						<br>{{getThaiDate(data.division_approve_date)}}</td>
+					<td align="center"><span class="glyphicon glyphicon-check" style="color: green;" ng-show="data.office_approve_date != null && (data.office_approve_comment == null || data.office_approve_comment == '')"></span> 
+						<span class="glyphicon glyphicon-remove" style="color: red;" ng-show="data.office_approve_comment != null && data.office_approve_comment != ''"></span> 
+						<br>{{getThaiDate(data.office_approve_date)}}</td>
+					<td>
+						<button class="btn btn-success" ng-click="goUpdate(data.id)">
+							<span class="glyphicon glyphicon-edit"></span> 
+							แก้ไข
+						</button>
+						
+						<button ng-show="data.editable == 'N' && !Approval" class="btn btn-default" disabled="" style="color: red;">
+							<span class="glyphicon glyphicon-lock"></span> 
+							
+						</button>
+						<button ng-show="data.editable == 'N' && Approval" class="btn btn-default" ng-click="updateEdit(data.id, 'Y')" style="color: red;">
+							<span class="glyphicon glyphicon-lock"></span> 
+							
+						</button>
+						<button ng-show="data.editable == 'Y'" class="btn btn-default" disabled="" style="color: green;">
+							<span class="glyphicon glyphicon-lock"></span> 
+							
+						</button>
+						
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

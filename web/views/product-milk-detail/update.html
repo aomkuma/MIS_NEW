@@ -1,0 +1,180 @@
+<div ng-include src="'views/header.html'"></div>
+<div class="page-header">
+    <h3>บริหารจัดการข้อมูล > บริหารจัดการรายการผลิตภัณฑ์นม</h3>
+</div>
+<div class="col-lg-10 col-lg-offset-1" ng-form="form_data">
+    <div class="row form-group">
+        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+            สำนักงาน
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            {{Data.factory_name}}
+        </div>
+
+    </div>
+    <div class="row form-group">
+        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+            ประเภทหลัก
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            {{Data.proname}}
+        </div>
+
+    </div>
+    <div class="row form-group">
+        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+            ประเภทย่อย
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+             {{ (Data.product_character!=null?Data.product_character:'') + ' ' + Data.subname}}
+        </div>
+    </div>
+    <!-- <div class="row form-group">
+        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+            ตัวแทนจำหน่าย
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <select name="Year" class="form-control" ng-model="Subdata.agent">
+                <option value="">กรุณาเลือก..</option>
+                <option value="ขายนมโรงเรียน (ขนส่ง)">ขายนมโรงเรียน (ขนส่ง)</option>
+            </select>
+        </div>
+    </div> -->
+    <div class="row form-group">
+        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+            รายการผลิตภัณฑ์
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <input type="text" class="form-control" ng-model="Subdata.name" maxlength="255">
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+            สถานะ
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <div class="btn-group">
+                <label class="btn btn-default btn-checkbox" ng-model="Subdata.actives" uib-btn-radio="'Y'" >ใช้</label>
+                <label class="btn btn-default btn-checkbox" ng-model="Subdata.actives" uib-btn-radio="'N'" >ไม่ใช้</label>
+            </div>
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+            จำนวนต่อ 1 ลัง
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <input type="text" class="form-control" ng-model="Subdata.amount" maxlength="255" >
+            
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+            หน่วยของบรรจุภัณฑ์
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <select name="Year" class="form-control" ng-model="Subdata.amount_unit">
+                <option value="">กรุณาเลือก..</option>
+                <option value="ไม่บรรจุภาชนะ">ไม่บรรจุภาชนะ</option>
+                <option value="แกลลอน">แกลลอน</option>
+                <option value="ถ้วย">ถ้วย</option>
+                <option value="ถุง">ถุง</option>
+                <option value="ถัง">ถัง</option>
+                <option value="ขวด">ขวด</option>
+                <option value="กล่อง">กล่อง</option>
+            </select>
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+            ปริมาณ
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <input type="text" class="form-control" ng-model="Subdata.number_of_package" maxlength="255">
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+            หน่วยของปริมาณ
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <select name="Year" class="form-control" ng-model="Subdata.unit">
+                <option value="">กรุณาเลือก..</option>
+                <option value="กรัม">กรัม</option>
+                <option value="มิลลิลิตร">มิลลิลิตร</option>
+                <option value="กิโลกรัม">กิโลกรัม</option>
+                <option value="ลิตร">ลิตร</option>
+                <option value="ซีซี">ซีซี</option>
+                
+            </select>
+            
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+            รสชาติ
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <input type="text" class="form-control" ng-model="Subdata.taste" maxlength="255" >
+        </div>
+    </div>
+    <hr>
+    <div class="row form-group">
+        <div class="col-lg-12 text-center">
+            <button class="btn btn-primary" ng-click="save(Subdata)" ng-disabled="!form_data.$valid">
+                <span class="glyphicon glyphicon-floppy-save"></span> 
+                บันทึก
+            </button>
+            <button class="btn btn-default" ng-click="cancelUpdate()">
+                <span class="glyphicon glyphicon-arrow-left"></span> 
+                กลับหน้าหลัก
+            </button>
+        </div>
+    </div>
+    <div class="row form-group">
+    <div class="col-lg-12 table-responsive">
+        
+        <table class="table table-bordered table-striped">
+          
+            <thead>
+                <tr>
+
+                    <th>จัดการ</th>
+                    <th>ประเภทหลัก</th>
+                    <th>ประเภทย่อย</th>
+                    <th>รายการผลิตภัณฑ์</th>
+                    <th>สถานะ</th>
+                    <!--<th>แก้ไข</th>-->
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="data in List2">
+
+
+                    <td style="text-align: center;">
+                        <button class="btn btn-success" ng-click="goUpdate(data.id)">
+
+                            แก้ไข
+                        </button></td>
+                    <td style="text-align: center;">{{data.proname}}</td>
+                    <td style="text-align: center;">{{(Data.product_character!=null?Data.product_character:'') + ' ' + data.subname}}</td>
+                    <td style="text-align: center;">{{data.name + ' ' + data.number_of_package + ' ' + data.unit + ' ' + data.amount + ' ' + data.amount_unit + ' ' + data.taste}}</td>
+                    <td style="text-align: center;" ng-class="{'inactive-text':data.actives == 'N'}">{{data.actives=='Y'?'ใช้งาน':'ไม่ใช้งาน'}}</td>
+                    <!--					<td>
+                                                                    <button class="btn btn-success" ng-click="goUpdate(data.id)">
+                                                                            <span class="glyphicon glyphicon-edit"></span> 
+                                                                            แก้ไข
+                                                                    </button>
+                                                            </td>-->
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</div>
+<style type="text/css">
+    .inactive-text{
+        color: red;
+    }
+</style>

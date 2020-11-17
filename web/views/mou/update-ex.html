@@ -1,0 +1,141 @@
+<div ng-include src="'views/header.html'"></div>
+<div class="page-header">
+	<h3>
+		<span ng-repeat="data in MenuName">
+	        <span ng-show="$index > 0">></span>
+	        {{data.menu_name_th}}
+	    </span>
+	    >
+	    นอก MOU
+	</h3>
+</div>
+<div class="col-lg-10 col-lg-offset-1" ng-form="form_data">
+	<div class="row form-group">
+		<div class="field-label col-lg-2 col-md-2 col-sm-12 col-xs-12">
+			ชื่อสหกรณ์
+		</div>
+		<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+			<select class="form-control" ng-model="Data.cooperative_id" ng-options="data.id as data.cooperative_name for data in Cooperative" required="required">
+				<option value="">กรุณาเลือก..</option>
+			</select>
+		</div>
+	</div>
+	<div class="row form-group">
+		<div class="field-label col-lg-2 col-md-2 col-sm-12 col-xs-12">
+			ข้อมูลประจำปี
+		</div>
+		<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+			<select name="Year" class="form-control" ng-model="Data.years" ng-options="year.yearText as year.yearValue for year in YearList" required="required">
+					<option value="">กรุณาเลือก..</option>
+				</select>
+		</div>
+	</div>
+	<div class="row form-group">
+		<div class="field-label col-lg-2 col-md-2 col-sm-12 col-xs-12">
+			วันที่ประกาศ
+		</div>
+		<div class="col-lg-3 col-md-13 col-sm-12 col-xs-12">
+			​<p class="input-group">
+				<input type="text" class="form-control" ng-model="Data.echo_date" uib-datepicker-popup="yyyy-MM-dd" is-open="popup3.opened" datepicker-options="dateOptions3">
+				<span class="input-group-btn">
+	            	<button type="button" class="btn btn-default" ng-click="open3()"><i class="glyphicon glyphicon-calendar"></i></button>
+	          	</span>
+	        </p>
+		</div>
+	</div>
+	<div class="row form-group">
+		<div class="field-label col-lg-2 col-md-2 col-sm-12 col-xs-12">
+			วันที่เริ่ม
+		</div>
+		<div class="col-lg-3 col-md-13 col-sm-12 col-xs-12">
+			​<p class="input-group">
+				<input type="text" class="form-control" ng-model="Data.start_date" uib-datepicker-popup="yyyy-MM-dd" is-open="popup1.opened" datepicker-options="dateOptions1">
+				<span class="input-group-btn">
+	            	<button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+	          	</span>
+	        </p>
+		</div>
+	</div>
+	<div class="row form-group">
+		<div class="field-label col-lg-2 col-md-2 col-sm-12 col-xs-12">
+			วันที่สิ้นสุด
+		</div>
+		<div class="col-lg-3 col-md-13 col-sm-12 col-xs-12">
+			​<p class="input-group">
+				<input type="text" class="form-control" ng-model="Data.end_date" uib-datepicker-popup="yyyy-MM-dd" is-open="popup2.opened" datepicker-options="dateOptions2">
+				<span class="input-group-btn">
+	            	<button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
+	          	</span>
+	        </p>
+		</div>
+	</div>
+	<div class="row form-group">
+		<div class="field-label col-lg-2 col-md-2 col-sm-12 col-xs-12">
+			ปริมาณที่ระบบใน MOU
+		</div>
+		<div class="col-lg-3 col-md-13 col-sm-12 col-xs-12">
+			<input type="number" class="form-control" ng-model="Data.mou_amount" required="true">
+		</div>
+	</div>
+	<div class="row form-group">
+		<div class="field-label col-lg-2 col-md-2 col-sm-12 col-xs-12">
+			มูลค่า
+		</div>
+		<div class="col-lg-3 col-md-13 col-sm-12 col-xs-12">
+			<input type="number" class="form-control" ng-model="Data.mou_value" required="true">
+		</div>
+	</div>
+	<hr>
+	<div ng-show="HistoryList.length > 0">
+		<div class="row form-group">
+			<div class="col-lg-12"  style="background-color: #B6CCFF; padding: 5px;">
+				<b>ประวัติการบันทึก</b>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-8 col-lg-offset-2">
+				<table class="table table-bordered table-striped">
+					<thead>
+						<tr>	
+							<td>Last Update</td>
+							<th>ชื่อสหกรณ์</th>
+							<th>ประจำปี</th>
+							<th>วันที่เริ่ม</th>
+							<th>วันที่สิ้นสุด</th>
+							<th>ปริมาณที่ระบุใน MOU</th>
+							<th>มูลค่า</th>
+							<th>บริหารจัดการ</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="data in HistoryList">
+							<td>{{data.update_date}}</td>
+							<td>{{data.cooperative.cooperative_name}}</td>
+							<td>{{data.years + 543}}</td>
+							<td>{{getThaiDate(data.start_date)}}</td>
+							<td>{{getThaiDate(data.end_date)}}</td>
+							<td>{{data.mou_amount}}</td>
+							<td>{{data.mou_value}}</td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="row form-group">
+		<div class="col-lg-12 text-center">
+			<button class="btn btn-primary" ng-click="save(Data)" ng-disabled="!form_data.$valid">
+				<span class="glyphicon glyphicon-floppy-save"></span> 
+				บันทึก
+			</button>
+			<button class="btn btn-default" ng-click="cancelUpdate()">
+				<span class="glyphicon glyphicon-arrow-left"></span> 
+				กลับหน้าหลัก
+			</button>
+		</div>
+	</div>
+	
+</div>

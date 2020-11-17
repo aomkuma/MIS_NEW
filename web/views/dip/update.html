@@ -1,0 +1,78 @@
+<div ng-include src="'views/header.html'"></div>
+<div class="page-header">
+	<h3>
+		บริหารจัดการข้อมูล DIP
+	</h3>
+</div>
+<div class="col-lg-10 col-lg-offset-1" ng-form="form_data">
+	<div class="row form-group">
+		<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+			ปีงบประมาณ
+		</div>
+		<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+			<select class="form-control" ng-model="Data.years" ng-options="data.yearText as data.yearValue for data in YearList">
+				<option value="">กรุณาเลือก..</option>
+			</select>
+		</div>
+	</div>
+	<div class="row form-group">
+		<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+			ชื่อสหกรณ์/ฟาร์ม/เกษตรกร
+		</div>
+		<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+			<input type="text" class="form-control" ng-model="Data.dip_name" required="true">
+		</div>
+	</div>
+	<div class="row form-group">
+		<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+			วันที่เข้าร่วม
+		</div>
+		<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+			<p class="input-group">
+				<input type="text" class="form-control" ng-model="Data.join_date" uib-datepicker-popup="yyyy-MM-dd" is-open="popup1.opened" required="true">
+				<span class="input-group-btn">
+	            	<button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+	          </span>
+	        </p>
+		</div>
+	</div>
+	<div class="row form-group">
+		<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+			สถานะ
+		</div>
+		<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+			<select class="form-control" ng-model="Data.dip_status">
+				<option value="">กรุณาเลือก..</option>
+				<option value="Y">ผ่าน</option>
+				<option value="N">ไม่ผ่าน</option>
+			</select>
+		</div>
+	</div>
+	<div class="row form-group">
+		<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+			วันที่ผ่านการประเมิน
+		</div>
+		<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+			<p class="input-group">
+				<input type="text" class="form-control" ng-model="Data.pass_date" uib-datepicker-popup="yyyy-MM-dd" is-open="popup2.opened" required="true">
+				<span class="input-group-btn">
+	            	<button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
+	          </span>
+	        </p>
+		</div>
+	</div>
+	<hr>
+	<div class="row form-group">
+		<div class="col-lg-12 text-center">
+			<button class="btn btn-primary" ng-click="save(Data)" ng-disabled="!form_data.$valid">
+				<span class="glyphicon glyphicon-floppy-save"></span> 
+				บันทึก
+			</button>
+			<button class="btn btn-default" ng-click="cancelUpdate()">
+				<span class="glyphicon glyphicon-arrow-left"></span> 
+				กลับหน้าหลัก
+			</button>
+		</div>
+	</div>
+	
+</div>

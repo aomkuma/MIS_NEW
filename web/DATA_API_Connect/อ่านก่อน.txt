@@ -1,0 +1,2 @@
+1. สร้าง database ตาม ไฟล์  datausermisdb.sql
+2. แก้ไข connect database connectdb.php

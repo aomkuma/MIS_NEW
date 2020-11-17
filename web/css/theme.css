@@ -1,0 +1,231 @@
+@CHARSET "UTF-8";
+
+@font-face {
+    /*font-family: "THSarabunNew";
+    src: url('../fonts/THSarabunNew.ttf')*/
+    font-family: "SukhumvitSet-Text";
+    src: url('../fonts/SukhumvitSet-Text.ttf')
+}
+
+
+body {
+	/*padding-top:50px;*/
+	background-color: #FFF;
+	overflow: auto !important;
+    font-size:1.2em;
+    /*font-family: "THSarabunNew";
+    src: url('../fonts/THSarabunNew.ttf')*/
+    
+    font-family: "SukhumvitSet-Text";
+    src: url('../fonts/SukhumvitSet-Text.ttf')
+}
+
+a {
+    cursor: pointer;
+}
+
+.form-control {
+  /*font-size: 16px;*/
+}
+
+.form-mobile {
+  border : none;
+  border-bottom: 1px #ccc solid;
+}
+
+.container {
+  
+	background-color: #FFF;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    /*width: 1350px;*/
+    width: 100%;
+
+}
+
+.required_field {
+	border-color: #F97E7E;
+}
+
+.form-control[readonly],.form-control[disabled]
+{
+    background-color:#f5f5f5;
+}
+
+.btn{
+  font-size: 12px;
+}
+
+.navbar-inverse{
+	color : #FFFFFF;
+}
+
+.overlay{
+    margin:0 auto;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    z-index: 1000000;
+    opacity:8.0;
+    filter:alpha(opacity=80);
+    background-color: rgba(0, 0, 0, 0.05);
+    text-align:center;   
+}
+.obj_center {
+    text-align: center;
+}
+
+.user_login_section {
+    padding-top: 2%;
+    text-align: center;
+}
+
+.custom_tabs{
+    background-color: #000;
+    color:#FFF;
+}
+
+.default_bg_color {
+    background-color: #4CC6C6; 
+    color: #fff;
+}
+
+/* default scroll */
+.scrollable-default::-webkit-scrollbar-track
+{
+  background-color: #FFF;
+}
+
+.scrollable-default::-webkit-scrollbar
+{
+  width: 10px;
+  background-color: #F5F5F5;
+}
+
+.scrollable-default::-webkit-scrollbar-thumb
+{
+  background-color: #ccc;
+  border: 2px solid #ccc;
+}
+
+/* Override navbar inverse */
+
+.navbar-inverse {
+  background-color: #FFF;
+  border-color: #FFF;
+  float:none;
+}
+.navbar-inverse .navbar-brand {
+  color: #FFF;
+}
+.navbar-inverse .navbar-brand:hover,
+.navbar-inverse .navbar-brand:focus {
+  color: #fff;
+  background-color: transparent;
+}
+.navbar-inverse .navbar-text {
+  color: #F6F6F6;
+}
+.navbar-inverse .navbar-nav > li > a {
+  color: #000;
+}
+.navbar-inverse .navbar-nav > li > a:hover,
+.navbar-inverse .navbar-nav > li > a:focus {
+  color: #000;
+  background-color: transparent;
+  font-weight: lighter;
+}
+.navbar-inverse .navbar-nav > li > a:active {
+  color: #fff;
+  background-color: transparent;
+  font-weight: lighter;
+}
+.navbar-inverse .navbar-nav > .active > a,
+.navbar-inverse .navbar-nav > .active > a:hover,
+.navbar-inverse .navbar-nav > .active > a:focus {
+  color: #F3EBEB;
+  background-color: #4CC6C6;
+}
+.navbar-inverse .navbar-nav > .disabled > a,
+.navbar-inverse .navbar-nav > .disabled > a:hover,
+.navbar-inverse .navbar-nav > .disabled > a:focus {
+  color: #444;
+  background-color: transparent;
+}
+.navbar-inverse .navbar-toggle {
+  border-color: #4CC6C6;
+}
+.navbar-inverse .navbar-toggle:hover,
+.navbar-inverse .navbar-toggle:focus {
+  background-color: #4CC6C6;
+}
+.navbar-inverse .navbar-toggle .icon-bar {
+  background-color: #fff;
+}
+.navbar-inverse .navbar-collapse,
+.navbar-inverse .navbar-form {
+  border-color: #101010;
+  padding-left: 0px;
+}
+.navbar-inverse .navbar-nav > .open > a,
+.navbar-inverse .navbar-nav > .open > a:hover,
+.navbar-inverse .navbar-nav > .open > a:focus {
+  color: #fff;
+  background-color: #ccc;
+  border-radius: 20px 20px 0px 0px;
+}
+
+#content {
+  width: 100%;
+  padding-left:20px ;
+}
+
+h2 {
+  margin: 20px 0;
+  line-height: 51px;
+  position: relative;
+    
+  
+  font-size: 30px;
+  text-align: center;
+  color: #fff;
+}
+
+
+h2.topic {
+  background-color: #1E02BE;
+}
+h2.topic:after, h2.topic:before {
+  border-width: 25px 0 25px 25px;
+}
+h2.topic:before {
+  border-color: #1E02BE transparent;
+  left: -24px;
+}
+h2.topic:after {
+  border-color: transparent #1E02BE;
+  right: -25px;
+}
+
+h2:before, h2:after {
+  content: '';
+  position: absolute;
+  height: 0;
+  width: 0;
+  border-style: solid;
+  border-width: 0;
+
+}
+
+.monthview-datetable{
+    border:0px;
+}
+
+
+.file-alert{
+  color:red;
+}
+
+.dropdown-menu > li > a{
+  font-size: 1em;
+}

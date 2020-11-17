@@ -1,0 +1,139 @@
+<div class="row">
+  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+    <img src="../files/img/logo.png" alt="" style="height:150px; padding-top: 10px; padding-bottom: 10px;">
+  </div>
+  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+    <span class="pull-right" style="padding-top: 6%;">
+      <span class="glyphicon glyphicon-user" style="color: #4D84BC;"></span> : {{currentUser.FirstName + ' ' + currentUser.LastName}}
+      <br>
+      <span class="glyphicon glyphicon-home"></span> : {{currentUser.Org}}
+      <br>
+      <a ng-click="logout()"><span class="glyphicon glyphicon-log-out" style="color: red;"></span> : ออกจากระบบ</a>
+    </span>
+  </div>
+</div>
+<nav class="navbar navbar-inverse" role="navigation" ng-show="DEFAULT_LANGUAGE == 'TH'">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+
+        <button type="button" class="navbar-toggle" ng-init="navCollapsed = true" ng-click="navCollapsed = !navCollapsed">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        
+      </div>
+    
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" ng-class="!navCollapsed && 'in'">
+      
+        <ul class="nav navbar-nav">
+          <li ng-class="{'active':menu_selected == 'home'}"><a href="#/"  style="border-left: 0px solid #000000;">หน้าหลัก</a></li>
+          <li ng-repeat="menu in Menu" ng-class="{'active':menu_selected == menu.menu_url, 'menu-item dropdown':menu.sub_menu.length > 0}" class="dropdown">
+            
+            <a ng-show="menu.sub_menu.length == 0" 
+              href="#/{{ 'page/' + menu.menu_url }}">
+            {{DEFAULT_LANGUAGE=='TH'?menu.menu_name_th:menu.menu_name_en}}
+            </a>
+
+            <a tabindex="-1" ng-show="menu.sub_menu.length > 0"
+            href="" 
+            class="dropdown-toggle" 
+            data-toggle="dropdown" 
+            role="button" 
+            aria-haspopup="true" 
+            aria-expanded="false" >
+              {{DEFAULT_LANGUAGE=='TH'?menu.menu_name_th:menu.menu_name_en}} <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu"><!-- style="min-width: 400px; overflow: scroll; height: 500px;"-->
+                <li ng-repeat="sub_menu1 in menu.sub_menu"
+                 ng-class="{'dropdown-submenu':sub_menu1.sub_menu.length > 0}">
+                  <a ng-show="sub_menu1.menu_type == 'EXLINK'" href="{{ sub_menu1.menu_url }}" target="_blank">
+                    {{DEFAULT_LANGUAGE=='TH'?sub_menu1.menu_name_th:sub_menu1.menu_name_en}}
+                  </a>
+                  <a href="#/{{sub_menu1.menu_url}}" ng-show="sub_menu1.sub_menu.length == 0 && sub_menu1.menu_type != 'EXLINK'">{{DEFAULT_LANGUAGE=='TH'?sub_menu1.menu_name_th:sub_menu1.menu_name_en}}
+                  </a>
+                  <a href="" tabindex="-1" class="test" ng-show="sub_menu1.sub_menu.length > 0 && sub_menu1.menu_type != 'EXLINK'">
+                    {{DEFAULT_LANGUAGE=='TH'?sub_menu1.menu_name_th:sub_menu1.menu_name_en}}
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li ng-repeat="sub_menu2 in sub_menu1.sub_menu" 
+                    ng-class="{'dropdown-submenu':sub_menu2.sub_menu.length > 0}">
+                      <a ng-show="sub_menu2.menu_type == 'EXLINK'" href="{{ sub_menu2.menu_url }}" target="_blank">
+                        {{DEFAULT_LANGUAGE=='TH'?sub_menu2.menu_name_th:sub_menu2.menu_name_en}}
+                      </a>
+                      <a href="#/{{sub_menu2.menu_url}}" ng-show="sub_menu2.menu_type != 'EXLINK' && sub_menu2.sub_menu.length == 0">{{DEFAULT_LANGUAGE=='TH'?sub_menu2.menu_name_th:sub_menu2.menu_name_en}}
+                      </a>
+                      <a href="" tabindex="-1" class="test" ng-show="sub_menu2.menu_type == 'PARENT' && sub_menu2.sub_menu.length > 0">{{DEFAULT_LANGUAGE=='TH'?sub_menu2.menu_name_th:sub_menu2.menu_name_en}}
+                      </a>
+                      <ul class="dropdown-menu">
+                        <li ng-repeat="sub_menu3 in sub_menu2.sub_menu">
+                          <a ng-show="sub_menu3.menu_type == 'PAGE'" href="#/{{ sub_menu3.menu_url }}">
+                            {{DEFAULT_LANGUAGE=='TH'?sub_menu3.menu_name_th:sub_menu3.menu_name_en}}
+                          </a>
+                          <a ng-show="sub_menu3.menu_type == 'EXLINK'" href="{{ sub_menu3.menu_url }}" target="_blank">
+                            {{DEFAULT_LANGUAGE=='TH'?sub_menu3.menu_name_th:sub_menu3.menu_name_en}}
+                          </a>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+
+            </ul>
+
+          </li>
+          <!--<li ng-class="{'active':menu_selected == 'menu'}"><a href="#/menu-manage">จัดการเมนู</a></li>
+          <li ng-class="{'active':menu_selected == 'news'}"><a href="#/update/news">ข่าวประชาสัมพันธ์</a></li>
+          <li ng-class="{'active':menu_selected == 'relatelink'}"><a href="#/link-url/manage">ลิ้งค์ที่เกี่ยวข้อง</a></li>
+          <li ng-class="{'active':menu_selected == 'palace'}"><a href="#/palace/manage">บุคลากร</a></li>
+          <li ng-class="{'active':menu_selected == 'video'}"><a href="#/video">วีดีโอ</a></li>
+          <li ng-class="{'active':menu_selected == 'question'}"><a href="#/question">คำถามที่พบบ่อย</a></li>
+          <!--<li class="menu-item dropdown" ng-class="{'active':menu_selected == ''}">
+              <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">เกี่ยวกับหน่วยงาน <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                  <li class="menu-item dropdown dropdown-submenu"><a href="#/update/pages/history">ประวัติความเป็นมา</a></li>
+                  <li class="menu-item dropdown dropdown-submenu"><a href="#/update/pages/authority">อำนาจหน้าที่</a></li>
+                  <li class="menu-item dropdown dropdown-submenu"><a href="#/update/links/structure">โครงสร้างหน่วยงาน</a></li>
+                  <li class="menu-item dropdown dropdown-submenu"><a href="#/palace/manage">บุคลากร</a></li>
+                  
+                  
+              </ul>
+          </li>
+          <li ng-class="{'active':menu_selected == 'law'}"><a href="#/update/laws">กฎหมาย/ระเบียบที่เกี่ยวข้อง</a></li>
+          <li ng-class="{'active':menu_selected == 'news'}"><a href="#/update/news">ข่าวประชาสัมพันธ์</a></li>
+          <li ng-class="{'active':menu_selected == 'tradition'}"><a href="#/update/pages/tradition">ขั้นตอนปฏิบัติเกี่ยวกับการเสนอต่อ ครม.</a></li>
+          <li ng-class="{'active':menu_selected == 'resolution'}"><a href="#/update/links/resolution">มติ ครม. ที่เกี่ยวข้อง</a></li>
+          <li ng-class="{'active':menu_selected == 'relatelink'}"><a href="#/link-url/manage">ลิ้งค์ที่เกี่ยวข้อง</a></li>
+          
+          <!--<li><a href="#">แก้ไขข้อมูลส่วนตัว</a></li>-->
+          <!--<li dropdown>
+            <a href="#" dropdown-toggle>Dropdown <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="#">Action</a></li>
+              <li><a href="#">Another action</a></li>
+              <li><a href="#">Something else here</a></li>
+              <li><a href="#">Separated link</a></li>
+              <li><a href="#">One more separated link</a></li>
+            </ul>
+          </li>-->
+          
+        </ul>
+        
+        <!--<form class="navbar-form navbar-right" role="search">
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder="Search">
+          </div>
+          <button type="submit" class="btn btn-default">Submit</button>
+        </form>-->
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </nav>
+
+<style type="text/css" media="screen">
+    .navbar 
+    {
+
+    }
+</style>

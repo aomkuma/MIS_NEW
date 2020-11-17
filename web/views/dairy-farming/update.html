@@ -1,0 +1,64 @@
+<div ng-include src="'views/header.html'"></div>
+<div class="page-header">
+	<span ng-repeat="data in MenuName">
+	        <span ng-show="$index > 0">></span>
+	        {{data.menu_name_th}}
+	    </span>
+</div>
+<div class="col-lg-10 col-lg-offset-1" ng-form="form_data">
+	<div class="row form-group">
+		<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+			ประเภทรายการ
+		</div>
+		<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+			<select class="form-control" ng-model="Data.dairy_farming_type">
+				<option value="">กรุณาเลือก..</option>
+				<option value="cooperative">สหกรณ์</option>
+				<option value="lab">ห้องปฏิบัติการ</option>
+			</select>
+		</div>
+	</div>
+	<div class="row form-group">
+		<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+			รายการกิจกรรมส่งเสริมโคนม (หลัก)
+		</div>
+		<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+			<select class="form-control" ng-model="Data.parent_id" ng-options="data.id as data.dairy_farming_name for data in ParentList">
+				<option value="">ไม่มี</option>
+			</select>
+		</div>
+	</div>
+	<div class="row form-group">
+		<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+			รายการกิจกรรมส่งเสริมโคนม (ย่อย)
+		</div>
+		<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+			<input type="text" class="form-control" ng-model="Data.dairy_farming_name" maxlength="255" required="required">
+		</div>
+	</div>
+	<div class="row form-group">
+		<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+			สถานะ
+		</div>
+		<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+			<div class="btn-group">
+				<label class="btn btn-default btn-checkbox" ng-model="Data.actives" uib-btn-radio="'Y'" >ใช้</label>
+	            <label class="btn btn-default btn-checkbox" ng-model="Data.actives" uib-btn-radio="'N'" >ไม่ใช้</label>
+	        </div>
+		</div>
+	</div>
+	<hr>
+	<div class="row form-group">
+		<div class="col-lg-12 text-center">
+			<button class="btn btn-primary" ng-click="save(Data)" ng-disabled="!form_data.$valid">
+				<span class="glyphicon glyphicon-floppy-save"></span> 
+				บันทึก
+			</button>
+			<button class="btn btn-default" ng-click="cancelUpdate()">
+				<span class="glyphicon glyphicon-arrow-left"></span> 
+				กลับหน้าหลัก
+			</button>
+		</div>
+	</div>
+	
+</div>

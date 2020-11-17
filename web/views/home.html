@@ -1,0 +1,57 @@
+<div ng-include src="'views/header.html'"></div>
+
+<div class="row form-group" style="padding-top: 50px;">
+	<div class="col-lg-10 col-lg-offset-1 graph-bg">
+		<div class="row form-group">
+			<div class="col-lg-12 text-center">
+				<form name="search_form" class="form-inline">
+					<div class="form-group">
+					    <label for="exampleInputName2">&nbsp; ปีงบประมาณ : </label>
+					    &nbsp; <select name="Year" class="form-control" ng-model="condition.Year" ng-options="year.yearText as year.yearValue for year in YearList" ng-change="loadData1()">
+							<option value="">กรุณาเลือก</option>
+						</select>
+			  		</div>
+			  	</form>
+			</div>
+		</div>
+		<div class="row form-group">
+			<div class="col-lg-12 text-center">
+				ข้อมูล ณ วันที่  {{makeDate()}}
+			</div>
+		</div>
+		<div class="row form-group">
+			<div class="col-lg-12 text-center">
+				<canvas id="myChart" style="height: 100px;"></canvas>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row form-group">
+	<div class="col-lg-10 col-lg-offset-1 graph-bg">
+		<div class="row form-group">
+			<div class="col-lg-12 text-center">
+				<form name="search_form" class="form-inline">
+					<div class="form-group">
+					    <label for="exampleInputName2">&nbsp; ปีงบประมาณ : </label>
+					    &nbsp; <select name="Year" class="form-control" ng-model="condition.Year1" ng-options="year.yearText as year.yearValue for year in YearList"  ng-change="loadData2()">
+							<option value="">กรุณาเลือก</option>
+						</select>
+			  		</div>
+			  	</form>
+			</div>
+		</div>
+		<div class="row form-group">
+			<div class="col-lg-12 text-center">
+				ข้อมูล ณ วันที่  {{makeDate()}}
+			</div>
+		</div>
+		<div class="row form-group">
+			<div class="col-lg-12 text-center">
+				<canvas id="myChart1" style="height: 4000px;"></canvas>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="page-header">
+	&nbsp;
+</div>

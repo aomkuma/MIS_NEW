@@ -1,0 +1,134 @@
+<div ng-include src="'views/header.html'"></div>
+<div class="page-header">
+    <h3>บริหารจัดการข้อมูล > บริหารจัดการรายการผลิตภัณฑ์นม</h3>
+</div>
+
+
+<div class="row form-group">
+    <div class="col-lg-12 table-responsive">
+        <table class="table table-bordered table-striped">
+
+            <caption>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                    <select name="Year" class="form-control" ng-model="Data.factory_id" ng-options="data.id as data.factory_name for data in FactoryList" required="required">
+                        <option value="">ทั้งหมด</option>
+                    </select>
+                </div>
+                <div class="col-lg-1 col-md-1 col-sm-2 col-xs-2">
+                    <button class="btn btn-primary" ng-click="goSearch(Data.factory_id)"><span class="glyphicon glyphicon-search"></span> ค้นหา</button>
+                </div>
+                <button class="btn btn-danger pull-right" ng-click="goUpdate('')">
+                    <span class="glyphicon glyphicon-plus"></span> 
+                    เพิ่มรายการ
+                </button>
+                <button class="btn btn-primary pull-right" ng-click="showSaleChanel()">
+                    <span class="glyphicon glyphicon-plus"></span> 
+                    ข้อมูลช่องทางการขาย
+                </button>
+            </caption>
+            <thead>
+                <tr>
+
+                    <th>จัดการ</th>
+                    <th>สำนักงาน</th>
+                    <th>ประเภทหลัก</th>
+                    <th>สถานะ</th>
+                    <!--<th>แก้ไข</th>-->
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="data in List">
+
+
+                    <td style="text-align: center;">
+                        <button class="btn btn-success" ng-click="goAddsub(data.id)">
+
+                            เพิ่มประเภทย่อย
+                        </button>
+                        <button class="btn btn-success" ng-click="goUpdate(data.id)">
+
+                            แก้ไข
+                        </button></td>
+                    <td style="text-align: center;">{{data.factory_name}}</td>
+                    <td style="text-align: center;">{{data.name}}</td>
+                    <td style="text-align: center;" ng-class="{'inactive-text':data.actives == 'N'}">{{data.actives=='Y'?'ใช้งาน':'ไม่ใช้งาน'}}</td>
+                    <!--					<td>
+                                                                    <button class="btn btn-success" ng-click="goUpdate(data.id)">
+                                                                            <span class="glyphicon glyphicon-edit"></span> 
+                                                                            แก้ไข
+                                                                    </button>
+                                                            </td>-->
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!--<style type="text/css">
+        .inactive-text{
+                color: red;
+        }
+</style>-->
+<script type="text/ng-template" id="sale_chanel.html">
+    <div class="modal-header">
+        <h5 class="modal-title">ข้อมูลช่องทางการจำหน่าย</h5>
+    </div>
+    <div class="modal-body">
+        <div class="row form-group">
+            <div class="col-lg-10 col-lg-offset-1">
+                <table class="table  table-bordered table-striped">
+                    <caption>
+                        <div class="row form-group">
+                            <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                หัวข้อ
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <input type="text" class="form-control" ng-model="SaleChanel.chanel_name">
+                            </div>
+                            
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                สถานะ
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <div class="btn-group">
+                                    <label class="btn btn-default btn-checkbox" ng-model="SaleChanel.actives" uib-btn-radio="'Y'" >ใช้</label>
+                                    <label class="btn btn-default btn-checkbox" ng-model="SaleChanel.actives" uib-btn-radio="'N'" >ไม่ใช้</label>
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6">
+                                <button class="btn btn-primary" ng-click="saveSaleChanel(SaleChanel)" ng-disabled="SaleChanel.chanel_name == null || SaleChanel.chanel_name == ''">
+                                    <span class="glyphicon glyphicon-plus"></span> 
+                                    บันทึก
+                                </button>
+                            </div>
+                        </div>
+                    </caption>
+                    <thead>
+                        <tr>
+
+                            <th>หัวข้อ</th>
+                            <!--<th>สถานะ</th>-->
+                            <th>แก้ไข</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="data in SaleChanelList">
+                            <td style="text-align: center;">{{data.chanel_name}}</td>
+                            <!--<td style="text-align: center;" ng-class="{'inactive-text':data.actives == 'N'}">{{data.actives=='Y'?'ใช้งาน':'ไม่ใช้งาน'}}</td>-->
+                            <td style="text-align: center;">
+                                <button class="btn btn-success" ng-click="goUpdateSaleChanel(data)">
+                                    แก้ไข
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+    <button class="btn btn-default" ng-click="ok(ApproveComment)">OK</button>
+    <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+    </div>
+</script>

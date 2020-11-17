@@ -1,0 +1,104 @@
+<div ng-include src="'views/header.html'"></div>
+<div class="page-header">
+	<h3>บริหารจัดการข้อมูล > รายการเป้าหมายการดำเนินงาน</h3>
+</div>
+<div class="col-lg-10 col-lg-offset-1" ng-form="form_data">
+	<div class="row form-group">
+		<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+			ด้านกิจการ
+		</div>
+		<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+			<select class="form-control" ng-model="Data.goal_type" required="required" ng-change="changeGoalType()">
+				<option value="">กรุณาเลือก..</option>
+				<option value="DBI">ข้อมูลกิจการโคนม</option>
+				<option value="II">ข้อมูลอุตสาหกรรม</option>
+			</select>
+		</div>
+	</div>
+	<div class="row form-group">
+		<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+			ข้อมูล
+		</div>
+		<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+			<select class="form-control" ng-model="Data.menu_type" required="required" ng-options="data.value as data.name for data in MenuType">
+				<option value="">กรุณาเลือก..</option>
+				<!--
+				<option value="บริการสัตวแพทย์">บริการสัตวแพทย์</option>
+				<option value="ผสมเทียม">ผสมเทียม</option>
+				<option value="แร่ธาตุ พรีมิกซ์ และอาหาร">แร่ธาตุ พรีมิกซ์ และอาหาร</option>
+				<option value="ผลิตน้ำเชื้อแช่แข็ง">ผลิตน้ำเชื้อแช่แข็ง</option>
+				<option value="จำหน่ายน้ำเชื้อแช่แข็ง">จำหน่ายน้ำเชื้อแช่แข็ง</option>
+				<option value="วัสดุผสมเทียมและอื่นๆ">วัสดุผสมเทียมและอื่นๆ</option>
+				<option value="ปัจจัยการเลี้ยงโค">ปัจจัยการเลี้ยงโค</option>
+				<option value="ฝึกอบรม">ฝึกอบรม</option>
+				<option value="ท่องเที่ยว">ท่องเที่ยว</option>
+				<option value="สหกรณ์และปริมาณน้ำนม">สหกรณ์และปริมาณน้ำนม</option>
+				<option value="ข้อมูลฝูงโค">ข้อมูลฝูงโค</option>
+				<option value="ข้อมูลการผลิต">ข้อมูลการผลิต</option>
+				<option value="ข้อมูลการขาย">ข้อมูลการขาย</option>
+				<option value="ข้อมูลรับซื้อและจำหน่ายน้ำนม">ข้อมูลรับซื้อและจำหน่ายน้ำนม</option>
+				<option value="การสูญเสียในกระบวนการ">การสูญเสียในกระบวนการ</option>
+				<option value="การสูญเสียนอกกระบวนการ">การสูญเสียนอกกระบวนการ</option>
+				<option value="การสูญเสียรอจำหน่าย">การสูญเสียรอจำหน่าย</option>
+				<option value="การสูญเสียในกระบวนการขนส่ง">การสูญเสียในกระบวนการขนส่ง</option>
+				-->
+			</select>
+		</div>
+	</div>
+	<div class="row form-group" ng-show="Data.menu_type == 'แร่ธาตุ พรีมิกซ์ และอาหาร' || Data.menu_type == 'ข้อมูลฝูงโค' || Data.menu_type == 'ข้อมูลฝูงโคพ่อพันธุ์' || Data.menu_type == 'การสูญเสียในกระบวนการ'"
+	>
+		<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+			ประเภทย่อย
+		</div> 
+		<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+			<select class="form-control" ng-model="Data.sub_goal_type" ng-options="data.name as data.name for data in SubGoalTypeList | filter:{type:Data.menu_type}:true">
+				<option value="">กรุณาเลือก..</option>
+			</select>
+		</div>
+	</div>
+
+	<div class="row form-group">
+		<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+			รายการ
+		</div>
+		<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+			<input type="text" class="form-control" ng-model="Data.goal_name" maxlength="255" required="required">
+		</div>
+	</div>
+	<div class="row form-group">
+		<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+			สำนักงาน
+		</div>
+		<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+			<select class="form-control" ng-model="Data.factory_id" ng-options="data.id as data.factory_name for data in FactoryList">
+				<option value="">กรุณาเลือก..</option>
+			</select>
+		</div>
+	</div>
+	
+	<div class="row form-group">
+		<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+			สถานะ
+		</div>
+		<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+			<div class="btn-group">
+				<label class="btn btn-default btn-checkbox" ng-model="Data.actives" uib-btn-radio="'Y'" >ใช้</label>
+	            <label class="btn btn-default btn-checkbox" ng-model="Data.actives" uib-btn-radio="'N'" >ไม่ใช้</label>
+	        </div>
+		</div>
+	</div>
+	<hr>
+	<div class="row form-group">
+		<div class="col-lg-12 text-center">
+			<button class="btn btn-primary" ng-click="save(Data)" ng-disabled="!form_data.$valid">
+				<span class="glyphicon glyphicon-floppy-save"></span> 
+				บันทึก
+			</button>
+			<button class="btn btn-default" ng-click="cancelUpdate()">
+				<span class="glyphicon glyphicon-arrow-left"></span> 
+				กลับหน้าหลัก
+			</button>
+		</div>
+	</div>
+	
+</div>

@@ -1,0 +1,210 @@
+<div ng-include src="'views/header.html'"></div>
+<div class="row form-group" style="padding-top: 10px;">
+	  <div class="col-lg-5">
+	    <div class="row">
+	      <div class="col-lg-10" style="padding: 5px; font-weight: bolder; font-size: 1.3em;">
+	        <img src="../cio-files/img/pin-menu.png">
+	        ข่าวประชาสัมพันธ์
+	      </div>
+	    </div>
+	  </div>
+	  <div class="col-lg-6">
+
+	  </div>
+</div>
+
+<div ng-show="PAGE == 'UPDATE'">
+	<div class="row form-group">
+		<div class="col-lg-12 text-center">
+			<img ngf-thumbnail="AttachFile" style="height: 200px; " ng-show="AttachFile != null && News.image_cover_path == null">
+			<img src="{{'../'+ News.image_cover_path}}" style="height: 200px;" ng-show="News.image_cover_path != null && AttachFile == null">
+		</div>
+	</div>
+
+	<div class="row form-group">
+		<label class="col-lg-2 col-lg-offset-2 form-control-static">
+			รูปภาพข่าว (Cover)
+		</label>
+		<div class="col-lg-4" >
+			<p class="input-group">
+	          <input type="text" readonly="true" class="form-control" ng-model="AttachFile.name" />
+	          <span class="input-group-btn">
+	            <button class="btn btn-default" ngf-select ng-model="AttachFile" ngf-max-size="5MB"  ngf-model-invalid="AttachFile.invalidFile" accept="image/*" ngf-pattern="'.png,.jpg,.gif'" >เลือก</button>
+	          </span>
+	        </p>
+		</div>
+		<div class="col-lg-3">
+			<div class="file-alert" ng-show="fle.attachFile.invalidFile.$error === 'maxSize'">ขนาดไฟล์ต้องไม่เกิน : {{AttachFile.invalidFile.$errorParam}}</div>
+		</div>
+	</div>
+	<div class="page-header">
+		<h3>สถานะ</h3>
+	</div>
+	<div class="row form-group">
+		<div class="col-lg-10">
+			<div class="btn-group">
+                <label class="btn btn-default btn-checkbox" ng-model="News.actives" uib-btn-radio="'Y'">ใช้</label>
+                <label class="btn btn-default btn-checkbox" ng-model="News.actives" uib-btn-radio="'N'">ไม่ใช้</label>
+            </div>
+		</div>
+	</div>
+	<div class="page-header">
+		<h3>วันที่ข่าว</h3>
+	</div>
+	<div class="row form-group">
+		<div class="col-lg-4 col-xs-12">
+			<p class="input-group">
+				<input type="text" class="form-control" ng-model="News.news_date" uib-datepicker-popup="yyyy-MM-dd" is-open="popup1.opened" datepicker-options="dateOptions1">
+				<span class="input-group-btn">
+	            	<button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+	          </span>
+	        </p>
+		</div>
+	</div>
+	<div class="page-header">
+		<h3>ประเภทข่าว</h3>
+	</div>
+	<div class="row form-group">
+		<div class="col-lg-4 col-xs-12">
+			<select ng-model="News.news_type" class="form-control">
+				<option value="">กรุณาเลือก</option>
+				<option value="ข่าวเด่นรัฐมนตรีว่าการกระทรวงการท่องเที่ยวและกีฬาจากสื่อต่างๆ">ข่าวเด่นรัฐมนตรีว่าการกระทรวงการท่องเที่ยวและกีฬาจากสื่อต่างๆ</option>
+				<option value="ข่าวประชาสัมพันธ์รัฐมนตรีว่าการกระทรวงการท่องเที่ยวและกีฬาจากสื่อต่างๆ">ข่าวประชาสัมพันธ์รัฐมนตรีว่าการกระทรวงการท่องเที่ยวและกีฬาจากสื่อต่างๆ</option>
+				<option value="ข่าวประชาสัมพันธ์ปลัดกระทรวงการท่องเที่ยวและกีฬา">ข่าวประชาสัมพันธ์ปลัดกระทรวงการท่องเที่ยวและกีฬา</option>
+				<option value="ข่าวประชาสัมพันธ์ของจังหวัด">ข่าวประชาสัมพันธ์ของจังหวัด</option>
+			</select>
+		</div>
+	</div>
+	<div class="page-header">
+		<h3>หัวข้อภาษาไทย</h3>
+	</div>
+	<div class="row form-group">
+		<div class="col-lg-12">
+			<input type="text" class="form-control" ng-model="News.title_th" maxlength="255">
+		</div>
+	</div>
+	<div class="page-header">
+		<h3>หัวข้อภาษาอังกฤษ</h3>
+	</div>
+	<div class="row form-group">
+		<div class="col-lg-12">
+			<input type="text" class="form-control" ng-model="News.title_en" maxlength="255">
+		</div>
+	</div>
+
+	<div class="page-header">
+		<h3>เนื้อหาภาษาไทย</h3>
+	</div>
+	<div class="row form-group">
+		<div class="col-lg-12" id="ckeditor">
+			<textarea class="form-control" id="editor1" name="editor1" ng-model="News.contents" rows="100" data-sample="40" data-sample-short="" >
+			</textarea>
+		</div>
+	</div>
+
+	<div class="page-header">
+		<h3>เนื้อหาภาษาอังกฤษ</h3>
+	</div>
+	<div class="row form-group">
+		<div class="col-lg-12" id="ckeditor_en">
+			<textarea class="form-control" id="editor2" name="editor2" ng-model="News.contents_en" rows="100" data-sample="40" data-sample-short="" >
+			</textarea>
+		</div>
+	</div>
+
+	<div class="page-header">
+		<h3>ไฟล์แนบ</h3>
+	</div>
+
+	<div class="row form-group" ng-repeat="file in News.AttachFiles">
+		<div class="col-lg-12">
+			
+					<button class="btn btn-danger btn-xs" ng-click="removeAttach('attach/delete', file.id)"><span class="glyphicon glyphicon-trash"></span></button>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<a target="_self" href="{{file.file_path}}" download="{{file.file_name}}">{{file.file_name}}</a>
+				
+		</div>
+	</div>
+
+	<div class="row form-group">
+		<div class="col-lg-12">
+			<button class="btn btn-primary " ng-click="addFiles()"> เพิ่มไฟล์แนบ</button>
+		</div>
+		<div class="col-lg-12">
+			<div class="row" ng-repeat="fle in FileList">
+				<div class="col-lg-4" >
+					<p class="input-group">
+	                  <input type="text" readonly="true" class="form-control" ng-model="fle.attachFile.name" />
+	                  <span class="input-group-btn">
+	                    <button class="btn btn-default" ngf-select ng-model="fle.attachFile" ngf-max-size="25MB"  ngf-model-invalid="fle.attachFile.invalidFile">เลือก</button>
+	                  </span>
+	                </p>
+				</div>
+				<div class="col-lg-3">
+					<div class="file-alert" ng-show="fle.attachFile.invalidFile.$error === 'maxSize'">ขนาดไฟล์ต้องไม่เกิน : {{fle.attachFile.invalidFile.$errorParam}}</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="page-header text-center">
+		<button class="btn btn-success" ng-click="previewTemplate()">Preview</button>
+		<button class="btn btn-info" ng-click="save('news/update', News, AttachFile, FileList)">บันทึก</button>
+		<button class="btn btn-default" ng-click="cancelUpdate()">ยกเลิก</button>
+	</div>
+
+	<div class="row" style="height: 240px;" ng-show="show_preview">
+			<div class="col-lg-12 text-center">
+				<img ngf-thumbnail="AttachFile" style="height: 200px; " ng-show="AttachFile != null && News.image_cover_path == null">
+				<img src="{{'../'+ News.image_cover_path}}" style="height: 200px;" ng-show="News.image_cover_path != null && AttachFile == null">
+			</div>
+		</div>
+	<div class="row form-group" ng-show="show_preview">
+		<div class="col-lg-12" id="div_preview" bind-html-compile="preview">
+			
+		</div>
+	</div>
+</div>
+
+<div class="row" ng-show="PAGE == 'MAIN'">
+	<div class="col-lg-12">
+		<button ng-click="add()" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> เพิ่ม</button>
+	</div>
+	<div class="col-lg-4 col-sm-3 col-xs-12" ng-repeat="data in NewsList" style="border: 1px #ccc solid; height: 600px; word-break:break-all;">
+		<div class="row" style="height: 240px;">
+			<div class="col-lg-12 text-center">
+				<img ng-src="{{ '../' + data.image_cover_path }}" alt="" style="max-width: 100%; height: 230px;">
+			</div>
+		</div>
+		<div class="row">
+				<div class="col-lg-12">
+					<a ng-click="edit(data)" style="cursor: pointer; color: #999;" bind-html-compile="data.title_th | htmlToPlaintext"></a>
+					<br>
+					<div style="background: url('../cio-files/img/line-bottom.png') no-repeat; height: 3px; width:100%; margin:0px auto; margin-top:20px;margin-bottom:15px;"></div>
+				</div>
+			</div>
+		<div class="row">
+			<div class="col-lg-12">
+				<span bind-html-compile="data.contents | htmlToPlaintext | cut:true:200:' ...'" style="word-wrap: break-word;"></span>
+			</div>
+		</div>
+		<div class="row" style="padding-top: 2vh;">
+			<div class="col-lg-6">
+				
+			</div>	
+			<div class="col-lg-6 ">
+				<span class="pull-right" style="color: #FF5C5C;">{{data.news_type}}</span>
+			</div>	
+		</div>
+		<hr>
+		<div class="row" style="padding-bottom: 3vh;">
+			<div class="col-lg-6">
+				<span class=" pull-left" style="color:#A5C7CE;">{{data.news_date}}</span>
+			</div>	
+			<div class="col-lg-6 ">
+				<span class="pull-right" style="color: #A5C7CE;">จำนวนเข้าชม {{data.visit_count==null?0:data.visit_count}} ครั้ง</span>
+			</div>	
+		</div>
+	</div>
+	<div class="col-lg-12" style="text-align:center;" ng-show="tableLoad"><img src="img/ellipsis.gif"></div>
+</div>

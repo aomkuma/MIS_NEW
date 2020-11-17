@@ -1,0 +1,46 @@
+<div ng-include src="'views/header.html'"></div>
+<div class="page-header">
+	<span ng-repeat="data in MenuName">
+	        <span ng-show="$index > 0">></span>
+	        {{data.menu_name_th}}
+	    </span>
+</div>
+<div class="col-lg-12 table-responsive">
+	<table class="table table-bordered table-striped">
+		<caption>
+			<button class="btn btn-danger pull-right" ng-click="goUpdate('')">
+				<span class="glyphicon glyphicon-plus"></span> 
+				เพิ่มรายการ
+			</button>
+		</caption>
+		<thead>
+			<tr>
+				<th>Last Update</th>
+				<th>รายการกิจกรรมส่งเสริมโคนม (หลัก)</th>
+				<th>รายการกิจกรรมส่งเสริมโคนม (ย่อย)</th>
+				<th>สถานะ</th>
+				<th>บริหารจัดการ</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="data in List">
+				<td>{{data.update_date}}</td>
+				<td>{{data.dairy_farming_name}}</td>
+				<td>{{data.child_name}}</td>
+				<td ng-class="{'inactive-text':data.actives=='N'}">{{data.actives=='Y'?'ใช้งาน':'ไม่ใช้งาน'}}</td>
+				<td>
+					<button class="btn btn-success" ng-click="goUpdate(data.id)">
+						<span class="glyphicon glyphicon-edit"></span> 
+						แก้ไข
+					</button>
+					
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<style type="text/css">
+	.inactive-text{
+		color: red;
+	}
+</style>

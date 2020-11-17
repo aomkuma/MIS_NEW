@@ -1,0 +1,132 @@
+<div ng-include src="'views/header.html'"></div>
+<div class="page-header">
+	<h3>
+		<span ng-repeat="data in MenuName">
+	        <span ng-show="$index > 0">></span>
+	        {{data.menu_name_th}}
+	    </span>
+	</h3>
+</div>
+<div class="row form-group">
+	<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+		ฝ่าย
+	</div>
+	<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+		<input type="text" class="form-control" ng-model="User.Office" readonly="true">
+	</div>
+</div>
+<div class="row form-group">
+	<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+		กอง
+	</div>
+	<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+		<input type="text" class="form-control" ng-model="User.Division" readonly="true">
+	</div>
+</div>
+<div class="row form-group">
+	<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+		แผนก
+	</div>
+	<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+		<input type="text" class="form-control" ng-model="User.Department" readonly="true">
+	</div>
+</div>
+<div class="row form-group">
+	<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+		ชื่อ
+	</div>
+	<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+		<input type="text" class="form-control" ng-model="User.FirstName" readonly="true">
+	</div>
+</div>
+<div class="row form-group">
+	<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+		สกุล
+	</div>
+	<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+		<input type="text" class="form-control" ng-model="User.LastName" readonly="true">
+	</div>
+</div>
+<div class="row form-group">
+	<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+		รหัสพนักงาน
+	</div>
+	<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+		<input type="text" class="form-control" ng-model="User.StaffID" readonly="true">
+	</div>
+</div>
+<div class="row form-group">
+	<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+		พื้นที่รับผิดชอบ
+	</div>
+	<div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+		<div class="row form-group">
+			<div class="col-lg-4 col-md-4 col-sm-3 col-xs-12" ng-repeat="region in User.person_region">
+				{{region.RegionName}}
+			</div>
+		</div>
+	</div>
+</div>
+<hr>
+<div class="row form-group">
+	<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+		บทบาทการใช้งาน
+	</div>
+	<div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+		<div class="row form-group">
+			<div class="col-lg-4 col-md-4 col-sm-3 col-xs-12">
+				<input id="Filler" type="checkbox" ng-model="Role.Filler" ng-true-values="Role.Filler" ng-false-values="!Role.Filler"> &nbsp; <label for="Filler">ผู้กรอกข้อมูล</label>
+			</div>
+			<div class="col-lg-4 col-md-4 col-sm-3 col-xs-12">
+				<input id="Approver" type="checkbox" ng-model="Role.Approver" ng-true-values="true" ng-false-values="false" ng-checked="Role.Approver"> &nbsp; <label for="Approver">ผู้อนุมัติ</label>
+			</div>
+			<div class="col-lg-4 col-md-4 col-sm-3 col-xs-12">
+				<input id="General" type="checkbox" ng-model="Role.General" ng-true-values="true" ng-false-values="false" ng-checked="Role.General"> &nbsp; <label for="General">ผู้ใช้งานทั่วไป</label>
+			</div>
+			<div class="col-lg-4 col-md-4 col-sm-3 col-xs-12">
+				<input id="Reporter" type="checkbox" ng-model="Role.Reporter" ng-true-values="true" ng-false-values="false" ng-checked="Role.Reporter"> &nbsp; <label for="Reporter">ผู้ออกรายงาน</label>
+			</div>
+			<div class="col-lg-4 col-md-4 col-sm-3 col-xs-12">
+				<input id="Admin" type="checkbox" ng-model="Role.Admin" ng-true-values="true" ng-false-values="false" ng-checked="Role.Admin"> &nbsp; <label for="Admin">ผู้ดูแลระบบ</label>
+			</div>
+		</div>
+	</div>
+</div>
+<hr>
+<div class="row form-group">
+	<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+		สิทธิ์การกรอก / อนุมัติข้อมูล
+	</div>
+	<div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+		<div class="row form-group" ng-repeat="menu in MenuList">
+			<div class="col-lg-11" style="background-color: #B6CCFF; padding: 5px;">
+				<input id="{{menu.id+$index}}" type="checkbox" ng-model="menu.checked_menu"  ng-true-values="true" ng-false-values="false" ng-checked="menu.checked_menu"> &nbsp; <label for="{{menu.id+$index}}"> {{menu.menu_name_th}}
+			</div>
+			<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" ng-repeat="sub_menu in menu.sub_menu" style="padding-top: 5px;">
+				<input id="{{sub_menu.id+$index}}" type="checkbox" ng-model="sub_menu.checked_menu"  ng-true-values="true" ng-false-values="false" ng-checked="sub_menu.checked_menu"> &nbsp; <label for="{{sub_menu.id+$index}}">{{sub_menu.menu_name_th}}</label>
+			</div>
+		</div>
+	</div>
+</div>
+<hr>
+<div class="row form-group">
+	<div class="col-lg-12 text-center">
+		<button class="btn btn-primary" ng-click="save(Role, MenuList)">
+			<span class="glyphicon glyphicon-floppy-save"></span> 
+			บันทึก
+		</button>
+		<button class="btn btn-default" ng-click="cancelUpdate()">
+			<span class="glyphicon glyphicon-arrow-left"></span> 
+			กลับหน้าหลัก
+		</button>
+	</div>
+</div>
+<div class="page-header">
+	&nbsp;
+</div>
+<style type="text/css">
+	label{
+		font-weight:normal;
+		display:inline;
+	}
+</style>

@@ -1,0 +1,263 @@
+<div ng-include src="'views/header.html'"></div>
+<div class="page-header">
+	<h3>
+		<span ng-repeat="data in MenuName">
+	        <span ng-show="$index > 0">></span>
+	        {{data.menu_name_th}}
+	    </span>
+	</h3>
+</div>
+<div class="col-lg-10 col-lg-offset-1" ng-form="form_data">
+	
+	<div class="row form-group">
+		<div class="field-label col-lg-1 col-md-1 col-sm-12 col-xs-12" ng-show="Maker">
+			ชื่อสหกรณ์
+		</div>
+		<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12" ng-show="Maker">
+			<select class="form-control" ng-model="Veterinary.cooperative_id" ng-options="data.id as data.cooperative_name for data in Cooperative" required="required">
+				<option value="">กรุณาเลือก..</option>
+			</select>
+		</div>
+		<div class="field-label col-lg-1 col-md-1 col-sm-12 col-xs-12">
+			เดือน
+		</div>
+		<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+			<select name="Year" class="form-control" ng-model="Veterinary.months" ng-options="month.monthValue as month.monthText for month in MonthList" required="required">
+					<option value="">กรุณาเลือก..</option>
+				</select>
+		</div>
+		<div class="field-label col-lg-1 col-md-1 col-sm-12 col-xs-12">
+			ปีพ.ศ.
+		</div>
+		<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+			<select name="Year" class="form-control" ng-model="Veterinary.years" ng-options="year.yearText as year.yearValue for year in YearList" required="required">
+					<option value="">กรุณาเลือก..</option>
+				</select>
+		</div>
+		<div class="field-label col-lg-1 col-md-1 col-sm-12 col-xs-12">
+			<button class="btn btn-info" ng-click="goSearch(Veterinary)" ng-disabled="!form_data.$valid">
+				<span class="glyphicon glyphicon-search"></span> 
+				ค้นหา
+			</button>
+		</div>
+	</div>
+	<hr>
+	<fieldset ng-disabled="!Maker">
+	<div ng-show="Search || VeterinaryDetailList.length > 0">
+		<div class="row form-group">
+			<div class="col-lg-6">
+				<div class="row form-group">
+					<label class="col-lg-12 form-control-static">
+						สหกรณ์ : {{CooperativeName}}
+					</label>
+					<label class="col-lg-12 form-control-static">
+						 เดือน : {{MonthName}}
+					</label>
+					<label class="col-lg-12 form-control-static">
+						ปี : {{YearName}}
+					</label>
+				</div>
+			</div>
+			<div class="col-lg-6">
+				<div class="row form-group">
+					<label class="col-lg-12 form-control-static">
+						เป้าหมายประจำปี : {{Goal.goal_year.price_value}} บาท
+					</label>
+					<label class="col-lg-12 form-control-static">
+						 เป้าหมายสะสม : {{Goal.goal_total}} บาท
+					</label>
+					<label class="col-lg-12 form-control-static">
+						เป้าหมายประจำเดือน : {{Goal.goal_months}} บาท
+					</label>
+				</div>
+			</div>
+		</div>
+		<div class="row form-group">
+			<div class="col-lg-12">
+				<button class="btn btn-danger  pull-right" ng-click="addVeterinaryDetail()" ><!--ng-disabled="!form_data.$valid"-->
+				<span class="glyphicon glyphicon-plus"></span> 
+				เพิ่ม
+			</button>
+			</div>
+		</div>
+		<div ng-repeat="VeterinaryDetail in VeterinaryDetailList" ng-init="parentIndex = $index">
+			<fieldset style="border: 1px solid #999; padding: 10px; margin-top: 10px;">
+			<div ng-form="sub_form_data">
+				<div class="row form-group">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						วันที่แก้ไขล่าสุด {{getThaiDateTimeFromString(VeterinaryDetail.update_date)}}
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+						กิจกรรมส่งเสริมโคนม (หลัก)
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+						<select class="form-control" ng-model="VeterinaryDetail.dairy_farming_id" ng-options="data.id as data.dairy_farming_name for data in DairyFarmingList[parentIndex]" ng-change="loadDairyFarming('CHILD', VeterinaryDetail.dairy_farming_id, parentIndex)" required="true">
+							<option value="">กรุณาเลือก..</option>
+						</select>
+					</div>
+					<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+						กิจกรรมส่งเสริมโคนม (ย่อย)
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+						<select class="form-control" ng-model="VeterinaryDetail.sub_dairy_farming_id" ng-options="data.id as data.dairy_farming_name for data in SubDairyFarmingList[parentIndex]" required="true">
+							<option value="">กรุณาเลือก..</option>
+						</select>
+					</div>
+					<div class="col-lg-2">
+						<button class="btn btn-danger" ng-click="removeDetail(VeterinaryDetail.id, parentIndex)">
+							<span class="glyphicon glyphicon-trash"></span> 
+							
+						</button>
+					</div>
+				</div>
+				<div class="row form-group" ng-repeat="VeterinaryItem in VeterinaryDetail.veterinary_item">
+					
+						<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+							รายการ
+						</div>
+						<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+							<select class="form-control" ng-model="VeterinaryItem.item_type" required="true">
+								<option value="">กรุณาเลือก..</option>
+								<option value="สมาชิก">สมาชิก</option>
+								<option value="โคนม">โคนม</option>
+								<option value="ค่าเวชภัณฑ์">ค่าเวชภัณฑ์</option>
+								<option value="ค่าบริการ">ค่าบริการ</option>
+								<option value="ค่าวัสดุ">ค่าวัสดุ</option>
+								<option value="ปริมาณงาน">ปริมาณงาน</option>
+								<option value="ค่าน้ำเชื้อ">ค่าน้ำเชื้อ</option>
+							</select>
+						</div>
+						<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+							จำนวน
+						</div>
+						<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+							<input type="text" class="form-control" ng-model="VeterinaryItem.item_amount" min="0" required="true">
+						</div>
+						<div class="col-lg-2 col-md-2  col-sm-12 col-xs-12">
+							<!--<button class="btn btn-primary" ng-click="saveVeterinaryDetail(VeterinaryItem)" >
+								<span class="glyphicon glyphicon-floppy-save"></span> 
+								
+							</button>-->
+							<button class="btn btn-danger" ng-click="removeItem(VeterinaryItem.id, parentIndex, $index)">
+								<span class="glyphicon glyphicon-trash"></span> 
+								
+							</button>
+						</div>
+					
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-12">
+						<button class="btn btn-primary pull-right" ng-click="addVeterinaryItem($index)">
+							<span class="glyphicon glyphicon-plus"></span> 
+							เพิ่มรายการ
+						</button>
+					</div>
+				</div>
+			</div>
+			<br><br>
+			</fieldset>
+		</div>
+		<br><br>
+		<div class="row form-group">
+			<label class="form-control-static col-lg-1">
+				หมายเหตุ 
+			</label>
+			<div class="col-lg-11">
+				<textarea class="form-control" ng-model="Veterinary.user_comment" ng-disabled="!Maker"></textarea>
+			</div>
+		</div>
+	</div>
+	<hr>
+	</fieldset>
+	<div class="row form-group">
+		<div class="col-lg-12 text-center">
+			<button class="btn btn-default" ng-click="cancelUpdate()">
+				<span class="glyphicon glyphicon-arrow-left"></span> 
+				กลับหน้าหลัก
+			</button>
+			<button class="btn btn-primary" ng-click="save(Veterinary, VeterinaryDetailList)" ng-disabled="!form_data.$valid || Saving ||  SpermDetailList.length == 0" ng-show="Maker">
+				<span class="glyphicon glyphicon-floppy-save"></span> 
+				บันทึก
+			</button>
+
+			<button class="btn btn-success" ng-click="approve(Veterinary, 'dep')" 
+						ng-show="Veterinary.id != '' && Veterinary.dep_approve_id == currentUser.UserID 
+								&& Veterinary.dep_approve_date == null
+								&& Veterinary.division_approve_id == null
+								&& Veterinary.office_approve_id == null">
+					<span class="glyphicon glyphicon-check"></span> 
+					อนุมัติ
+				</button>
+				<button class="btn btn-danger" ng-click="reject(Veterinary, 'dep')" 
+						ng-show="Veterinary.id != '' && Veterinary.dep_approve_id == currentUser.UserID 
+								&& Veterinary.dep_approve_date == null
+								&& Veterinary.division_approve_id == null
+								&& Veterinary.office_approve_id == null">
+					<span class="glyphicon glyphicon-remove-sign"></span> 
+					ไม่อนุมัติ
+				</button>
+
+				<button class="btn btn-success" ng-click="approve(Veterinary, 'division')" 
+						ng-show="Veterinary.id != '' && Veterinary.division_approve_id == currentUser.UserID 
+								&& Veterinary.dep_approve_date != null
+								&& Veterinary.division_approve_date == null
+								&& Veterinary.office_approve_id == null">
+					<span class="glyphicon glyphicon-check"></span> 
+					อนุมัติ
+				</button>
+				<button class="btn btn-danger" ng-click="reject(Veterinary, 'division')" 
+						ng-show="Veterinary.id != '' && Veterinary.division_approve_id == currentUser.UserID 
+								&& Veterinary.dep_approve_date != null
+								&& Veterinary.division_approve_date == null
+								&& Veterinary.office_approve_id == null">
+					<span class="glyphicon glyphicon-remove-sign"></span> 
+					ไม่อนุมัติ
+				</button>
+
+				<button class="btn btn-success" ng-click="approve(Veterinary, 'office')" 
+						ng-show="Veterinary.id != '' && Veterinary.office_approve_id == currentUser.UserID 
+								&& Veterinary.dep_approve_date != null
+								&& Veterinary.division_approve_date != null
+								&& Veterinary.office_approve_date == null">
+					<span class="glyphicon glyphicon-check"></span> 
+					อนุมัติ
+				</button>
+				<button class="btn btn-danger" ng-click="reject(Veterinary, 'office')" 
+						ng-show="Veterinary.id != '' && Veterinary.office_approve_id == currentUser.UserID 
+								&& Veterinary.dep_approve_date != null
+								&& Veterinary.division_approve_date != null
+								&& Veterinary.office_approve_date == null">
+					<span class="glyphicon glyphicon-remove-sign"></span> 
+					ไม่อนุมัติ
+				</button>
+		</div>
+	</div>
+	<div class="row form-group" ng-show="Veterinary.id != '' && 
+	((Veterinary.dep_approve_comment != null && Veterinary.dep_approve_comment != '') || (Veterinary.division_approve_comment != null && Veterinary.division_approve_comment != '') || (Veterinary.office_approve_comment != null && Veterinary.office_approve_comment != ''))">
+		<div class="col-lg-12 text-center" style="color: red;">
+			
+			ไม่อนุมัติ เนื่องจาก {{Veterinary.dep_approve_comment + Veterinary.division_approve_comment + Veterinary.office_approve_comment}}
+			
+		</div>
+	</div>
+</div>
+<script type="text/ng-template" id="reject_dialog.html">
+	<div class="modal-header">
+		<h5 class="modal-title">Confirm</h5>
+	</div>
+	<div class="modal-body">
+		<div  class="obj_center" bind-html-compile="alertMessage"></div>
+		<br>
+		<div class="row form-group">
+			<div class="col-lg-10 col-lg-offset-1">
+				<textarea class="form-control" ng-model="ApproveComment" placeholder="ระบุเหตุผลที่ไม่อนุมัติ.."></textarea>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+	<button class="btn btn-default" ng-click="ok(ApproveComment)">OK</button>
+	<button class="btn btn-default" ng-click="cancel()">Cancel</button>
+	</div>
+</script>

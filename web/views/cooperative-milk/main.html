@@ -1,0 +1,264 @@
+<div ng-include src="'views/header.html'"></div>
+<div class="page-header">
+	<h3>
+		<span ng-repeat="data in MenuName">
+	        <span ng-show="$index > 0">></span>
+	        {{data.menu_name_th}}
+	    </span>
+	</h3>
+</div>
+<div class="row form-group">
+	<div class="col-lg-12">
+		<button class="btn btn-danger pull-right" ng-click="goUpdate('')">
+			<span class="glyphicon glyphicon-plus"></span> 
+			บันทึกข้อมูลรายเดือน
+		</button>
+		<button class="btn btn-default pull-right" ng-click="showApproveList()" ng-show="Approver">
+			<span class="glyphicon glyphicon-zoom-in"></span> 
+			รายการที่ต้องอนุมัติ ({{ApproveList.length}} รายการ)
+		</button>
+	</div>
+</div>
+<div class="row form-group">
+	<div class="col-lg-12 text-center">
+		<form name="search_form" class="form-inline">
+	  		<div class="form-group">
+			    <label for="exampleInputName2">&nbsp; สำนักงาน : </label>
+			    &nbsp; <select name="Year" class="form-control" ng-model="condition.Region" ng-options="region.RegionID as region.RegionName for region in PersonRegion" required="required">
+			    	<option value="">กรุณาเลือก..</option>
+				</select>
+		  	</div>
+			<div class="form-group">
+			    <label for="exampleInputName2">&nbsp; เดือน : </label>
+			    &nbsp; <select name="Year" class="form-control" ng-model="condition.MonthFrom" ng-options="month.monthValue as month.monthText for month in MonthList" required="required">
+					<option value="">กรุณาเลือก..</option>
+				</select>
+		  	</div>
+			<!--<div class="form-group">
+			    <label for="exampleInputName2">&nbsp; ปีพ.ศ. : </label>
+			    &nbsp; <select name="Year" class="form-control" ng-model="condition.YearFrom" ng-options="year.yearText as year.yearValue for year in YearList" required="required">
+					<option value="">กรุณาเลือก..</option>
+				</select>
+		  	</div>-->
+		  	<div class="form-group">
+			    <label for="exampleInputName2">&nbsp; ถึง </label>
+		  	</div>
+		  	<div class="form-group">
+			    <label for="exampleInputName2">&nbsp; เดือน : </label>
+			    &nbsp; <select name="Year" class="form-control" ng-model="condition.MonthTo" ng-options="month.monthValue as month.monthText for month in MonthList" required="required">
+					<option value="">กรุณาเลือก..</option>
+				</select>
+		  	</div>
+			<div class="form-group">
+			    <label for="exampleInputName2">&nbsp; ปีพ.ศ. : </label>
+			    &nbsp; <select name="Year" class="form-control" ng-model="condition.YearTo" ng-options="year.yearText as year.yearValue for year in YearList" required="required">
+					<option value="">กรุณาเลือก..</option>
+				</select>
+		  	</div>
+		  	<button class="btn btn-primary" ng-click="goSearch()"><span class="glyphicon glyphicon-search"></span> ค้นหา</button>
+		</form>
+	</div>
+</div>
+<div class="col-lg-8 col-lg-offset-2 table-responsive" ng-show="ViewType == 'MAIN'">
+	<table class="table table-bordered table-striped">
+		<tr>
+			<td colspan="6" class="text-center">
+				ข้อมูลรวมสหกรณ์และปริมาณน้ำนม
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" class="text-center">
+				เกษตรกร / สมาชิก (ราย)
+			</td>
+			<td colspan="2" class="text-center">
+				โค  (ตัว)
+			</td>
+			<td rowspan="2" class="text-center">
+				ปริมาณน้ำนม (กิโลกรัม)
+			</td>
+			<td rowspan="2" class="text-center">
+				มูลค่า (บาท)
+			</td>
+		</tr>
+		<tr>
+			<td class="text-center">ทั้งหมด</td>
+			<td class="text-center">ส่ง</td>
+			<td class="text-center">ทั้งหมด</td>
+			<td class="text-center">รีดนม</td>
+		</tr>
+		<tr>
+			<td class="text-right">{{SummaryPerson}}</td>
+			<td class="text-right">{{SummaryPersonSent}}</td>
+			<td class="text-right">{{SummaryCow}}</td>
+			<td class="text-right">{{SummaryCowBeeb}}</td>
+			<td class="text-right">{{SummaryMilkAmount}}</td>
+			<td class="text-right">{{ SummaryValues | number:4 }}</td>
+		</tr>
+	</table>
+</div>
+<div class="col-lg-12 table-responsive" ng-show="ViewType == 'MAIN'">
+	<table class="table table-bordered table-striped">
+		<caption>
+			
+		</caption>
+		<thead style="background-color: #BD1212; color: #FFF;">
+			<tr>
+				<th rowspan="2" style="text-align: center; vertical-align: middle;">สำนักงาน</th>
+				<th rowspan="2" style="text-align: center; vertical-align: middle;">สหกรณ์</th>
+				<th colspan="2" style="text-align: center;">
+					เกษตรกร / สมาชิก<br>(ราย)
+				</th>
+				<th colspan="2" style="text-align: center;">
+					โค
+					<br>(ตัว)
+				</th>
+				<th rowspan="2" style="text-align: center; vertical-align: middle;">ปริมาณน้ำนม (กิโลกรัม)</th>
+				<th rowspan="2" style="text-align: center; vertical-align: middle;">มูลค่า (บาท)</th>
+				<th rowspan="2" style="text-align: center; vertical-align: middle;">ราคาเฉลี่ย (บาท / กิโลกรัม)</th>
+				<th rowspan="2" style="text-align: center; vertical-align: middle;">วันที่บันทึกข้อมูล</th>
+				<th rowspan="2" style="text-align: center; vertical-align: middle;">วันที่อนุมัติ</th>
+				<th rowspan="2" style="text-align: center; vertical-align: middle;">สถานะ</th>
+				<th rowspan="2" style="text-align: center; vertical-align: middle;">รายละเอียด</th>
+			</tr>
+			<tr>
+				<th style="text-align: center;">ทั้งหมด</th>
+				<th style="text-align: center;">ส่ง</th>
+				<th style="text-align: center;">ทั้งหมด</th>
+				<th style="text-align: center;">รีดนม</th>
+			</tr>
+		</thead>
+		<tbody >
+			<!--<tr style="background-color: #B6CCFF; padding: 5px;">
+				<td colspan="7">{{getRegionName(data.region_id)}}</td>
+			</tr>-->
+			<tr ng-repeat="data in List">
+				<td>{{data.RegionName}}</td>
+				<td>{{data.CooperativeName}}</td>
+				<td class="text-right">{{numberFormat(data.TotalPerson)}}</td>
+				<td class="text-right">{{numberFormat(data.TotalPersonSent)}}</td>
+				<td class="text-right">{{numberFormat(data.TotalCow)}}</td>
+				<td class="text-right">{{numberFormat(data.TotalCowBeeb)}}</td>
+				<td class="text-right">{{(data.TotalMilkAmount) | number:4}}</td>
+				<td class="text-right">{{data.TotalValues  | number:4}}</td>
+				<td class="text-right">{{data.AverageValues | number:4}}</td>
+				<td>{{data.CreateDate}}</td>
+				<td>{{data.ApproveDate}}</td>
+				<td>{{data.Status}}</td>
+				<td>
+					<a class="pull-right" style="padding-right: 20px;" ng-click="exportReport( data,condition)"><img src="../files/img/excel.png" style="height: 40px;"></a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<div class="col-lg-12 table-responsive" ng-show="ViewType == 'DETAIL'">
+	<table class="table table-bordered table-striped">
+		<caption>
+			
+		</caption>
+		<thead style="background-color: #BD1212; color: #FFF;">
+			<tr>
+				<th rowspan="2" style="text-align: center; vertical-align: middle;">สำนักงาน</th>
+				<th rowspan="2" style="text-align: center; vertical-align: middle;">สหกรณ์</th>
+				<th rowspan="2" style="text-align: center; vertical-align: middle;">สมาชิก</th>
+				
+				<th colspan="2" style="text-align: center;">
+					เกษตรกร / สมาชิก<br>(ราย)
+				</th>
+				<th colspan="2" style="text-align: center;">
+					โค
+					<br>(ตัว)
+				</th>
+				<th rowspan="2" style="text-align: center; vertical-align: middle;">ปริมาณน้ำนม (กิโลกรัม)</th>
+				<th rowspan="2" style="text-align: center; vertical-align: middle;">มูลค่า (บาท)</th>
+				<th rowspan="2" style="text-align: center; vertical-align: middle;">ราคาเฉลี่ย (บาท / กิโลกรัม)</th>
+				
+			</tr>
+			<tr>
+				<th style="text-align: center;">ราย</th>
+				<th style="text-align: center;">ส่งนม</th>
+				<th style="text-align: center;">ทั้งหมด</th>
+				<th style="text-align: center;">รีดนม</th>
+			</tr>
+		</thead>
+		<tbody >
+			<tr ng-repeat="data in DetailList">
+				<td>{{data.RegionName}}</td>
+				<td>{{data.CooperativeName}}</td>
+				<td>{{data.MemberName}}</td>
+				<td>{{data.TotalMilk}}</td>
+				<td>{{data.TotalMilkSent}}</td>
+				<td>{{data.TotalMilkBeeb}}</td>
+				<td>{{data.TotalMilkBeebSent}}</td>
+				<td>{{data.TotalMilkAmount | number:4}}</td>
+				<td>{{data.TotalValues | number:4}}</td>
+				<td>{{data.AverageValues | number:4}}</td>
+				
+			</tr>
+		</tbody>
+		<tr>
+			<td></td>
+			<td>รวม</td>
+			<td></td>
+			<td ng-repeat="data in DetailSummary" style="text-align: center; vertical-align: middle;">
+				{{data.values}}
+			</td>
+		</tr>
+	</table>
+</div>
+<div class="page-header">
+&nbsp;
+</div>
+<style type="text/css">
+	a{
+		color: #FFF;
+	}
+</style>
+<script type="text/ng-template" id="approve_list_dialog.html">
+	<div class="modal-header">
+		<h5 class="modal-title">รายการที่ต้องอนุมัติ</h5>
+	</div>
+	<div class="modal-body">
+		<table class="table table-striped table-bordered">
+			<thead>
+				<tr>
+					<th rowspan="2">วันที่บันทึก</th>
+					<th rowspan="2">รายการ</th>
+					<th colspan="3">สถานะการอนุมัติ</th>
+					<th rowspan="2"></th>
+				</tr>
+				<tr>
+					<th>แผนก</th>
+					<th>กอง</th>
+					<th>ฝ่าย</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="data in ApproveList">
+					<td>{{data.create_date}}</td>
+					<td>{{data.RegionName}} : เดือน {{ getMonthName(data.months) }} ปี {{ data.years + 543 }}</td>
+					<td align="center">
+						<span class="glyphicon glyphicon-check" style="color: green;" ng-show="data.dep_approve_date != null && (data.dep_approve_comment == null || data.dep_approve_comment == '')"></span> 
+						<span class="glyphicon glyphicon-remove" style="color: red;" ng-show="data.dep_approve_comment != null && data.dep_approve_comment != ''"></span> 
+						<br>{{getShortDateTime(data.dep_approve_date)}}
+					</td>
+					<td align="center"><span class="glyphicon glyphicon-check" style="color: green;" ng-show="data.division_approve_date != null && (data.division_approve_comment == null || data.division_approve_comment == '')"></span> 
+						<span class="glyphicon glyphicon-remove" style="color: red;" ng-show="data.division_approve_comment != null && data.division_approve_comment != ''"></span> 
+						<br>{{getShortDateTime(data.division_approve_date)}}
+					</td>
+					<td align="center"><span class="glyphicon glyphicon-check" style="color: green;" ng-show="data.office_approve_date != null && (data.office_approve_comment == null || data.office_approve_comment == '')"></span> 
+						<span class="glyphicon glyphicon-remove" style="color: red;" ng-show="data.office_approve_comment != null && data.office_approve_comment != ''"></span> 
+							<br>{{getShortDateTime(data.office_approve_date)}}
+					</td>
+					<td>
+						<a class="btn btn-info" href="#/cooperative-milk/update/{{data.id}}"> ดูข้อมูล</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="modal-footer">
+	<button class="btn btn-default" ng-click="cancel()">ปิด</button>
+	</div>
+</script>

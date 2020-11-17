@@ -1,0 +1,367 @@
+<div ng-include src="'views/header.html'"></div>
+<div class="page-header">
+	<h3>
+		<span ng-repeat="data in MenuName">
+	        <span ng-show="$index > 0">></span>
+	        {{data.menu_name_th}}
+	    </span>
+	</h3>
+</div>
+<div class="col-lg-10 col-lg-offset-1" ng-form="form_data">
+	<div class="row form-group">
+		<!--<div class="field-label col-lg-1 col-md-1 col-sm-12 col-xs-12">
+			ชื่อสหกรณ์
+		</div>
+		<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+			<select class="form-control" ng-model="Sperm.cooperative_id" ng-options="data.id as data.cooperative_name for data in Cooperative" required="required">
+				<option value="">กรุณาเลือก..</option>
+			</select>
+		</div>-->
+		<div class="field-label col-lg-1 col-md-1 col-sm-12 col-xs-12">
+			วัน
+		</div>
+		<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+			<select name="Year" class="form-control" ng-model="Sperm.days" ng-options="day.dayValue as day.dayText for day in DayList" required="required">
+					<option value="">กรุณาเลือก..</option>
+				</select>
+		</div>
+		<div class="field-label col-lg-1 col-md-1 col-sm-12 col-xs-12">
+			เดือน
+		</div>
+		<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+			<select name="Year" class="form-control" ng-model="Sperm.months" ng-options="month.monthValue as month.monthText for month in MonthList" required="required">
+					<option value="">กรุณาเลือก..</option>
+				</select>
+		</div>
+		<div class="field-label col-lg-1 col-md-1 col-sm-12 col-xs-12">
+			ปี
+		</div>
+		<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+			<select name="Year" class="form-control" ng-model="Sperm.years" ng-options="year.yearText as year.yearValue for year in YearList" required="required">
+					<option value="">กรุณาเลือก..</option>
+				</select>
+		</div>
+		<div class="field-label col-lg-1 col-md-1 col-sm-12 col-xs-12">
+			<button class="btn btn-info" ng-click="goSearch(Sperm)" ng-disabled="!form_data.$valid">
+				<span class="glyphicon glyphicon-search"></span> 
+				ค้นหา
+			</button>
+		</div>
+	</div>
+	<hr>
+	<div ng-show="Search || SpermDetailList.length > 0">
+		<div class="row form-group">
+			<div class="col-lg-6">
+				<div class="row form-group">
+					<label class="col-lg-12 form-control-static">
+						วัน : {{Sperm.days}}
+					</label>
+					<label class="col-lg-12 form-control-static">
+						 เดือน : {{MonthName}}
+					</label>
+					<label class="col-lg-12 form-control-static">
+						ปีพ.ศ. : {{YearName}}
+					</label>
+				</div>
+			</div>
+			<div class="col-lg-6">
+				<div class="row form-group">
+					<label class="col-lg-12 form-control-static">
+						เป้าหมายประจำปีพ.ศ. : {{Goal.goal_year.price_value}} บาท
+					</label>
+					<label class="col-lg-12 form-control-static">
+						 เป้าหมายสะสม : {{Goal.goal_total}} บาท
+					</label>
+					<label class="col-lg-12 form-control-static">
+						เป้าหมายประจำเดือน : {{Goal.goal_months}} บาท
+					</label>
+				</div>
+			</div>
+		</div>
+		<div class="row form-group">
+			<div class="col-lg-12">
+				<button class="btn btn-danger  pull-right" ng-click="addSpermDetail()" ><!--ng-disabled="!form_data.$valid"-->
+				<span class="glyphicon glyphicon-plus"></span> 
+				เพิ่ม
+			</button>
+			</div>
+		</div>
+		<div>
+			<fieldset style="border: 1px solid #999; padding: 10px; margin-top: 10px;" ng-repeat="SpermDetail in SpermDetailList">
+			<div ng-form="sub_form_data">
+				<!--<div class="row form-group">
+					<div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+						รายการ
+					</div>
+					<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+						<select class="form-control" ng-model="SpermDetail.travel_type_id" ng-options="data.id as data.goal_name for data in MasterGoalList" >
+							<option value="">กรุณาเลือก..</option>
+						</select>
+					</div>
+				</div>
+				-->
+				<div class="row form-group">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						วันที่แก้ไขล่าสุด {{getThaiDateTimeFromString(SpermDetail.update_date)}}
+					</div>
+				</div>
+				<div class="row form-group" ng-init="parentIndex = $index">
+					<div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+						หน่วยงาน
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+						<input type="text" class="form-control" ng-model="SpermDetail.organize">
+					</div>
+					<div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+						วันที่
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+						<p class="input-group">
+							<input type="text" class="form-control" ng-model="SpermDetail.travel_date" uib-datepicker-popup="yyyy-MM-dd" is-open="SpermDetail.open_date">
+							<span class="input-group-btn">
+				            	<button type="button" class="btn btn-default" ng-click="openDateObj($index)"><i class="glyphicon glyphicon-calendar"></i></button>
+				          </span>
+				        </p>
+					</div>
+					<div class="col-lg-4 col-md-4">
+						<button class="btn btn-danger pull-right" ng-click="removeDetail(SpermDetail.id, parentIndex)">
+							<span class="glyphicon glyphicon-trash"></span> 
+							
+						</button>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-12">
+						<div class="table-responsive">
+							<table class="table">
+								<thead>
+									<tr>
+										<th></th>
+										<th>จำนวนผู้เข้าชมที่ต้องจ่าย</th>
+										<th>ราคาต่อหน่วย</th>
+										<th>ส่วนลด</th>
+										<th>ราคารวม</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="data in SpermDetail.Item">
+										<td>{{data.goal_name}}</td>
+										<td><input type="number" class="form-control" ng-model="data.total_person_pay" ng-blur="calcPrice(data)"></td>
+										<td><input type="number" class="form-control" ng-model="data.unit_price" ng-blur="calcPrice(data)"></td>
+										<td><input type="number" class="form-control" ng-model="data.discount" ng-blur="calcPrice(data)"></td>
+										<td><input type="number" class="form-control" ng-model="data.total_price"></td>
+									</tr>
+									<!--
+									<tr>
+										<td>จำนวนผู้เข้าชมที่ยกเว้น</td>
+										<td><input type="number" class="form-control" ng-model="SpermDetail.except_amount" ng-change="calcAmount(SpermDetail)"></td>
+										<td><input type="number" class="form-control" ng-model="SpermDetail.except_prices" ng-change="calcPrice(SpermDetail)"></td>
+									</tr>
+									<tr>
+										<td>นักศึกษา</td>
+										<td><input type="number" class="form-control" ng-model="SpermDetail.student_amount" ng-change="calcAmount(SpermDetail)"></td>
+										<td><input type="number" class="form-control" ng-model="SpermDetail.student_prices" ng-change="calcPrice(SpermDetail)"></td>
+									</tr>
+									<tr>
+										<td>บุคคลทั่วไป (เด็ก)</td>
+										<td><input type="number" class="form-control" ng-model="SpermDetail.child_amount" ng-change="calcAmount(SpermDetail)"></td>
+										<td><input type="number" class="form-control" ng-model="SpermDetail.child_prices" ng-change="calcPrice(SpermDetail)"></td>
+									</tr>
+									<tr>
+										<td>บุคคลทั่วไป (ผู้ใหญ่)</td>
+										<td><input type="number" class="form-control" ng-model="SpermDetail.adult_amount" ng-change="calcAmount(SpermDetail)"></td>
+										<td><input type="number" class="form-control" ng-model="SpermDetail.adult_prices" ng-change="calcPrice(SpermDetail)"></td>
+									</tr>
+									<tr>
+										<td></td>
+										<td><input type="number" class="form-control" ng-model="SpermDetail.total_amount" readonly="true"></td>
+										<td><input type="number" class="form-control" ng-model="SpermDetail.total_prices" readonly="true"></td>
+									</tr>
+
+								-->
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<!--
+				<div class="row form-group">
+					<div class="col-lg-12">
+						<b>จำนวนผู้เข้าชมที่ต้องจ่าย</b>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+						ผู้ใหญ่
+					</div>
+					<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+						<input type="text" class="form-control" ng-model="SpermDetail.adult_pay">
+					</div>
+					<div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+						เด็ก
+					</div>
+					<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+						<input type="text" class="form-control" ng-model="SpermDetail.child_pay">
+					</div>
+					<div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+						นักศึกษา
+					</div>
+					<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+						<input type="text" class="form-control" ng-model="SpermDetail.student_pay">
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-12">
+						<b>ราคาต่อหน่วย</b>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+						ผู้ใหญ่
+					</div>
+					<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+						<input type="text" class="form-control" ng-model="SpermDetail.adult_price">
+					</div>
+					<div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+						เด็ก
+					</div>
+					<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+						<input type="text" class="form-control" ng-model="SpermDetail.child_price">
+					</div>
+					<div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+						นักศึกษา
+					</div>
+					<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+						<input type="text" class="form-control" ng-model="SpermDetail.student_price">
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-12">
+						<b>จำนวนผู้เข้าชมที่ยกเว้น</b>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+						ผู้ใหญ่
+					</div>
+					<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+						<input type="text" class="form-control" ng-model="SpermDetail.adult_except">
+					</div>
+					<div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+						เด็ก
+					</div>
+					<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+						<input type="text" class="form-control" ng-model="SpermDetail.child_except">
+					</div>
+					<div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+						นักศึกษา
+					</div>
+					<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+						<input type="text" class="form-control" ng-model="SpermDetail.student_except">
+					</div>
+				</div>
+			-->
+			</div>
+			<br><br>
+			</fieldset>
+		</div>
+		<br><br>
+		<div class="row form-group">
+			<label class="form-control-static col-lg-1">
+				หมายเหตุ 
+			</label>
+			<div class="col-lg-11">
+				<textarea class="form-control" ng-model="Sperm.user_comment" ng-disabled="!Maker"></textarea>
+			</div>
+		</div>
+	</div>
+	<hr>
+	<div class="row form-group">
+		<div class="col-lg-12 text-center">
+			<button class="btn btn-default" ng-click="cancelUpdate()">
+				<span class="glyphicon glyphicon-arrow-left"></span> 
+				กลับหน้าหลัก
+			</button>
+			<button class="btn btn-primary" ng-click="save(Sperm, SpermDetailList)" ng-disabled="!form_data.$valid || Saving ||  SpermDetailList.length == 0" ng-show="Maker">
+				<span class="glyphicon glyphicon-floppy-save"></span> 
+				บันทึก
+			</button>
+
+			<button class="btn btn-success" ng-click="approve(Sperm, 'dep')" 
+						ng-show="Sperm.id != '' && Sperm.dep_approve_id == currentUser.UserID 
+								&& Sperm.dep_approve_date == null
+								&& Sperm.division_approve_id == null
+								&& Sperm.office_approve_id == null">
+					<span class="glyphicon glyphicon-check"></span> 
+					อนุมัติ
+				</button>
+				<button class="btn btn-danger" ng-click="reject(Sperm, 'dep')" 
+						ng-show="Sperm.id != '' && Sperm.dep_approve_id == currentUser.UserID 
+								&& Sperm.dep_approve_date == null
+								&& Sperm.division_approve_id == null
+								&& Sperm.office_approve_id == null">
+					<span class="glyphicon glyphicon-remove-sign"></span> 
+					ไม่อนุมัติ
+				</button>
+
+				<button class="btn btn-success" ng-click="approve(Sperm, 'division')" 
+						ng-show="Sperm.id != '' && Sperm.division_approve_id == currentUser.UserID 
+								&& Sperm.dep_approve_date != null
+								&& Sperm.division_approve_date == null
+								&& Sperm.office_approve_id == null">
+					<span class="glyphicon glyphicon-check"></span> 
+					อนุมัติ
+				</button>
+				<button class="btn btn-danger" ng-click="reject(Sperm, 'division')" 
+						ng-show="Sperm.id != '' && Sperm.division_approve_id == currentUser.UserID 
+								&& Sperm.dep_approve_date != null
+								&& Sperm.division_approve_date == null
+								&& Sperm.office_approve_id == null">
+					<span class="glyphicon glyphicon-remove-sign"></span> 
+					ไม่อนุมัติ
+				</button>
+
+				<button class="btn btn-success" ng-click="approve(Sperm, 'office')" 
+						ng-show="Sperm.id != '' && Sperm.office_approve_id == currentUser.UserID 
+								&& Sperm.dep_approve_date != null
+								&& Sperm.division_approve_date != null
+								&& Sperm.office_approve_date == null">
+					<span class="glyphicon glyphicon-check"></span> 
+					อนุมัติ
+				</button>
+				<button class="btn btn-danger" ng-click="reject(Sperm, 'office')" 
+						ng-show="Sperm.id != '' && Sperm.office_approve_id == currentUser.UserID 
+								&& Sperm.dep_approve_date != null
+								&& Sperm.division_approve_date != null
+								&& Sperm.office_approve_date == null">
+					<span class="glyphicon glyphicon-remove-sign"></span> 
+					ไม่อนุมัติ
+				</button>
+	</div>
+	<div class="row form-group" ng-show="Sperm.id != '' && 
+	((Sperm.dep_approve_comment != null && Sperm.dep_approve_comment != '') || (Sperm.division_approve_comment != null && Sperm.division_approve_comment != '') || (Sperm.office_approve_comment != null && Sperm.office_approve_comment != ''))">
+		<div class="col-lg-12 text-center" style="color: red;">
+			
+			ไม่อนุมัติ เนื่องจาก {{Sperm.dep_approve_comment + Sperm.division_approve_comment + Sperm.office_approve_comment}}
+			
+		</div>
+	</div>
+</div>
+<script type="text/ng-template" id="reject_dialog.html">
+	<div class="modal-header">
+		<h5 class="modal-title">Confirm</h5>
+	</div>
+	<div class="modal-body">
+		<div  class="obj_center" bind-html-compile="alertMessage"></div>
+		<br>
+		<div class="row form-group">
+			<div class="col-lg-10 col-lg-offset-1">
+				<textarea class="form-control" ng-model="ApproveComment" placeholder="ระบุเหตุผลที่ไม่อนุมัติ.."></textarea>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+	<button class="btn btn-default" ng-click="ok(ApproveComment)">OK</button>
+	<button class="btn btn-default" ng-click="cancel()">Cancel</button>
+	</div>
+</script>

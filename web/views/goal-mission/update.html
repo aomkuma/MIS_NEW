@@ -1,0 +1,384 @@
+<div ng-include src="'views/header.html'"></div>
+<div class="page-header">
+	<h3>
+		<span ng-repeat="data in MenuName">
+	        <span ng-show="$index > 0">></span>
+	        {{data.menu_name_th}}
+	    </span>
+	</h3>
+</div>
+<fieldset ng-disabled="Data.editable == 'N' || !Maker">
+	<div class="col-lg-10 col-lg-offset-1" ng-form="form_data">
+	<!--
+		<div class="row form-group">
+			<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+				ด้านกิจการ
+			</div>
+			<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+				<select class="form-control" ng-model="Data.goal_type" required="required">
+					<option value="">กรุณาเลือก..</option>
+					<option value="DBI">ข้อมูลกิจการโคนม</option>
+					<option value="II">ข้อมูลอุตสาหกรรม</option>
+				</select>
+			</div>
+		</div>
+		<div class="row form-group">
+			<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+				รายการ
+			</div>
+			<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+				<input type="text" class="form-control" ng-model="Data.goal_name" maxlength="255" required="required">
+			</div>
+		</div>
+	-->
+		<div class="row form-group">
+			<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+				ปีงบประมาณ
+			</div>
+			<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+				<select name="Year" class="form-control" ng-model="Data.years" ng-options="year.yearText as year.yearValue for year in YearList" required="required" data-ng-change="avgData(Data)">
+					<option value="">กรุณาเลือก</option>
+				</select>
+			</div>
+		</div>
+		<div class="row form-group">
+			<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+				พื้นที่รับผิดชอบ
+			</div>
+			<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+				<select name="Year" class="form-control" ng-model="Data.region_id" ng-options="region.RegionID as region.RegionName for region in PersonRegion" required="required">
+					<option value="">กรุณาเลือก</option>
+				</select>
+			</div>
+		</div>
+		<div class="row form-group">
+			<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+				ด้านกิจการ
+			</div>
+			<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+				<select class="form-control" ng-model="Data.goal_type" ng-change="checkMenu()">
+					<option value="">กรุณาเลือก..</option>
+					<option value="DBI">ข้อมูลกิจการโคนม</option>
+					<option value="II">ข้อมูลอุตสาหกรรม</option>
+				</select>
+			</div>
+		</div>
+		<div class="row form-group">
+			<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+				ข้อมูล
+			</div>
+			<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+				<select class="form-control" ng-model="Data.menu_type" required="required" ng-options="data.value as data.name for data in MenuType" ng-change="loadMasterGoalList('master-goal/list', Data.menu_type, Data.region_id)">
+					<option value="">กรุณาเลือก..</option>
+				</select>
+			</div>
+		</div>
+		<div class="row form-group" ng-show="Data.menu_type == 'ข้อมูลการขาย'">
+			<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+				ช่องทางการขาย
+			</div>
+			<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+				<select name="Year" class="form-control" ng-model="Data.sale_chanel" ng-options="data.id as data.chanel_name for data in SaleChanelList">
+					<option value="">กรุณาเลือก</option>
+				</select>
+			</div>
+		</div>
+		<div class="row form-group">
+			<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+				รายการ
+			</div>
+			<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+				<select name="Year" class="form-control" ng-model="Data.goal_id" ng-options="goal.id as goal.goal_name for goal in MasterGoalList">
+					<option value="">กรุณาเลือก</option>
+				</select>
+			</div>
+		</div>
+		
+		<div class="row form-group">
+			<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+				ปริมาณ (ต่อปี)
+			</div>
+			<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+				<input type="number" class="form-control" ng-model="Data.amount" required="required">
+			</div>
+		</div>
+		<div class="row form-group">
+			<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+				หน่วย
+			</div>
+			<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+				<select class="form-control" ng-model="Data.unit">
+					<option value="">กรุณาเลือก..</option>
+					<option value="ครั้ง">ครั้ง</option>
+					<option value="ตัน">ตัน</option>
+					<option value="กิโลกรัม">กิโลกรัม</option>
+					<option value="ร้อยละ">ร้อยละ</option>
+					<option value="คน">คน</option>
+					<option value="ตัว">ตัว</option>
+					<option value="หลอด">หลอด</option>
+					<option value="กล่อง">กล่อง</option>
+					<option value="ลิตร">ลิตร</option>
+					<option value="บาท">บาท</option>
+				</select>
+			</div>
+		</div>
+		<div class="row form-group" ng-show="Data.menu_type == 'ข้อมูลการขาย'">
+			<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+				ปริมาณ (ต่อปี - แถม)
+			</div>
+			<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+				<input type="number" class="form-control" ng-model="Data.addon_amount">
+			</div>
+		</div>
+		<div class="row form-group" ng-show="Data.menu_type == 'ข้อมูลการขาย'">
+			<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+				หน่วย (แถม)
+			</div>
+			<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+				<select class="form-control" ng-model="Data.addon_unit">
+					<option value="">กรุณาเลือก..</option>
+					<option value="ครั้ง">ครั้ง</option>
+					<option value="ตัน">ตัน</option>
+					<option value="กิโลกรัม">กิโลกรัม</option>
+					<option value="ร้อยละ">ร้อยละ</option>
+					<option value="คน">คน</option>
+					<option value="ตัว">ตัว</option>
+					<option value="หลอด">หลอด</option>
+					<option value="กล่อง">กล่อง</option>
+					<option value="ลิตร">ลิตร</option>
+					<option value="บาท">บาท</option>
+				</select>
+			</div>
+		</div>
+		<div class="row form-group">
+			<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+				มูลค่า (ต่อปี)
+			</div>
+			<div class="col-lg-6 col-md-6 col-sm-10 col-xs-10">
+				<input type="number" class="form-control" ng-model="Data.price_value">
+			</div>
+			<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+				บาท
+			</div>
+		</div>
+		<div class="row form-group">
+			<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 col-lg-offset-2 col-md-offset-2">
+				<button class="btn btn-info" ng-click="avgData(Data)" ng-disabled="Data.amount == null">
+					กำหนดรายเดือน
+				</button>
+			</div>
+		</div>
+		<div ng-show="avgList.length > 0">
+			<div class="row form-group">
+				<div class="col-lg-12"  style="background-color: #B6CCFF; padding: 5px;">
+					<b>เฉลี่ยเป้าหมายรายเดือน</b>
+				</div>
+			</div>
+			<div class="row form-group">
+				<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 col-lg-offset-4 col-md-offset-4">
+					จำนวน {{Data.unit}}
+				</div>
+				<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12" ng-show="Data.menu_type == 'ข้อมูลการขาย'">
+					จำนวน (แถม)
+				</div>
+				<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+					มูลค่า (บาท)
+				</div>
+			</div>
+			<div class="row form-group" ng-repeat="data in avgList">
+				<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 col-lg-offset-2 col-md-offset-2">
+					<span class="pull-right">{{getMonthYearText(data.avg_date)}}</span>
+				</div>
+				<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+					<input type="number" class="form-control" ng-model="data.amount" required="required" ng-keyup="reCalcAmount()" ><!-- ng-focus="data.amount == 0? data.amount = null: data.amount" ng-blur="data.amount == 0? data.amount = null: data.amount"-->
+				</div>
+				<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12" ng-show="Data.menu_type == 'ข้อมูลการขาย'">
+					<input type="number" class="form-control" ng-model="data.addon_amount" required="required" ng-keyup="reCalcAddonAmount()" > <!-- ng-focus="data.addon_amount == 0? data.addon_amount = null: data.addon_amount" ng-blur="data.addon_amount == 0? data.addon_amount = null: data.addon_amount" -->
+				</div>
+				<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+					<input type="number" class="form-control" ng-model="data.price_value" required="required" ng-keyup="reCalcPrice()" > <!-- ng-focus="data.price_value == 0? data.price_value = null: data.price_value" ng-blur="data.price_value == 0? data.price_value = null: data.price_value" -->
+				</div>
+			</div>
+			<div class="row form-group">
+				<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 col-lg-offset-2 col-md-offset-2">
+					<span class="pull-right">รวม</span>
+				</div>
+				<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+					<input type="number" class="form-control" ng-model="totalAmount" readonly="true">
+				</div>
+				<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12" ng-show="Data.menu_type == 'ข้อมูลการขาย'">
+					<input type="number" class="form-control" ng-model="totalAddonAmount" readonly="true">
+				</div>
+				<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+					<input type="number" class="form-control" ng-model="totalPriceValue" readonly="true">
+				</div>
+			</div>
+		</div>
+		<hr>
+		</fieldset>
+		<div class="row form-group">
+			<div class="col-lg-12 text-center">
+				<button class="btn btn-default" ng-click="cancelUpdate()">
+					<span class="glyphicon glyphicon-arrow-left"></span> 
+					กลับหน้าหลัก
+				</button>
+				<button class="btn btn-primary" ng-click="save(Data, avgList, 'DRAFT')" ng-disabled="!form_data.$valid || Data.editable == 'N'"><!-- || !AVGAction-->
+					<span class="glyphicon glyphicon-floppy-save"></span> 
+					บันทึก
+				</button>
+				<button class="btn btn-info" ng-click="save(Data, avgList, 'SEND')" ng-disabled="!form_data.$valid || Data.editable == 'N'"><!-- || !AVGAction-->
+					<span class="glyphicon glyphicon-floppy-save"></span> 
+					ยืนยันข้อมูล
+				</button>
+
+				<button class="btn btn-success" ng-click="approve(Data, 'dep')" 
+						ng-show="Data.dep_approve_id == currentUser.UserID 
+								&& Data.dep_approve_date == null
+								&& Data.division_approve_id == null
+								&& Data.office_approve_id == null">
+					<span class="glyphicon glyphicon-check"></span> 
+					อนุมัติ
+				</button>
+				<button class="btn btn-danger" ng-click="reject(Data, 'dep')" 
+						ng-show="Data.dep_approve_id == currentUser.UserID 
+								&& Data.dep_approve_date == null
+								&& Data.division_approve_id == null
+								&& Data.office_approve_id == null">
+					<span class="glyphicon glyphicon-remove-sign"></span> 
+					ไม่อนุมัติ
+				</button>
+
+				<button class="btn btn-success" ng-click="approve(Data, 'division')" 
+						ng-show="Data.division_approve_id == currentUser.UserID 
+								&& Data.dep_approve_date != null
+								&& Data.division_approve_date == null
+								&& Data.office_approve_id == null">
+					<span class="glyphicon glyphicon-check"></span> 
+					อนุมัติ
+				</button>
+				<button class="btn btn-danger" ng-click="reject(Data, 'division')" 
+						ng-show="Data.division_approve_id == currentUser.UserID 
+								&& Data.dep_approve_date != null
+								&& Data.division_approve_date == null
+								&& Data.office_approve_id == null">
+					<span class="glyphicon glyphicon-remove-sign"></span> 
+					ไม่อนุมัติ
+				</button>
+
+				<button class="btn btn-success" ng-click="approve(Data, 'office')" 
+						ng-show="Data.office_approve_id == currentUser.UserID 
+								&& Data.dep_approve_date != null
+								&& Data.division_approve_date != null
+								&& Data.office_approve_date == null">
+					<span class="glyphicon glyphicon-check"></span> 
+					อนุมัติ
+				</button>
+				<button class="btn btn-danger" ng-click="reject(Data, 'office')" 
+						ng-show="Data.office_approve_id == currentUser.UserID 
+								&& Data.dep_approve_date != null
+								&& Data.division_approve_date != null
+								&& Data.office_approve_date == null">
+					<span class="glyphicon glyphicon-remove-sign"></span> 
+					ไม่อนุมัติ
+				</button>
+
+			</div>
+			
+			<!--
+			<div class="row form-group" ng-show="(Data.dep_approve_comment != null && Data.dep_approve_comment != '')">
+				<div class="col-lg-12 text-center" style="color: red;">
+					ไม่อนุมัติ เนื่องจาก {{Data.dep_approve_comment}}
+				</div>
+			</div>
+			<div class="row form-group" ng-show="(Data.division_approve_comment != null && Data.division_approve_comment != '')">
+				<div class="col-lg-12 text-center" style="color: red;">
+					ไม่อนุมัติ เนื่องจาก {{Data.division_approve_comment}}
+				</div>
+			</div>
+			<div class="row form-group" ng-show="(Data.office_approve_comment != null && Data.office_approve_comment != '')">
+				<div class="col-lg-12 text-center" style="color: red;">
+					ไม่อนุมัติ เนื่องจาก {{Data.office_approve_comment}}
+				</div>
+			</div>
+		-->
+		</div>	
+		<div ><!--ng-show="historyList.length > 0"-->
+			<div class="row form-group">
+				<div class="col-lg-12"  style="background-color: #B6CCFF; padding: 5px;">
+					<b>ประวัติการเปลี่ยนแปลง</b>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-8 col-lg-offset-2">
+					<table class="table table-bordered table-striped">
+						<thead>
+							<tr>	
+								<td>วันที่เปลี่ยนแปลง</td>
+								<td>รายการ</td>
+								<td>จำนวน</td>
+								<td ng-show="Data.menu_type == 'ข้อมูลการขาย'">จำนวน (แถม)</td>
+								<td>มูลค่า</td>
+								<td>ผู้แก้ไข</td>
+								<td>ผู้ปลดล็อค</td>
+							</tr>
+						</thead>
+						<tbody>
+							<!--
+							<tr ng-show="(Data.dep_approve_comment != null && Data.dep_approve_comment != '')">
+								<td>{{Data.dep_approve_date}}</td>
+								<td>{{Data.dep_approve_comment}}</td>
+								<td></td>
+								<td></td>
+								<td>{{Data.dep_approve_name}}</td>
+								<td></td>
+							</tr>
+							<tr ng-show="(Data.division_approve_comment != null && Data.division_approve_comment != '')">
+								<td>{{Data.division_approve_date}}</td>
+								<td>{{Data.division_approve_comment}}</td>
+								<td></td>
+								<td></td>
+								<td>{{Data.division_approve_name}}</td>
+								<td></td>
+							</tr>
+							<tr ng-show="(Data.office_approve_comment != null && Data.office_approve_comment != '')">
+								<td>{{Data.office_approve_date}}</td>
+								<td>{{Data.office_approve_comment}}</td>
+								<td></td>
+								<td></td>
+								<td>{{Data.office_approve_name}}</td>
+								<td></td>
+							</tr>
+							-->
+							<tr ng-repeat="data in historyList">
+								<td>{{data.change_date}}</td>
+								<td>{{getMonthYearText(data.avg_date)}}{{data.remark}}</td>
+								<td>{{data.amount}}</td>
+								<td ng-show="Data.menu_type == 'ข้อมูลการขาย'">{{data.addon_amount}}</td>
+								<td>{{data.price_value}}</td>
+								<td>{{data.edit_name}}</td>
+								<td>{{data.unlock_name}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+<script type="text/ng-template" id="reject_dialog.html">
+	<div class="modal-header">
+		<h5 class="modal-title">Confirm</h5>
+	</div>
+	<div class="modal-body">
+		<div  class="obj_center" bind-html-compile="alertMessage"></div>
+		<br>
+		<div class="row form-group">
+			<div class="col-lg-10 col-lg-offset-1">
+				<textarea class="form-control" ng-model="ApproveComment" placeholder="ระบุเหตุผลที่ไม่อนุมัติ.."></textarea>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+	<button class="btn btn-default" ng-click="ok(ApproveComment)">OK</button>
+	<button class="btn btn-default" ng-click="cancel()">Cancel</button>
+	</div>
+</script>

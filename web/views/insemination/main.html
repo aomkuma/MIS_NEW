@@ -1,0 +1,400 @@
+<div ng-include src="'views/header.html'"></div>
+<div class="page-header">
+	<!-- <h3>ข้อมูลกิจการโคนม  >  ข้อมูลผสมเทียม</h3> -->
+	<h3>
+		<span ng-repeat="data in MenuName">
+	        <span ng-show="$index > 0">></span>
+	        {{data.menu_name_th}}
+	    </span>
+	</h3>
+</div>
+<div class="row form-group">
+	<div class="col-lg-12">
+		<button class="btn btn-danger pull-right" ng-click="goUpdate('')">
+			<span class="glyphicon glyphicon-plus"></span> 
+			บันทึกข้อมูลรายเดือน
+		</button>
+		<button class="btn btn-default pull-right" ng-click="showApproveList()" ng-show="Approver">
+			<span class="glyphicon glyphicon-zoom-in"></span> 
+			รายการที่ต้องอนุมัติ ({{ApproveList.length}} รายการ)
+		</button>
+	</div>
+</div>
+<div class="row form-group">
+	<div class="col-lg-12 text-center">
+		<form name="search_form" class="form-inline">
+	  		<!--<div class="form-group">
+			    <label for="exampleInputName2">&nbsp; ภูมิภาค : </label>
+			    &nbsp; <select name="Year" class="form-control" ng-model="condition.Region" ng-options="region.RegionID as region.RegionName for region in PersonRegion" required="required">
+			    	<option value="">กรุณาเลือก..</option>
+				</select>
+		  	</div>
+		  -->
+			<div ng-show="condition.DisplayType == 'monthly'">
+		  		<div class="form-group">
+				    <label for="exampleInputName2">&nbsp; การแสดงข้อมูล : </label>
+				    &nbsp; <select name="Year" class="form-control" ng-model="condition.DisplayType" ng-change="goSearch()">
+						<option value="">กรุณาเลือก</option>
+						<option value="monthly">รายเดือน</option>
+						<option value="quarter">รายไตรมาส</option>
+						<option value="annually">รายปี</option>
+					</select>
+			  	</div>
+				<div class="form-group">
+				    <label for="exampleInputName2">&nbsp; เดือน : </label>
+				    &nbsp; <select name="Year" class="form-control" ng-model="condition.MonthFrom" ng-options="month.monthValue as month.monthText for month in MonthList" required="required">
+						<option value="">กรุณาเลือก..</option>
+					</select>
+			  	</div>
+			<!--	<div class="form-group">
+				    <label for="exampleInputName2">&nbsp; ปี : </label>
+				    &nbsp; <select name="Year" class="form-control" ng-model="condition.YearFrom" ng-options="year.yearText as year.yearValue for year in YearList" required="required">
+						<option value="">กรุณาเลือก..</option>
+					</select>
+			  	</div>-->
+			  	<div class="form-group">
+				    <label for="exampleInputName2">&nbsp; ถึง </label>
+			  	</div>
+			  	<div class="form-group">
+				    <label for="exampleInputName2">&nbsp; เดือน : </label>
+				    &nbsp; <select name="Year" class="form-control" ng-model="condition.MonthTo" ng-options="month.monthValue as month.monthText for month in MonthList" required="required">
+						<option value="">กรุณาเลือก..</option>
+					</select>
+			  	</div>
+				<div class="form-group">
+				    <label for="exampleInputName2">&nbsp; ปี : </label>
+				    &nbsp; <select name="Year" class="form-control" ng-model="condition.YearTo" ng-options="year.yearText as year.yearValue for year in YearList" required="required">
+						<option value="">กรุณาเลือก..</option>
+					</select>
+			  	</div>
+			  	<button class="btn btn-primary" ng-click="goSearch()"><span class="glyphicon glyphicon-search"></span> ค้นหา</button>
+			</div>
+			<div ng-show="condition.DisplayType == 'quarter'">
+				<div class="form-group">
+				    <label for="exampleInputName2">&nbsp; การแสดงข้อมูล : </label>
+				    &nbsp; <select name="Year" class="form-control" ng-model="condition.DisplayType" ng-change="goSearch()">
+						<option value="">กรุณาเลือก</option>
+						<option value="monthly">รายเดือน</option>
+						<option value="quarter">รายไตรมาส</option>
+						<option value="annually">รายปี</option>
+					</select>
+			  	</div>
+				<div class="form-group">
+				    <label for="exampleInputName2">&nbsp; ไตรมาสที่: </label>
+				    &nbsp; <select name="Year" class="form-control" ng-model="condition.QuarterFrom" required="required">
+						<option value="">กรุณาเลือก..</option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+					</select>
+			  	</div>
+				<div class="form-group">
+				    <label for="exampleInputName2">&nbsp; ปีงบประมาณ: </label>
+				    &nbsp; <select name="Year" class="form-control" ng-model="condition.YearFrom" ng-options="year.yearText as year.yearValue for year in YearList" required="required">
+						<option value="">กรุณาเลือก..</option>
+					</select>
+			  	</div>
+			  	<div class="form-group">
+				    <label for="exampleInputName2">&nbsp; ถึง </label>
+			  	</div>
+			  	<div class="form-group">
+				    <label for="exampleInputName2">&nbsp; ไตรมาสที่: </label>
+				    &nbsp; <select name="Year" class="form-control" ng-model="condition.QuarterTo" required="required">
+						<option value="">กรุณาเลือก..</option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+					</select>
+			  	</div>
+				<div class="form-group">
+				    <label for="exampleInputName2">&nbsp; ปีงบประมาณ: </label>
+				    &nbsp; <select name="Year" class="form-control" ng-model="condition.YearTo" ng-options="year.yearText as year.yearValue for year in YearList" required="required">
+						<option value="">กรุณาเลือก..</option>
+					</select>
+			  	</div>
+			  	<button class="btn btn-primary" ng-click="goSearch()"><span class="glyphicon glyphicon-search"></span> ค้นหา</button>
+			</div>
+			<div ng-show="condition.DisplayType == 'annually'">
+				<div class="form-group">
+				    <label for="exampleInputName2">&nbsp; การแสดงข้อมูล : </label>
+				    &nbsp; <select name="Year" class="form-control" ng-model="condition.DisplayType" ng-change="goSearch()">
+						<option value="">กรุณาเลือก</option>
+						<option value="monthly">รายเดือน</option>
+						<option value="quarter">รายไตรมาส</option>
+						<option value="annually">รายปี</option>
+					</select>
+			  	</div>
+				<div class="form-group">
+				    <label for="exampleInputName2">&nbsp; ปีงบประมาณ: </label>
+				    &nbsp; <select name="Year" class="form-control" ng-model="condition.YearFrom" ng-options="year.yearText as year.yearValue for year in YearList" required="required">
+						<option value="">กรุณาเลือก..</option>
+					</select>
+			  	</div>
+			  	<div class="form-group">
+				    <label for="exampleInputName2">&nbsp; ถึง </label>
+			  	</div>
+				<div class="form-group">
+				    <label for="exampleInputName2">&nbsp; ปีงบประมาณ: </label>
+				    &nbsp; <select name="Year" class="form-control" ng-model="condition.YearTo" ng-options="year.yearText as year.yearValue for year in YearList" required="required">
+						<option value="">กรุณาเลือก..</option>
+					</select>
+			  	</div>
+			  	<button class="btn btn-primary" ng-click="goSearch()"><span class="glyphicon glyphicon-search"></span> ค้นหา</button>
+			</div>
+		</form>
+	</div>
+</div>
+<div class="row form-group">
+	<div class="col-lg-12" style=""> 
+		<div class="row"  style="background-color: #BD1212; padding: 10px; color: #FFF;border-top:solid 1px #000;border-right:solid 1px #000;border-left:solid 1px #000;">
+			<div class="col-lg-12 text-center">
+				สรุปข้อมูล
+			</div>
+		</div>
+		<div class="row" style="">
+			<div class="col-lg-6" style="padding: 20px; border:solid 1px #000;">
+				ปริมาณโคที่รับบริการ&nbsp; {{numberFormat(SummaryData.SummaryCurrentCowService)}}
+				<br>
+				รายได้จากการจำหน่ายแร่ธาตุ &nbsp; {{numberFormatComma(SummaryData.SummaryCurrentIncomeService)}}
+			</div>
+			<div class="col-lg-6" style="padding: 20px; border:solid 1px #000;">
+				เปอร์เซ็นต์การเติบโตเมื่อเทียบกับปีก่อนหน้า &nbsp; {{numberFormatComma(SummaryData.SummaryCowServicePercentage)}} %
+				<br>
+				เปอร์เซ็นต์การเติบโตเมื่อเทียบกับปีก่อนหน้า &nbsp; {{numberFormatComma(SummaryData.SummaryIncomeServicePercentage)}} %
+			</div>
+		</div>
+	</div>
+</div>
+<div class="col-lg-12 table-responsive" ng-show="ViewType == 'MAIN' && condition.DisplayType == 'monthly'">
+	<table class="table table-bordered table-striped">
+		<caption class="caption-bg">
+			
+		</caption>
+		<thead style="background-color: #BD1212; color: #FFF;">
+			<tr>
+				<th rowspan="2" style="text-align: center; vertical-align: middle;">ภูมิภาค</th>
+				<th rowspan="2" style="text-align: center; vertical-align: middle;">เดือน</th>
+				<th colspan="2" style="text-align: center; vertical-align: middle;">{{CurYear}}</th>
+				<th colspan="2" style="text-align: center; vertical-align: middle;">{{LastYear}}</th>
+				<th colspan="4" style="text-align: center;">ผลต่าง</th>
+				<th rowspan="2" style="text-align: center; vertical-align: middle;">วันที่บันทึกข้อมูล</th>
+				<th rowspan="2" style="text-align: center; vertical-align: middle;">วันที่อนุมัติ</th>
+				<th rowspan="2" style="text-align: center; vertical-align: middle;">สถานะ</th>
+				<th rowspan="2" style="text-align: center; vertical-align: middle;">รายละเอียด</th>
+				
+			</tr>
+			<tr>
+				<th style="text-align: center;">โคที่รับบริการ (ตัว)</th>
+				<th style="text-align: center;">รายได้ค่าบริการ + รายได้ค่าน้ำเชื้อ+วัสดุฯ (บาท)</th>
+				<th style="text-align: center;">โคที่รับบริการ (ตัว)</th>
+				<th style="text-align: center;">รายได้ค่าบริการ + รายได้ค่าน้ำเชื้อ+วัสดุฯ (บาท)</th>
+				<th style="text-align: center;">โคที่รับบริการ (ตัว)</th>
+				<th style="text-align: center;">% เพิ่ม / ลด</th>
+				<th style="text-align: center;">รายได้ค่าบริการ + รายได้ค่าน้ำเชื้อ+วัสดุฯ (บาท)</th>
+				<th style="text-align: center;">% เพิ่ม / ลด</th>
+			</tr>
+		</thead>
+		<tbody >
+			<!--<tr style="background-color: #B6CCFF; padding: 5px;">
+				<td colspan="7">{{getRegionName(data.region_id)}}</td>
+			</tr>-->
+			<tr ng-repeat="data in List">
+				<td>{{data.RegionName}}</td>
+				<td>{{data.Month}}</td>
+				<td>{{numberFormat(data.CurrentCowService)}}</td>
+				<td>{{numberFormatComma(data.CurrentIncomeService)}}</td>
+				<td>{{numberFormat(data.BeforeCowService)}}</td>
+				<td>{{numberFormatComma(data.BeforeIncomeService)}}</td>
+				<td>{{numberFormat(data.DiffCowService)}}</td>
+				<td>{{numberFormatComma(data.DiffCowServicePercentage)}}</td>
+				<td>{{numberFormatComma(data.DiffIncomeService)}}</td>
+				<td>{{numberFormatComma(data.DiffIncomeServicePercentage)}}</td>
+				<td>{{data.CreateDate}}</td>
+				<td>{{data.ApproveDate}}</td>
+				<td>{{data.Status}}</td>
+				<td><a class="pull-right" style="padding-right: 20px;" ng-click="exportReport( data,condition)"><img src="../files/img/excel.png" style="height: 40px;"></a></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<div class="col-lg-12 table-responsive" ng-show="ViewType == 'MAIN' && condition.DisplayType == 'quarter'">
+	<table class="table table-bordered table-striped">
+		<caption>
+			
+		</caption>
+		<thead style="background-color: #BD1212; color: #FFF;">
+			<tr>
+				<th rowspan="2" style="text-align: center; vertical-align: middle;">ภูมิภาค</th>
+				<th rowspan="2" style="text-align: center; vertical-align: middle;">ไตรมาส</th>
+				<th colspan="2" style="text-align: center; vertical-align: middle;">{{CurYear}}</th>
+				<th colspan="2" style="text-align: center; vertical-align: middle;">{{LastYear}}</th>
+				<th colspan="4" style="text-align: center;">ผลต่าง</th>
+				<th rowspan="2" style="text-align: center; vertical-align: middle;">รายละเอียด</th>
+			</tr>
+			<tr>
+				<th style="text-align: center;">โคที่รับบริการ (ตัว)</th>
+				<th style="text-align: center;">รายได้ค่าบริการ + รายได้ค่าน้ำเชื้อ+วัสดุฯ (บาท)</th>
+				<th style="text-align: center;">โคที่รับบริการ (ตัว)</th>
+				<th style="text-align: center;">รายได้ค่าบริการ + รายได้ค่าน้ำเชื้อ+วัสดุฯ (บาท)</th>
+				<th style="text-align: center;">โคที่รับบริการ (ตัว)</th>
+				<th style="text-align: center;">% เพิ่ม / ลด</th>
+				<th style="text-align: center;">รายได้ค่าบริการ + รายได้ค่าน้ำเชื้อ+วัสดุฯ (บาท)</th>
+				<th style="text-align: center;">% เพิ่ม / ลด</th>
+			</tr>
+		</thead>
+		<tbody >
+			<!--<tr style="background-color: #B6CCFF; padding: 5px;">
+				<td colspan="7">{{getRegionName(data.region_id)}}</td>
+			</tr>-->
+			<tr ng-repeat="data in List">
+				<td>{{data.RegionName}}</td>
+				<td>{{data.Quarter}}</td>
+				<td>{{numberFormat(data.CurrentCowService)}}</td>
+				<td>{{numberFormatComma(data.CurrentIncomeService)}}</td>
+				<td>{{numberFormat(data.BeforeCowService)}}</td>
+				<td>{{numberFormatComma(data.BeforeIncomeService)}}</td>
+				<td>{{numberFormat(data.DiffCowService)}}</td>
+				<td>{{numberFormatComma(data.DiffCowServicePercentage)}}</td>
+				<td>{{numberFormatComma(data.DiffIncomeService)}}</td>
+				<td>{{numberFormatComma(data.DiffIncomeServicePercentage)}}</td>
+				<td><a class="pull-right" style="padding-right: 20px;" ng-click="exportReport( data,condition)"><img src="../files/img/excel.png" style="height: 40px;"></a></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<div class="col-lg-12 table-responsive" ng-show="ViewType == 'MAIN' && condition.DisplayType == 'annually'">
+	<table class="table table-bordered table-striped">
+		<caption>
+			
+		</caption>
+		<thead style="background-color: #BD1212; color: #FFF;">
+			<tr>
+				<th rowspan="2" style="text-align: center; vertical-align: middle;">ภูมิภาค</th>
+				<th rowspan="2" style="text-align: center; vertical-align: middle;">ปี</th>
+				<th rowspan="2" style="text-align: center; vertical-align: middle;">โคที่รับบริการ (ตัว)</th>
+				<th rowspan="2" style="text-align: center; vertical-align: middle;">รายได้ค่าบริการ + รายได้ค่าน้ำเชื้อ+วัสดุฯ (บาท)</th>
+				<th colspan="4" style="text-align: center;">ผลต่าง</th>
+				<th rowspan="2" style="text-align: center; vertical-align: middle;">รายละเอียด</th>
+			</tr>
+			<tr>
+				<th style="text-align: center;">โคที่รับบริการ (ตัว)</th>
+				<th style="text-align: center;">% เพิ่ม / ลด</th>
+				<th style="text-align: center;">รายได้ค่าบริการ + รายได้ค่าน้ำเชื้อ+วัสดุฯ (บาท)</th>
+				<th style="text-align: center;">% เพิ่ม / ลด</th>
+			</tr>
+		</thead>
+		<tbody >
+			<!--<tr style="background-color: #B6CCFF; padding: 5px;">
+				<td colspan="7">{{getRegionName(data.region_id)}}</td>
+			</tr>-->
+			<tr ng-repeat="data in List">
+				<td>{{data.RegionName}}</td>
+				<td>{{data.Year}}</td>
+				<td>{{numberFormat(data.CurrentCowService)}}</td>
+				<td>{{numberFormatComma(data.CurrentIncomeService)}}</td>
+				<td>{{numberFormat(data.DiffCowService)}}</td>
+				<td>{{numberFormatComma(data.DiffCowServicePercentage)}}</td>
+				<td>{{numberFormatComma(data.DiffIncomeService)}}</td>
+				<td>{{numberFormatComma(data.DiffIncomeServicePercentage)}}</td>
+				<td><a class="pull-right" style="padding-right: 20px;" ng-click="exportReport( data,condition)"><img src="../files/img/excel.png" style="height: 40px;"></a></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<div class="col-lg-12 table-responsive" ng-show="ViewType == 'DETAIL'">
+	<table class="table table-bordered table-striped">
+		<caption>
+			
+		</caption>
+		<thead style="background-color: #BD1212; color: #FFF;">
+			<tr>
+				<th rowspan="3" style="text-align: center; vertical-align: middle;">สหกรณ์</th>
+				<th colspan="{{ItemUnit.length}}" style="text-align: center; vertical-align: middle;">รายการ</th>
+			</tr>
+			<tr>
+				<th colspan="{{data.unit.length}}" style="text-align: center; vertical-align: middle;" ng-repeat="data in Item">
+					{{data.label}}
+				</th>
+			</tr>
+			<tr>
+				<th style="text-align: center; vertical-align: middle;" ng-repeat="data in ItemUnit">
+					{{data.label}}
+				</th>
+			</tr>
+		</thead>
+		<tbody >
+			<tr ng-repeat="data in DetailList"">
+				<td>{{data.RegionName}}</td>
+				<td ng-repeat="item in data.ValueList" style="text-align: center; vertical-align: middle;">
+					{{item.values}}
+				</td>
+			</tr>
+		</tbody>
+		<tr>
+			<td>รวม</td>
+			<td ng-repeat="data in DetailSummary" style="text-align: center; vertical-align: middle;">
+				{{data.values}}
+			</td>
+		</tr>
+	</table>
+</div>
+<div class="page-header">
+&nbsp;
+</div>
+<style type="text/css">
+	a{
+		color: #FFF;
+	}
+</style>
+<script type="text/ng-template" id="approve_list_dialog.html">
+	<div class="modal-header">
+		<h5 class="modal-title">รายการที่ต้องอนุมัติ</h5>
+	</div>
+	<div class="modal-body">
+		<table class="table table-striped table-bordered">
+			<thead>
+				<tr>
+					<th rowspan="2">วันที่บันทึก</th>
+					<th rowspan="2">รายการ</th>
+					<th colspan="3">สถานะการอนุมัติ</th>
+					<th rowspan="2"></th>
+				</tr>
+				<tr>
+					<th>แผนก</th>
+					<th>กอง</th>
+					<th>ฝ่าย</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="data in ApproveList">
+					<td>{{data.create_date}}</td>
+					<td>{{data.cooperative_name}} : เดือน {{ getMonthName(data.months) }} ปี {{ data.years + 543 }}</td>
+					<td align="center">
+						<span class="glyphicon glyphicon-check" style="color: green;" ng-show="data.dep_approve_date != null && (data.dep_approve_comment == null || data.dep_approve_comment == '')"></span> 
+						<span class="glyphicon glyphicon-remove" style="color: red;" ng-show="data.dep_approve_comment != null && data.dep_approve_comment != ''"></span> 
+						<br>{{getShortDateTime(data.dep_approve_date)}}
+					</td>
+					<td align="center"><span class="glyphicon glyphicon-check" style="color: green;" ng-show="data.division_approve_date != null && (data.division_approve_comment == null || data.division_approve_comment == '')"></span> 
+						<span class="glyphicon glyphicon-remove" style="color: red;" ng-show="data.division_approve_comment != null && data.division_approve_comment != ''"></span> 
+						<br>{{getShortDateTime(data.division_approve_date)}}
+					</td>
+					<td align="center"><span class="glyphicon glyphicon-check" style="color: green;" ng-show="data.office_approve_date != null && (data.office_approve_comment == null || data.office_approve_comment == '')"></span> 
+						<span class="glyphicon glyphicon-remove" style="color: red;" ng-show="data.office_approve_comment != null && data.office_approve_comment != ''"></span> 
+							<br>{{getShortDateTime(data.office_approve_date)}}
+					</td>
+					<td>
+						<a class="btn btn-info" href="#/insemination/update/{{data.id}}"> ดูข้อมูล</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="modal-footer">
+	<button class="btn btn-default" ng-click="cancel()">ปิด</button>
+	</div>
+</script>

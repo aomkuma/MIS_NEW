@@ -1,0 +1,224 @@
+<div ng-include src="'views/header.html'"></div>
+<div class="page-header">
+	<h3>
+		<span ng-repeat="data in MenuName">
+	        <span ng-show="$index > 0">></span>
+	        {{data.menu_name_th}}
+	    </span>
+	</h3>
+</div>
+<div class="col-lg-10 col-lg-offset-1" ng-form="form_data">
+	<div class="row form-group">
+		<div class="field-label col-lg-1 col-md-1 col-sm-12 col-xs-12">
+			ชื่อสหกรณ์
+		</div>
+		<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+			<select class="form-control" ng-model="Insemination.cooperative_id" ng-options="data.id as data.cooperative_name for data in Cooperative" required="required">
+				<option value="">กรุณาเลือก..</option>
+			</select>
+		</div>
+		<div class="field-label col-lg-1 col-md-1 col-sm-12 col-xs-12">
+			เดือน
+		</div>
+		<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+			<select name="Year" class="form-control" ng-model="Insemination.months" ng-options="month.monthValue as month.monthText for month in MonthList" required="required">
+					<option value="">กรุณาเลือก..</option>
+				</select>
+		</div>
+		<div class="field-label col-lg-1 col-md-1 col-sm-12 col-xs-12">
+			ปี
+		</div>
+		<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+			<select name="Year" class="form-control" ng-model="Insemination.years" ng-options="year.yearText as year.yearValue for year in YearList" required="required">
+					<option value="">กรุณาเลือก..</option>
+				</select>
+		</div>
+		<div class="field-label col-lg-1 col-md-1 col-sm-12 col-xs-12">
+			<button class="btn btn-info" ng-click="goSearch(Insemination)" ng-disabled="!form_data.$valid">
+				<span class="glyphicon glyphicon-search"></span> 
+				ค้นหา
+			</button>
+		</div>
+	</div>
+	<hr>
+	<div ng-show="Search || InseminationDetailList.length > 0">
+		<div class="row form-group">
+			<label class="col-lg-12 form-control-static">
+				สหกรณ์ : {{CooperativeName}}
+			</label>
+			<label class="col-lg-12 form-control-static">
+				 เดือน : {{MonthName}}
+			</label>
+			<label class="col-lg-12 form-control-static">
+				ปี : {{YearName}}
+			</label>
+		</div>
+		<div class="row form-group">
+			<div class="col-lg-12">
+				<button class="btn btn-danger  pull-right" ng-click="addInseminationDetail()" ><!--ng-disabled="!form_data.$valid"-->
+				<span class="glyphicon glyphicon-plus"></span> 
+				เพิม
+			</button>
+			</div>
+		</div>
+		<div ng-repeat="InseminationDetail in InseminationDetailList" ng-init="parentIndex = $index">
+			<fieldset style="border: 1px solid #999; padding: 10px; margin-top: 10px;">
+			<div ng-form="sub_form_data">
+				<div class="row form-group">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						วันที่แก้ไขล่าสุด {{getThaiDateTimeFromString(InseminationDetail.update_date)}}
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+						จำนวนโคที่ได้รับบริการ (ตัว)
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+						<input type="text" class="form-control" ng-model="InseminationDetail.cow_amount">
+					</div>
+					<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+						ค่าบริการ (บาท)
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+						<input type="text" class="form-control" ng-model="InseminationDetail.service_cost">
+					</div>
+					<!--<div class="col-lg-2">
+						<button class="btn btn-danger" ng-click="removeDetail(InseminationDetail.id, parentIndex)">
+							<span class="glyphicon glyphicon-trash"></span> 
+							
+						</button>
+					</div>-->
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+						ค่าน้ำเชื้อ (บาท)
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+						<input type="text" class="form-control" ng-model="InseminationDetail.sperm_cost">
+					</div>
+					<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+						ค่าวัสดุ (บาท)
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+						<input type="text" class="form-control" ng-model="InseminationDetail.material_cost">
+					</div>
+					<div class="col-lg-2 col-md-2  col-sm-12 col-xs-12">
+						<button class="btn btn-danger" ng-click="removeDetail(InseminationDetail.id, parentIndex)">
+							<span class="glyphicon glyphicon-trash"></span> 
+							
+						</button>
+					</div>
+				</div>
+
+				<!--<div class="row form-group">
+					<div class="col-lg-12">
+						<button class="btn btn-primary pull-right" ng-click="addInseminationItem($index)">
+							<span class="glyphicon glyphicon-plus"></span> 
+							เพิ่มรายการ
+						</button>
+					</div>
+				</div>-->
+			</div>
+			<br><br>
+			</fieldset>
+		</div>
+		<br><br>
+		<div class="row form-group">
+			<label class="form-control-static col-lg-1">
+				หมายเหตุ 
+			</label>
+			<div class="col-lg-11">
+				<textarea class="form-control" ng-model="Insemination.user_comment" ng-disabled="!Maker"></textarea>
+			</div>
+		</div>
+	</div>
+	<hr>
+	<div class="row form-group">
+		<div class="col-lg-12 text-center">
+			<button class="btn btn-default" ng-click="cancelUpdate()">
+				<span class="glyphicon glyphicon-arrow-left"></span> 
+				กลับหน้าหลัก
+			</button>
+			<button class="btn btn-primary" ng-click="save(Insemination, InseminationDetailList)" ng-disabled="!form_data.$valid" ng-show="Maker">
+				<span class="glyphicon glyphicon-floppy-save"></span> 
+				บันทึก
+			</button>
+			<button class="btn btn-success" ng-click="approve(Insemination, 'dep')" 
+						ng-show="Insemination.id != '' && Insemination.dep_approve_id == currentUser.UserID 
+								&& Insemination.dep_approve_date == null
+								&& Insemination.division_approve_id == null
+								&& Insemination.office_approve_id == null">
+					<span class="glyphicon glyphicon-check"></span> 
+					อนุมัติ
+				</button>
+				<button class="btn btn-danger" ng-click="reject(Insemination, 'dep')" 
+						ng-show="Insemination.id != '' && Insemination.dep_approve_id == currentUser.UserID 
+								&& Insemination.dep_approve_date == null
+								&& Insemination.division_approve_id == null
+								&& Insemination.office_approve_id == null">
+					<span class="glyphicon glyphicon-remove-sign"></span> 
+					ไม่อนุมัติ
+				</button>
+
+				<button class="btn btn-success" ng-click="approve(Insemination, 'division')" 
+						ng-show="Insemination.id != '' && Insemination.division_approve_id == currentUser.UserID 
+								&& Insemination.dep_approve_date != null
+								&& Insemination.division_approve_date == null
+								&& Insemination.office_approve_id == null">
+					<span class="glyphicon glyphicon-check"></span> 
+					อนุมัติ
+				</button>
+				<button class="btn btn-danger" ng-click="reject(Insemination, 'division')" 
+						ng-show="Insemination.id != '' && Insemination.division_approve_id == currentUser.UserID 
+								&& Insemination.dep_approve_date != null
+								&& Insemination.division_approve_date == null
+								&& Insemination.office_approve_id == null">
+					<span class="glyphicon glyphicon-remove-sign"></span> 
+					ไม่อนุมัติ
+				</button>
+
+				<button class="btn btn-success" ng-click="approve(Insemination, 'office')" 
+						ng-show="Insemination.id != '' && Insemination.office_approve_id == currentUser.UserID 
+								&& Insemination.dep_approve_date != null
+								&& Insemination.division_approve_date != null
+								&& Insemination.office_approve_date == null">
+					<span class="glyphicon glyphicon-check"></span> 
+					อนุมัติ
+				</button>
+				<button class="btn btn-danger" ng-click="reject(Insemination, 'office')" 
+						ng-show="Insemination.id != '' && Insemination.office_approve_id == currentUser.UserID 
+								&& Insemination.dep_approve_date != null
+								&& Insemination.division_approve_date != null
+								&& Insemination.office_approve_date == null">
+					<span class="glyphicon glyphicon-remove-sign"></span> 
+					ไม่อนุมัติ
+				</button>
+		</div>
+	</div>
+	<div class="row form-group" ng-show="Insemination.id != '' && 
+	((Insemination.dep_approve_comment != null && Insemination.dep_approve_comment != '') || (Insemination.division_approve_comment != null && Insemination.division_approve_comment != '') || (Insemination.office_approve_comment != null && Insemination.office_approve_comment != ''))">
+		<div class="col-lg-12 text-center" style="color: red;">
+			
+			ไม่อนุมัติ เนื่องจาก {{Insemination.dep_approve_comment + Insemination.division_approve_comment + Insemination.office_approve_comment}}
+			
+		</div>
+	</div>
+</div>
+<script type="text/ng-template" id="reject_dialog.html">
+	<div class="modal-header">
+		<h5 class="modal-title">Confirm</h5>
+	</div>
+	<div class="modal-body">
+		<div  class="obj_center" bind-html-compile="alertMessage"></div>
+		<br>
+		<div class="row form-group">
+			<div class="col-lg-10 col-lg-offset-1">
+				<textarea class="form-control" ng-model="ApproveComment" placeholder="ระบุเหตุผลที่ไม่อนุมัติ.."></textarea>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+	<button class="btn btn-default" ng-click="ok(ApproveComment)">OK</button>
+	<button class="btn btn-default" ng-click="cancel()">Cancel</button>
+	</div>
+</script>

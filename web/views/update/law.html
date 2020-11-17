@@ -1,0 +1,107 @@
+<div ng-include src="'views/header.html'"></div>
+
+<div class="row form-group" style="padding-top: 10px;">
+	  <div class="col-lg-5">
+	    <div class="row">
+	      <div class="col-lg-10" style="padding: 5px; font-weight: bolder; font-size: 1.3em;">
+	        <img src="../cio-files/img/pin-menu.png">
+	        กฎหมาย/ระเบียบที่เกี่ยวข้อง
+	      </div>
+	    </div>
+	  </div>
+	  <div class="col-lg-6">
+
+	  </div>
+</div>
+
+<div ng-show="PAGE == 'UPDATE'">
+	<div class="row form-group">
+		<label class="col-lg-2 col-xs-12 form-control-static">
+			หัวข้อภาษาไทย
+		</label>
+		<div class="col-lg-4 col-xs-12">
+			<input type="text" class="form-control" ng-model="Law.topic_th">
+		</div>
+		<label class="col-lg-2 col-xs-12 form-control-static">
+			หัวข้อภาษาอังกฤษ
+		</label>
+		<div class="col-lg-4 col-xs-12">
+			<input type="text" class="form-control" ng-model="Law.topic_en">
+		</div>
+	</div>
+	<div class="row form-group">
+		<label class="col-lg-2 col-xs-12 form-control-static">
+			ประเภทประกาศ
+		</label>
+		<div class="col-lg-4 col-xs-12">
+			<select ng-model="Law.law_type" class="form-control">
+				<option value="">กรุณาเลือก</option>
+				<option value="กฎหมาย/ระเบียบ ที่เกี่ยวข้อง">กฎหมาย/ระเบียบ ที่เกี่ยวข้อง</option>
+				<option value="ประกาศและคำสั่ง">ประกาศและคำสั่ง</option>
+			</select>
+		</div>
+		
+		<label class="col-lg-2 col-xs-12 form-control-static">
+			วันที่ประกาศ
+		</label>
+		<div class="col-lg-4 col-xs-12">
+			<p class="input-group">
+				<input type="text" class="form-control" ng-model="Law.law_date" uib-datepicker-popup="yyyy-MM-dd" is-open="popup1.opened" datepicker-options="dateOptions1">
+				<span class="input-group-btn">
+	            	<button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+	          </span>
+	        </p>
+		</div>
+	</div>
+	
+	<div class="row form-group">
+		<label class="col-lg-2 form-control-static">อัพโหลดไฟล์</label>
+		<div class="col-lg-4" >
+			<p class="input-group">
+              <input type="text" readonly="true" class="form-control" ng-model="AttachFile.name" />
+              <span class="input-group-btn">
+                <button class="btn btn-default" ngf-select ng-model="AttachFile" ngf-max-size="25MB"  ngf-model-invalid="AttachFile.invalidFile">เลือก</button>
+              </span>
+            </p>
+		</div>
+		<div class="col-lg-3">
+			<div class="file-alert" ng-show="Law.invalidFile.$error === 'maxSize'">ขนาดไฟล์ต้องไม่เกิน : {{AttachFile.invalidFile.$errorParam}}</div>
+		</div>
+	</div>
+	<div class="row form-group">
+		<div class="col-lg-12">
+			ไฟล์ปัจจุบัน : <a target="_self" href="{{'../'+Law.file_path}}" download="{{Law.file_name}}">{{Law.file_name}}</a>
+		</div>
+	</div>
+
+	<div class="page-header text-center">
+		<button class="btn btn-info" ng-click="save('laws/update', Law, AttachFile)">บันทึก</button>
+		<button class="btn btn-default" ng-click="cancelUpdate()">ยกเลิก</button>
+	</div>
+</div>
+<div class="row form-group" ng-show="PAGE == 'MAIN'">
+	<div class="table-responsive">
+		<table class="table table-striped">
+			<caption><button ng-click="add()" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> เพิ่ม</button></caption>
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>หัวข้อ</th>
+					<th>วันที่ประกาศ</th>
+					<th>ประเภทประกาศ</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="data in LawList">
+					<td>
+						<button class="btn btn-default btn-xs" ng-click="edit(data)"><span class="glyphicon glyphicon-edit"></span></button>
+						<button class="btn btn-danger btn-xs" ng-click="remove('laws/delete', data.id)"><span class="glyphicon glyphicon-trash"></span></button>
+					</td>
+					<td>{{data.topic_th}}</td>
+					<td>{{data.law_date}}</td>
+					<td>{{data.law_type}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

@@ -1,0 +1,41 @@
+<div ng-include src="'views/header.html'"></div>
+<div class="row form-group" style="padding-top: 10px;">
+	  <div class="col-lg-5">
+	    <div class="row">
+	      <div class="col-lg-10" style="padding: 5px; font-weight: bolder; font-size: 1.3em;">
+	        <img src="../cio-files/img/pin-menu.png">
+	        {{MenuName.menu_name_th}}
+
+	        <span ng-show="MenuName.sub_menu != null">
+	        	<img src="../cio-files/img/pin-menu.png">
+				{{MenuName.sub_menu.menu_name_th}}	        	
+	        </span>
+	      </div>
+	    </div>
+	  </div>
+	  <div class="col-lg-6">
+
+	  </div>
+</div>
+<div class="row form-group">
+	<label class="col-lg-2 form-control-static">อัพโหลดไฟล์</label>
+	<div class="col-lg-4" >
+		<p class="input-group">
+          <input type="text" readonly="true" class="form-control" ng-model="Link.name" />
+          <span class="input-group-btn">
+            <button class="btn btn-default" ngf-select ng-model="Link" ngf-max-size="25MB"  ngf-model-invalid="Link.invalidFile">เลือก</button>
+          </span>
+        </p>
+	</div>
+	<div class="col-lg-3">
+		<div class="file-alert" ng-show="Link.invalidFile.$error === 'maxSize'">ขนาดไฟล์ต้องไม่เกิน : {{fle.attachFile.invalidFile.$errorParam}}</div>
+	</div>
+</div>
+<div class="row form-group">
+	<div class="col-lg-12">
+		ไฟล์ปัจจุบัน : <a target="_self" href="{{'../'+Link.file_path}}" download="{{Link.file_name}}">{{Link.file_name}}</a>
+	</div>
+</div>
+<div class="page-header text-center">
+	<button class="btn btn-info" ng-click="save('links/update', Link)">บันทึก</button>
+</div>

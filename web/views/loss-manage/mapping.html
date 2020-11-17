@@ -1,0 +1,171 @@
+<div ng-include src="'views/header.html'"></div>
+<div class="page-header">
+	<h3>บริหารจัดการข้อมูล > จับคู่ข้อมูลสูญเสีย</h3>
+</div>
+<div class="col-lg-10 col-lg-offset-1" ng-form="form_data">
+	<div class="row form-group">
+		<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+			สำนักงาน
+		</div>
+		<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+			<select class="form-control" ng-model="Data.factory_id" ng-options="data.id as data.factory_name for data in FactoryList" required="required" ng-change="loadProductMilk()">
+				<option value="">กรุณาเลือก..</option>
+			</select>
+		</div>
+	</div>
+	<div class="row form-group">
+		<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+			ประเภทรายงานสูญเสีย
+		</div>
+		<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+			<select class="form-control" ng-model="Data.loss_type">
+				<option value="">กรุณาเลือก..</option>
+				<option value="การสูญเสียหลังกระบวนการ">สูญเสียหลังกระบวนการผลิต</option>
+				<option value="การสูญเสียรอจำหน่าย">สูญเสียระหว่างรอจำหน่าย</option>
+			</select>
+		</div>
+	</div>
+
+	<div class="row form-group">
+		<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+			หมวดรายงานสูญเสีย
+		</div>
+		<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+			<select class="form-control" ng-model="Data.loss_id" ng-options="data.id as data.name for data in MasterLossList">
+				<option value="">กรุณาเลือก..</option>
+			</select>
+		</div>
+	</div>
+
+	<div class="row form-group">
+		<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+			ตราผลิตภัณฑ์
+		</div>
+		<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+			<select class="form-control" ng-model="Data.product_milk_id"  ng-options="data.id as data.name for data in ProductMilkList"  ng-change="loadSubProductMilk(Data.product_milk_id)">
+				<option value="">กรุณาเลือก..</option>
+			</select>
+		</div>
+	</div>
+
+	<div class="row form-group">
+		<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+			หัวข้อการผลิต
+		</div>
+		<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+			<select class="form-control" ng-model="Data.subproduct_milk_id"  ng-options="data.id as (data.product_character + ' ' + data.name) for data in SubProductMilkList"  ng-change="loadProductMilkDetail(Data.subproduct_milk_id)">
+				<option value="">กรุณาเลือก..</option>
+			</select>
+		</div>
+	</div>
+
+	<div class="row form-group">
+		<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+			รายการผลิต
+		</div>
+		<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+			<select class="form-control" ng-model="Data.product_milk_detail_id"  ng-options="data.id as (data.name + ' ' + data.number_of_package + ' ' + data.unit + ' ' + data.amount + ' ' + data.amount_unit + ' ' + data.taste) for data in ProductMilkDetailList" >
+				<option value="">กรุณาเลือก..</option>
+			</select>
+		</div>
+	</div>
+
+	<!-- <div class="row form-group">
+		<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+			รสชาติ
+		</div>
+		<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+			<select class="form-control">
+				<option value="รสจืด">รสจืด</option>
+				<option value="ชอคโกแลต">ชอคโกแลต</option>
+			</select>
+		</div>
+	</div>
+	 -->
+	<hr>
+	<div class="row form-group">
+		<div class="col-lg-12 text-center">
+			<button class="btn btn-info" ng-click="loadData()">
+				<span class="glyphicon glyphicon-view"></span> 
+				ค้นหา
+			</button>
+			<button class="btn btn-primary" ng-click="save(Data)" ng-disabled="!form_data.$valid">
+				<span class="glyphicon glyphicon-floppy-save"></span> 
+				บันทึก
+			</button>
+			<button class="btn btn-default" ng-click="cancelUpdate()">
+				<span class="glyphicon glyphicon-arrow-left"></span> 
+				กลับหน้าหลัก
+			</button>
+		</div>
+	</div>
+
+	<div  ng-repeat="main_data in HistoryList">
+		<div class="row">
+			<div class="col-lg-8 col-lg-offset-2 text-center">
+				<h3>{{main_data.factory_name}}</h3>
+			</div>
+		</div>
+		<div  ng-repeat="loss_data in main_data.MasterLossList">
+			<div class="row">
+				<div class="col-lg-8 col-lg-offset-2">
+					<h4>{{loss_data.name}}</h4>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-8 col-lg-offset-2">
+					<table class="table table-bordered table-striped">
+						<thead>
+							<tr>	
+								<td>รายการ</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="data in loss_data.ProductMilkList">
+								<td>
+									{{data.name}}<br>
+									<table  class="table" ng-repeat="data1 in data.SubProductMilkList">
+										<tr>
+											<td colspan="2">
+												&nbsp;&nbsp;&nbsp;{{data1.product_character + ' ' + data1.name}}<br>
+												<table class="table" ng-repeat="data2 in data1.ProductMilkDetailList">
+													<tr>
+														<td>
+															&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{data2.name + ' ' + data2.number_of_package + ' ' + data2.unit + ' ' + data2.amount + ' ' + data2.amount_unit + ' ' + data2.taste}}<br>
+														</td>
+														<td>
+															<button class="btn btn-danger" ng-click="removeData(data2.id)">ลบรายการ</button>
+															<button class="btn btn-default" ng-click="createToMasterGoal(data2.id)">เพิ่มข้อมูลไปยังรายการเป้า</button>
+														</td>
+													</tr>
+												</table>
+											</td>
+											<td>&nbsp;</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+							<!-- <tr>
+								<td>นมพาสเจอร์ไรส์</td>
+								<td>&nbsp;</td>
+							</tr>
+							<tr>
+								<td>ขนาด 200 ซีซี (1x36)</td>
+								<td>&nbsp;</td>
+							</tr>
+							<tr>
+								<td>รสจืด</td>
+								<td>
+									<button class="btn btn-danger">ลบรายการ</button>
+								</td>
+							</tr> -->
+							
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+	
+</div>

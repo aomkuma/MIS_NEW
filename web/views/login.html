@@ -1,0 +1,35 @@
+<form name="myForm">
+    <div class="login-container">
+      <div class="row">
+        <div class="col-lg-6 col-lg-offset-3 col-sm-6 col-sm-offset-3 col-xs-12" style="background-color: #FFF; margin-top: 15%; padding: 10px; border-radius: 10px 10px 10px 10px; color: #000;">
+            <div class="page-header text-center"><h1><b><span style="color: red;">M</span>anagement <span style="color: red;">I</span>nfomation <span style="color: red;">S</span>ystem</b></h1></div>
+            <div class="col-lg-6 col-lg-offset-3 col-sm-12 col-xs-12">
+              <div class="form-group">
+                <input type="text" name="username" ng-model="user.Username" required class="form-control" placeholder="Username" style="font-size: 1.2em;">
+                <div ng-show="myForm.username.$error.required &amp;&amp; myForm.username.$touched" class="error">Required!</div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-lg-offset-3 col-sm-12 col-xs-12">
+              <div class="form-group">
+                <input type="password" name="Password" ng-model="user.Password" required class="form-control" placeholder="Password" style="font-size: 1.2em;">
+                <div ng-show="myForm.Password.$error.required &amp;&amp; myForm.Password.$touched" class="error">Required!</div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-lg-offset-3 col-sm-12 col-xs-12 text-center">
+              <div class="form-group">
+                <button ng-click="authenticate('login', user)" ng-disabled="myForm.$invalid" class="btn btn-danger btn-block" style="font-size: 1.2em;">เข้าสู่ระบบ</button>
+                <br>
+                <a href="https://docs.google.com/spreadsheets/d/1hgilhpWtsXvx6ZSjdeJHUQIcGFMkwBlNRR_E3v5sZjs/edit?usp=sharing" target="_blank">ตรวจสอบรายการแก้ไขระบบ MIS</a>
+              </div>
+            </div>
+            <div class="col-lg-12 col-sm-12 col-xs-12">
+              <div ng-show="showError" class="alert alert-danger">Login failed, Invalid username or password</div>
+              <div ng-show="showSuccess" class="alert alert-success">Login Successful!</div>
+            </div>
+          </div>
+          <div class="row">
+            
+          </div>
+      </div>
+    </div>
+</form>

@@ -1,0 +1,311 @@
+<div ng-include src="'views/header.html'"></div>
+<div class="page-header">
+	<h3>
+		<span ng-repeat="data in MenuName">
+	        <span ng-show="$index > 0">></span>
+	        {{data.menu_name_th}}
+	    </span>
+	</h3>
+</div>
+<div class="col-lg-10 col-lg-offset-1" ng-form="form_data">
+	<div class="row form-group">
+		<div class="field-label col-lg-1 col-md-1 col-sm-12 col-xs-12">
+			สำนักงาน
+		</div>
+		<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+			<select class="form-control" ng-model="Data.factory_id" ng-options="data.id as data.factory_name for data in FactoryList" required="required">
+				<option value="">กรุณาเลือก..</option>
+			</select>
+		</div>
+		<div class="field-label col-lg-1 col-md-1 col-sm-12 col-xs-12">
+			ปีพ.ศ.
+		</div>
+		<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+			<select name="Year" class="form-control" ng-model="Data.years" ng-options="year.yearText as year.yearValue for year in YearList" required="required">
+					<option value="">กรุณาเลือก..</option>
+				</select>
+		</div>
+		<div class="field-label col-lg-1 col-md-1 col-sm-12 col-xs-12">
+			เดือน
+		</div>
+		<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+			<select name="Year" class="form-control" ng-model="Data.months" ng-options="month.monthValue as month.monthText for month in MonthList" required="required">
+					<option value="">กรุณาเลือก..</option>
+				</select>
+		</div>
+		
+		<div class="field-label col-lg-1 col-md-1 col-sm-12 col-xs-12">
+			<button class="btn btn-info" ng-click="goSearch(Data)" ng-disabled="!form_data.$valid">
+				<span class="glyphicon glyphicon-search"></span> 
+				ค้นหา
+			</button>
+		</div>
+	</div>
+	<hr>
+	<div ng-show="Search || DataDetailList.length > 0">
+		<div class="row form-group">
+			<label class="col-lg-12 form-control-static">
+				โรงงาน : {{FactoryName}}
+			</label>
+			<label class="col-lg-12 form-control-static">
+				 เดือน : {{MonthName}}
+			</label>
+			<label class="col-lg-12 form-control-static">
+				ปีพ.ศ. : {{YearName}}
+			</label>
+		</div>
+		<div class="row form-group">
+			<div class="col-lg-12">
+				<!-- <button class="btn btn-danger  pull-right" ng-click="addDataDetail()" >
+					<span class="glyphicon glyphicon-plus"></span> 
+					เพิ่ม
+				</button> -->
+			<button class="btn btn-primary  pull-right" ng-click="switchDetailType()" ng-show="DETAIL_TYPE == 'MANUAL'" ><!--ng-disabled="!form_data.$valid"-->
+				อัพโหลดไฟล์
+			</button>
+			<!-- <button class="btn btn-primary  pull-right" ng-click="switchDetailType()" ng-show="DETAIL_TYPE == 'UPLOAD'" >
+				กรอกข้อมูล
+			</button> -->
+			</div>
+		</div>
+		<div>
+			<fieldset style="border: 1px solid #999; padding: 10px; margin-top: 10px;" ng-show="DETAIL_TYPE == 'UPLOAD'">
+				<!-- <div class="row form-group">
+					<label class="form-control-static col-lg-2">
+						ข้อมูล ณ วันที่ 
+					</label>
+					<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" >
+		                <p class="input-group">
+		                    <input type="text" class="form-control" ng-model="FileDate" uib-datepicker-popup="yyyy-MM-dd" is-open="popup1.opened">
+		                    <span class="input-group-btn">
+		                        <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+		                    </span>
+		                </p>
+		            </div>
+				</div> -->
+				<div class="row form-group">
+		            <label class="col-lg-2 form-control-static">
+		                แนบไฟล์
+		            </label>
+		            <div class="col-lg-6" >
+		                <p class="input-group">
+		                    <input type="text" readonly="true" class="form-control" ng-model="AttachFile.name" />
+		                    <span class="input-group-btn">
+		                        <button class="btn btn-default" ngf-select ng-model="AttachFile" ngf-max-size="25MB"  ngf-model-invalid="AttachFile.invalidFile" >แนบไฟล์</button>
+		                    </span>
+		                </p>
+		            </div>
+		            <div class="col-lg-2">
+		                <div class="file-alert" ng-show="fle.attachFile.invalidFile.$error === 'maxSize'">ขนาดไฟล์ต้องไม่เกิน : {{AttachFile.invalidFile.$errorParam}}</div>
+		            </div>
+		            <div class="col-lg-4">
+		                <!-- <a  href="../files/files/download/MIS_การขาย.xlsx" target="_self" download="MIS_การขาย.xlsx"><span class="glyphicon glyphicon-download"></span> Template สำหรับนำเข้า</a> -->
+		                <a ng-click="exportTemplate()" target="_self" ><span class="glyphicon glyphicon-download"></span> Template สำหรับนำเข้า</a>
+		            </div>
+
+		        </div>
+		        <div class="row form-group">
+		        	<div class="col-lg-12 text-center">
+			            <button class="btn btn-primary" ng-click="uploadFile(Data, AttachFile)">อัพโหลด</button>
+			        </div>
+		        </div>
+
+		        <div class="row form-group">
+		        	<div class="col-lg-12 table-responsive">
+		        		<table class="table table-striped">
+		        			<tr>
+		        				<th>บันทึกข้อมูลล่าสุด</th>
+		        				<th>ข้อมูล ณ วันที่</th>
+		        				<th>ไฟล์</th>
+		        			</tr>
+		        			<tr ng-repeat="data in UploadLogList">
+		        				<td>{{data.create_date}}</td>
+		        				<td>{{data.file_date}}</td>
+		        				<td><a href="../{{data.file_path}}" download="{{data.file_name}}">{{data.file_name}}</a></td>
+		        			</tr>
+		        		</table>
+		        	</div>
+		        </div>
+			</fieldset>
+
+			<fieldset style="border: 1px solid #999; padding: 10px; margin-top: 10px;" ng-show="DETAIL_TYPE == 'MANUAL'">
+			<div ng-form="sub_form_data">
+				<div class="row form-group" ng-repeat="DataDetail in DataDetailList" ng-init="parentIndex = $index">
+					<div class="col-lg-12">
+						<div class="row form-group">
+							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+								({{parentIndex + 1}}) วันที่แก้ไขล่าสุด {{getThaiDateTimeFromString(DataDetail.update_date)}}
+							</div>
+						</div>
+						<div class="row form-group">
+								<div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+									ประเภทหลัก
+								</div>
+								<div class="col-lg-11 col-md-11 col-sm-12 col-xs-12">
+									<select class="form-control" ng-model="DataDetail.production_info_type1" ng-options="data.id as data.name for data in ProductMilkList[parentIndex]" ng-change="loadSubProductMilk(DataDetail.production_info_type1, parentIndex)"><!--ng-change="loadDairyFarming('CHILD', DataDetail.dairy_farming_id)" -->
+										<option value="">กรุณาเลือก..</option>
+									</select>
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+									ประเภทย่อย
+								</div>
+								<div class="col-lg-11 col-md-11 col-sm-12 col-xs-12">
+									<select class="form-control" ng-model="DataDetail.production_info_type2" ng-options="data.id as (data.product_character + ' ' + data.name) for data in SubProductMilkList[parentIndex]" ng-change="loadProductMilkDetail(DataDetail.production_info_type2, parentIndex)"><!--ng-change="loadDairyFarming('CHILD', DataDetail.dairy_farming_id)" -->
+										<option value="">กรุณาเลือก..</option>
+									</select>
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+									รายการ
+								</div>
+								<div class="col-lg-11 col-md-11 col-sm-12 col-xs-12">
+									<select class="form-control" ng-model="DataDetail.production_info_type3" ng-options="data.id as (data.name + ' ' + data.number_of_package + ' ' + data.unit + ' ' + data.amount + ' ' + data.amount_unit + ' ' + data.taste) for data in ProductMilkDetailList[parentIndex]" ><!--ng-change="loadDairyFarming('CHILD', DataDetail.dairy_farming_id)" -->
+										<option value="">กรุณาเลือก..</option>
+									</select>
+								</div>
+							</div>
+						<div class="row form-group">
+							<div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+								หีบ : กล่อง
+							</div>
+							<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+								<input type="text" class="form-control" ng-model="DataDetail.package_amount" ng-blur="calcLitre(ProductMilkDetailList[parentIndex], DataDetail)">
+							</div>
+							<div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+								ปริมาณ (ลิตร)
+							</div>
+							<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+								<input type="text" class="form-control" ng-model="DataDetail.amount">
+							</div>
+							<div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+								มูลค่า (บาท)
+							</div>
+							<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+								<input type="text" class="form-control" ng-model="DataDetail.price_value">
+							</div>
+							
+							<div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+								<button class="btn btn-danger" ng-click="removeDetail(DataDetail.id, parentIndex)">
+									<span class="glyphicon glyphicon-trash"></span> 
+									
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--<div class="row form-group">
+					<div class="col-lg-12">
+						<button class="btn btn-primary pull-right" ng-click="addDataItem($index)">
+							<span class="glyphicon glyphicon-plus"></span> 
+							เพิ่มรายการ
+						</button>
+					</div>
+				</div>-->
+			</div>
+			<br><br>
+			</fieldset>
+		</div>
+		<br><br>
+		<div class="row form-group" ng-show="DETAIL_TYPE == 'MANUAL'">
+			<label class="form-control-static col-lg-1">
+				หมายเหตุ 
+			</label>
+			<div class="col-lg-11">
+				<textarea class="form-control" ng-model="Data.user_comment" ng-disabled="!Maker"></textarea>
+			</div>
+		</div>
+	</div>
+	<hr>
+	<div class="row form-group" ng-show="DETAIL_TYPE == 'MANUAL'">
+		<div class="col-lg-12 text-center">
+			<button class="btn btn-default" ng-click="cancelUpdate()">
+				<span class="glyphicon glyphicon-arrow-left"></span> 
+				กลับหน้าหลัก
+			</button>
+			<button class="btn btn-primary" ng-click="save(Data, DataDetailList)" ng-disabled="!form_data.$valid || Saving" ng-show="Maker && DETAIL_TYPE == 'MANUAL'">
+				<span class="glyphicon glyphicon-floppy-save"></span> 
+				บันทึก
+			</button>
+			<button class="btn btn-success" ng-click="approve(Data, 'dep')" 
+						ng-show="Data.id != '' && Data.dep_approve_id == currentUser.UserID 
+								&& Data.dep_approve_date == null
+								&& Data.division_approve_id == null
+								&& Data.office_approve_id == null">
+					<span class="glyphicon glyphicon-check"></span> 
+					อนุมัติ
+				</button>
+				<button class="btn btn-danger" ng-click="reject(Data, 'dep')" 
+						ng-show="Data.id != '' && Data.dep_approve_id == currentUser.UserID 
+								&& Data.dep_approve_date == null
+								&& Data.division_approve_id == null
+								&& Data.office_approve_id == null">
+					<span class="glyphicon glyphicon-remove-sign"></span> 
+					ไม่อนุมัติ
+				</button>
+
+				<button class="btn btn-success" ng-click="approve(Data, 'division')" 
+						ng-show="Data.id != '' && Data.division_approve_id == currentUser.UserID 
+								&& Data.dep_approve_date != null
+								&& Data.division_approve_date == null
+								&& Data.office_approve_id == null">
+					<span class="glyphicon glyphicon-check"></span> 
+					อนุมัติ
+				</button>
+				<button class="btn btn-danger" ng-click="reject(Data, 'division')" 
+						ng-show="Data.id != '' && Data.division_approve_id == currentUser.UserID 
+								&& Data.dep_approve_date != null
+								&& Data.division_approve_date == null
+								&& Data.office_approve_id == null">
+					<span class="glyphicon glyphicon-remove-sign"></span> 
+					ไม่อนุมัติ
+				</button>
+
+				<button class="btn btn-success" ng-click="approve(Data, 'office')" 
+						ng-show="Data.id != '' && Data.office_approve_id == currentUser.UserID 
+								&& Data.dep_approve_date != null
+								&& Data.division_approve_date != null
+								&& Data.office_approve_date == null">
+					<span class="glyphicon glyphicon-check"></span> 
+					อนุมัติ
+				</button>
+				<button class="btn btn-danger" ng-click="reject(Data, 'office')" 
+						ng-show="Data.id != '' && Data.office_approve_id == currentUser.UserID 
+								&& Data.dep_approve_date != null
+								&& Data.division_approve_date != null
+								&& Data.office_approve_date == null">
+					<span class="glyphicon glyphicon-remove-sign"></span> 
+					ไม่อนุมัติ
+				</button>
+
+		</div>
+	</div>
+	<div class="row form-group" ng-show="Data.id != '' && 
+	((Data.dep_approve_comment != null && Data.dep_approve_comment != '') || (Data.division_approve_comment != null && Data.division_approve_comment != '') || (Data.office_approve_comment != null && Data.office_approve_comment != ''))">
+		<div class="col-lg-12 text-center" style="color: red;">
+			
+			ไม่อนุมัติ เนื่องจาก {{Data.dep_approve_comment + Data.division_approve_comment + Data.office_approve_comment}}
+			
+		</div>
+	</div>
+</div>
+<script type="text/ng-template" id="reject_dialog.html">
+	<div class="modal-header">
+		<h5 class="modal-title">Confirm</h5>
+	</div>
+	<div class="modal-body">
+		<div  class="obj_center" bind-html-compile="alertMessage"></div>
+		<br>
+		<div class="row form-group">
+			<div class="col-lg-10 col-lg-offset-1">
+				<textarea class="form-control" ng-model="ApproveComment" placeholder="ระบุเหตุผลที่ไม่อนุมัติ.."></textarea>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+	<button class="btn btn-default" ng-click="ok(ApproveComment)">OK</button>
+	<button class="btn btn-default" ng-click="cancel()">Cancel</button>
+	</div>
+</script>

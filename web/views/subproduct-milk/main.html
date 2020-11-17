@@ -1,0 +1,60 @@
+<div ng-include src="'views/header.html'"></div>
+<div class="page-header">
+    <h3>บริหารจัดการข้อมูล > บริหารจัดการรายการผลิตภัณฑ์นม</h3>
+</div>
+
+
+<div class="row form-group">
+    <div class="col-lg-12 table-responsive">
+        <table class="table table-bordered table-striped">
+             <caption>
+                <button class="btn btn-danger pull-right" ng-click="cancelUpdate('')">
+                   
+                    ย้อนกลับ
+                </button>
+            </caption>
+            <thead>
+                <tr>
+
+                    <th>จัดการ</th>
+                    <th>โรงงาน</th>
+                    <th>ประเภทหลัก</th>
+                    <th>ลักษณะผลิตภัณฑ์ / ประเภทผลิตภัณฑ์หลัก</th>
+                    <th>สถานะ</th>
+                    <!--<th>แก้ไข</th>-->
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="data in List">
+
+
+                    <td style="text-align: center;">
+                        <button class="btn btn-success" ng-click="goAddsub(data.id)">
+
+                            เพิ่มรายการ
+                        </button>
+                     <button class="btn btn-success" ng-click="goEdit(data.id)">
+
+                                แก้ไข
+                            </button>
+                    </td>
+                    <td style="text-align: center;">{{data.factory_name}}</td>
+                    <td style="text-align: center;">{{data.proname}}</td>
+                    <td style="text-align: center;">{{(data.product_character!=null?data.product_character:'') + ' ' + data.name}}</td>
+                    <td style="text-align: center;" ng-class="{'inactive-text':data.actives == 'N'}">{{data.actives=='Y'?'ใช้งาน':'ไม่ใช้งาน'}}</td>
+                    <!--					<td>
+                                                                    <button class="btn btn-success" ng-click="goUpdate(data.id)">
+                                                                            <span class="glyphicon glyphicon-edit"></span> 
+                                                                            แก้ไข
+                                                                    </button>
+                                                            </td>-->
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!--<style type="text/css">
+        .inactive-text{
+                color: red;
+        }
+</style>-->

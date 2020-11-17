@@ -1,0 +1,24 @@
+<div ng-include src="'views/header.html'"></div>
+<div class="page-header">
+	<h3>รายงาน  >  รายเดือน</h3>
+</div>
+<div class="row form-group">
+	<div class="col-lg-12 text-center">
+		<form name="search_form" class="form-inline">
+			<div class="form-group">
+			    <label for="exampleInputName2">&nbsp; เดือน : </label>
+			    &nbsp; <select name="Year" class="form-control" ng-model="condition.Month" ng-options="month.monthValue as month.monthText for month in MonthList" required="required">
+					<option value="">กรุณาเลือก..</option>
+				</select>
+		  	</div>
+			<div class="form-group">
+			    <label for="exampleInputName2">&nbsp; ปีงบประมาณ : </label>
+			    &nbsp; <select name="Year" class="form-control" ng-model="condition.Year" ng-options="year.yearText as year.yearValue for year in YearList" required="required">
+					<option value="">กรุณาเลือก..</option>
+				</select>
+		  	</div>
+		  	<a role="button" class="btn btn-info" ng-click="exportReport( data,condition)" target="_self" ><span class="glyphicon glyphicon-download"></span> ออกรายงาน</a>
+		  	
+	  	</form>
+	</div>
+</div>

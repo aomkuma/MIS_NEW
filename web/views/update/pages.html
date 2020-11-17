@@ -1,0 +1,107 @@
+<div ng-include src="'views/header.html'"></div>
+<div class="row form-group" style="padding-top: 10px;">
+	  <div class="col-lg-5">
+	    <div class="row">
+	      <div class="col-lg-10" style="padding: 5px; font-weight: bolder; font-size: 1.3em;">
+	        <img src="../cio-files/img/pin-menu.png">
+	        {{MenuName.menu_name_th}}
+
+	        <span ng-show="MenuName.sub_menu != null">
+	        	<img src="../cio-files/img/pin-menu.png">
+				{{MenuName.sub_menu.menu_name_th}}	        	
+	        </span>
+	      </div>
+	    </div>
+	  </div>
+	  <div class="col-lg-6">
+
+	  </div>
+</div>
+<div class="page-header">
+	<h3>หัวข้อภาษาไทย</h3>
+</div>
+<div class="row form-group">
+	<div class="col-lg-12">
+		<input type="text" class="form-control" ng-model="Page.title_th" maxlength="255">
+	</div>
+</div>
+<div class="page-header">
+	<h3>หัวข้อภาษาอังกฤษ</h3>
+</div>
+<div class="row form-group">
+	<div class="col-lg-12">
+		<input type="text" class="form-control" ng-model="Page.title_en" maxlength="255">
+	</div>
+</div>
+
+<div class="page-header">
+	<h3>เนื้อหาภาษาไทย</h3>
+</div>
+<div class="row form-group">
+	<div class="col-lg-12" id="ckeditor">
+		<textarea class="form-control" id="editor1" name="editor1" ng-model="Page.contents" rows="100" data-sample="40" data-sample-short="" >
+		</textarea>
+	</div>
+</div>
+
+<div class="page-header">
+	<h3>เนื้อหาภาษาอังกฤษ</h3>
+</div>
+<div class="row form-group">
+	<div class="col-lg-12" id="ckeditor_en">
+		<textarea class="form-control" id="editor2" name="editor2" ng-model="Page.contents_en" rows="100" data-sample="40" data-sample-short="" >
+		</textarea>
+	</div>
+</div>
+
+<div class="page-header">
+	<h3>ไฟล์แนบ</h3>
+</div>
+
+<div class="row form-group" ng-repeat="file in Page.AttachFiles">
+	<div class="col-lg-12">
+		
+				<button class="btn btn-danger btn-xs" ng-click="removeAttach('attach/delete', file.id)"><span class="glyphicon glyphicon-trash"></span></button>
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				<a target="_self" href="{{file.file_path}}" download="{{file.file_name}}">{{file.file_name}}</a>
+			
+	</div>
+</div>
+
+<div class="row form-group">
+	<div class="col-lg-12">
+		<button class="btn btn-primary " ng-click="addFiles()"> เพิ่มไฟล์แนบ</button>
+	</div>
+	<div class="col-lg-12">
+		<div class="row" ng-repeat="fle in FileList">
+			<div class="col-lg-4" >
+				<p class="input-group">
+                  <input type="text" readonly="true" class="form-control" ng-model="fle.attachFile.name" />
+                  <span class="input-group-btn">
+                    <button class="btn btn-default" ngf-select ng-model="fle.attachFile" ngf-max-size="25MB"  ngf-model-invalid="fle.attachFile.invalidFile">เลือก</button>
+                  </span>
+                </p>
+			</div>
+			<div class="col-lg-3">
+				<div class="file-alert" ng-show="fle.attachFile.invalidFile.$error === 'maxSize'">ขนาดไฟล์ต้องไม่เกิน : {{fle.attachFile.invalidFile.$errorParam}}</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="page-header text-center">
+	<button class="btn btn-success" ng-click="previewTemplate()">Preview</button>
+	<button class="btn btn-info" ng-click="save('pages/update', Page, FileList)">บันทึก</button>
+</div>
+
+<div class="row form-group" ng-show="show_preview">
+	<div class="col-lg-12" id="div_preview" bind-html-compile="preview">
+		
+	</div>
+</div>
+<hr>
+<div class="row form-group" ng-show="show_preview_en">
+	<div class="col-lg-12" id="div_preview_en" bind-html-compile="preview_en">
+		
+	</div>
+</div>
