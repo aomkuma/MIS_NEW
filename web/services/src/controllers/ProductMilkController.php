@@ -142,29 +142,29 @@
                 if(empty($result)){
 
                     // Get old data
-                    $OldData = ProductMilkService::getData($_Data['id']);
+                    // $OldData = ProductMilkService::getData($_Data['id']);
 
                     $id = ProductMilkService::updateData($_Data);
                     $this->data_result['DATA']['id'] = $id;
 
-                    $SubProductMilk = SubProductMilkService::getListByProductMilk($_Data['id']);
+                    // $SubProductMilk = SubProductMilkService::getListByProductMilk($_Data['id']);
 
-                    foreach ($SubProductMilk as $key => $value) {
-                        $ProductMilkDetail = ProductMilkDetailService::getListByParent($value['id']);
+                    // foreach ($SubProductMilk as $key => $value) {
+                    //     $ProductMilkDetail = ProductMilkDetailService::getListByParent($value['id']);
 
-                        foreach ($ProductMilkDetail as $key1 => $value1) {
+                    //     foreach ($ProductMilkDetail as $key1 => $value1) {
                             
-                            // find master goal by name
-                            $old_goal_name = $OldData['name'] . ' - ' . $value['name'] . ' - ' . $value1['name'];
-                            $MasterGoal = MasterGoalService::getDataByName($old_goal_name);
-                            // Add master goal
-                            if(!empty($MasterGoal)){
-                                $MasterGoal['goal_name'] = $_Data['name'] . ' - ' . $value['name'] . ' - ' . $value1['name'];
-                                MasterGoalService::updateData($MasterGoal);
-                            }
+                    //         // find master goal by name
+                    //         $old_goal_name = $OldData['name'] . ' - ' . $value['name'] . ' - ' . $value1['name'];
+                    //         $MasterGoal = MasterGoalService::getDataByName($old_goal_name);
+                    //         // Add master goal
+                    //         if(!empty($MasterGoal)){
+                    //             $MasterGoal['goal_name'] = $_Data['name'] . ' - ' . $value['name'] . ' - ' . $value1['name'];
+                    //             MasterGoalService::updateData($MasterGoal);
+                    //         }
 
-                        }
-                    }
+                    //     }
+                    // }
 
                 }else{
                     // print_r($result);exit;

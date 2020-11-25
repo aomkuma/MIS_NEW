@@ -117,12 +117,13 @@ class ProductMilkDetailController extends Controller {
                 $SubProductMilkName = $SubProductMilk['product_character'] . ' ' . $SubProductMilk['subname'];
                 
                 // find master goal by name  , ' ' , number_of_package , ' ' , unit , ' ' , amount , ' ' , amount_unit , ' ' , taste
-                $old_goal_name = $ProductMilkName . ' - ' . $SubProductMilkName . ' - ' . $OldData['name']  . ' ' . $OldData['number_of_package'] . ' ' . $OldData['unit'] . ' ' . $OldData['amount'] . ' ' . $OldData['amount_unit'] . ' ' . $OldData['taste'];
+                $old_goal_name = $ProductMilkName . ' - ' . $SubProductMilkName . ' - ' . $OldData['name']  . ' ' . $OldData['number_of_package'] . ' ' . $OldData['unit'] . ' ' . (empty($OldData['amount']) || $OldData['amount'] == 0?'0.00':$OldData['amount']) . ' ' . $OldData['amount_unit'] . ' ' . $OldData['taste'];
 
                 $menuTypeList = ['ข้อมูลการผลิต', 'ข้อมูลการขาย', 'การสูญเสียในกระบวนการ'/*, 'การสูญเสียหลังกระบวนการ', 'การสูญเสียรอจำหน่าย'*/];
 
                 foreach ($menuTypeList as $key1 => $value1) {
                     $MasterGoal = MasterGoalService::getDataByName($old_goal_name, $value1, $fac_id);
+
                     // Add master goal
                     if(empty($MasterGoal)){
                         
@@ -131,9 +132,9 @@ class ProductMilkDetailController extends Controller {
                         $MasterGoal['menu_type'] = $value1/*'ข้อมูลการผลิต'*/;
                         $MasterGoal['actives'] = 'Y';    
                         $MasterGoal['factory_id'] = $fac_id;
-                        $MasterGoal['goal_name'] = $ProductMilkName . ' - ' . $SubProductMilkName . ' - ' . $_Data['name']  . ' ' . $_Data['number_of_package'] . ' ' . $_Data['unit'] . ' ' . (empty($_Data['amount'])?'0.00':$_Data['amount']). ' ' . $_Data['amount_unit'] . ' ' . $_Data['taste'];
+                        $MasterGoal['goal_name'] = $ProductMilkName . ' - ' . $SubProductMilkName . ' - ' . $_Data['name']  . ' ' . $_Data['number_of_package'] . ' ' . $_Data['unit'] . ' ' . (empty($_Data['amount']) || $_Data['amount'] == 0?'0.00':$_Data['amount']). ' ' . $_Data['amount_unit'] . ' ' . $_Data['taste'];
                     }else{
-                        $MasterGoal['goal_name'] = $ProductMilkName . ' - ' . $SubProductMilkName . ' - ' . $_Data['name']  . ' ' . $_Data['number_of_package'] . ' ' . $_Data['unit'] . ' ' . (empty($_Data['amount'])?'0.00':$_Data['amount']) . ' ' . $_Data['amount_unit'] . ' ' . $_Data['taste'];
+                        $MasterGoal['goal_name'] = $ProductMilkName . ' - ' . $SubProductMilkName . ' - ' . $_Data['name']  . ' ' . $_Data['number_of_package'] . ' ' . $_Data['unit'] . ' ' . (empty($_Data['amount']) || $_Data['amount'] == 0?'0.00':$_Data['amount']) . ' ' . $_Data['amount_unit'] . ' ' . $_Data['taste'];
                         $MasterGoal['actives'] = $_Data['actives'];
                     }
 

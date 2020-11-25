@@ -98,11 +98,11 @@ class SubProductMilkController extends Controller {
                 foreach ($ProductMilkDetail as $key1 => $value1) {
                     
                     // find master goal by name
-                    $old_goal_name = $OldData['proname'] . ' - ' . $OldData['product_character'] . ' ' . $OldData['subname'] . ' - ' . $value1['name']  . ' ' . $value1['number_of_package'] . ' ' . $value1['unit'] . ' ' . $value1['amount'] . ' ' . $value1['amount_unit'] . ' ' . $value1['taste'];
+                    $old_goal_name = $OldData['proname'] . ' - ' . $OldData['product_character'] . ' ' . $OldData['subname'] . ' - ' . $value1['name']  . ' ' . $value1['number_of_package'] . ' ' . $value1['unit'] . ' ' . (empty($value1['amount'] || $value1['amount'] == 0)?'0.00':$value1['amount']) . ' ' . $value1['amount_unit'] . ' ' . $value1['taste'];
                     $MasterGoal = MasterGoalService::getDataByName($old_goal_name);
                     // Add master goal
                     if(!empty($MasterGoal)){
-                        $MasterGoal['goal_name'] = $OldData['proname'] . ' - ' . $_Data['product_character'] . ' ' . $_Data['name'] . ' - ' . $value1['name']  . ' ' . $value1['number_of_package'] . ' ' . $value1['unit'] . ' ' . (empty($value1['amount'])?'0.00':$value1['amount']) . ' ' . $value1['amount_unit'] . ' ' . $value1['taste'];
+                        $MasterGoal['goal_name'] = $OldData['proname'] . ' - ' . $_Data['product_character'] . ' ' . $_Data['name'] . ' - ' . $value1['name']  . ' ' . $value1['number_of_package'] . ' ' . $value1['unit'] . ' ' . (empty($value1['amount'] || $value1['amount'] == 0)?'0.00':$value1['amount']) . ' ' . $value1['amount_unit'] . ' ' . $value1['taste'];
                         MasterGoalService::updateData($MasterGoal);
                     }
 
