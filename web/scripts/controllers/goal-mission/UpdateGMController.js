@@ -76,7 +76,7 @@ angular.module('e-homework').controller('UpdateGMController', function($scope, $
                 $scope.Data = result.data.DATA.Data;
                 $scope.avgList = $scope.Data.goal_mission_avg;
 
-                $scope.loadMasterGoalList('master-goal/list', $scope.Data.menu_type);
+                $scope.loadMasterGoalList('master-goal/list', $scope.Data.menu_type, $scope.Data.factory_id);
 
                 $scope.totalAmount = 0;
                 $scope.totalAddonAmount = 0;
