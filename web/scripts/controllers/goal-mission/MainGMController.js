@@ -1,5 +1,6 @@
 angular.module('e-homework').controller('MainGMController', function($scope, $cookies, $filter, $state, $uibModal, HTTPService, IndexOverlayFactory) {
 	//console.log('Hello !');
+    $scope.YearList = getYearList(20);
     $scope.DEFAULT_LANGUAGE = 'TH';
     $scope.menu_selected = 'management';
     var $user_session = sessionStorage.getItem('user_session');
@@ -188,8 +189,14 @@ angular.module('e-homework').controller('MainGMController', function($scope, $co
     //                     , 'Region' : ''
     //                     , 'Goal' : ''
     //                 };
-    $scope.condition = {'goal_type' : ''};
-    $scope.YearList = getYearList(20);
+    
+    var curDate = new Date();
+    var fiscalYear = 5;
+    if(curDate.getMonth() > 8){
+        fiscalYear = 6;
+    }
+
+    $scope.condition = {'Year': $scope.YearList[fiscalYear], 'Region' : $scope.PersonRegion[0], 'goal_type' : ''};
     $scope.getUserRole();
     $scope.loadList('goal-mission/list');
     // $scope.loadMasterGoalList('master-goal/list');

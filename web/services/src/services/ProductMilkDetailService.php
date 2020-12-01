@@ -7,6 +7,20 @@ use Illuminate\Database\Capsule\Manager as DB;
 
 class ProductMilkDetailService {
 
+    public static function getAllByFactory($factory_id){
+
+        return ProductMilkDetail::select("product_milk_detail.*", 'product_milk.name as proname', 'subproduct_milk.name as subname', 'factory.factory_name', 'product_character')
+                        ->join('subproduct_milk', 'subproduct_milk.id', '=', 'product_milk_detail.sub_product_milk_id')
+                        ->join('product_milk', 'product_milk.id', '=', 'subproduct_milk.product_milk_id')
+                        ->join('factory', 'factory.id', '=', 'product_milk.factory_id')
+                        ->where('factory_id', $factory_id)
+                        ->orderBy("product_milk_detail.id", 'ASC')
+                        ->get()
+                        ->toArray();
+
+        // return ProductMilkDetail::where('factory_id', $factory_id)->get()->toArray();
+    }
+
     public static function getIDByName($name, $sub_product_milk_id) {
         $res = ProductMilkDetail::where('sub_product_milk_id', $sub_product_milk_id)
                         ->where(DB::raw("CONCAT(name , ' ' , number_of_package , ' ' , unit , ' ' , amount , ' ' , amount_unit , ' ' , taste)"), $name)

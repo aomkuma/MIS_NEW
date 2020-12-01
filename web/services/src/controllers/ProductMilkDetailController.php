@@ -117,7 +117,7 @@ class ProductMilkDetailController extends Controller {
                 $SubProductMilkName = $SubProductMilk['product_character'] . ' ' . $SubProductMilk['subname'];
                 
                 // find master goal by name  , ' ' , number_of_package , ' ' , unit , ' ' , amount , ' ' , amount_unit , ' ' , taste
-                $old_goal_name = $ProductMilkName . ' - ' . $SubProductMilkName . ' - ' . $OldData['name']  . ' ' . $OldData['number_of_package'] . ' ' . $OldData['unit'] . ' ' . (empty($OldData['amount']) || $OldData['amount'] == 0?'0.00':$OldData['amount']) . ' ' . $OldData['amount_unit'] . ' ' . $OldData['taste'];
+                $old_goal_name = $ProductMilkName . ' - ' . $SubProductMilkName . ' - ' . $OldData['name']  . ' ' . $OldData['number_of_package'] . ' ' . $OldData['unit'] . ' ' . (empty($OldData['amount']) || $OldData['amount'] == 0?'0':$OldData['amount']) . ' ' . $OldData['amount_unit'] . ' ' . $OldData['taste'];
 
                 $menuTypeList = ['ข้อมูลการผลิต', 'ข้อมูลการขาย', 'การสูญเสียในกระบวนการ'/*, 'การสูญเสียหลังกระบวนการ', 'การสูญเสียรอจำหน่าย'*/];
 
@@ -132,9 +132,9 @@ class ProductMilkDetailController extends Controller {
                         $MasterGoal['menu_type'] = $value1/*'ข้อมูลการผลิต'*/;
                         $MasterGoal['actives'] = 'Y';    
                         $MasterGoal['factory_id'] = $fac_id;
-                        $MasterGoal['goal_name'] = $ProductMilkName . ' - ' . $SubProductMilkName . ' - ' . $_Data['name']  . ' ' . $_Data['number_of_package'] . ' ' . $_Data['unit'] . ' ' . (empty($_Data['amount']) || $_Data['amount'] == 0?'0.00':$_Data['amount']). ' ' . $_Data['amount_unit'] . ' ' . $_Data['taste'];
+                        $MasterGoal['goal_name'] = $ProductMilkName . ' - ' . $SubProductMilkName . ' - ' . $_Data['name']  . ' ' . $_Data['number_of_package'] . ' ' . $_Data['unit'] . ' ' . (empty($_Data['amount']) || $_Data['amount'] == 0?'0':$_Data['amount']). ' ' . $_Data['amount_unit'] . ' ' . $_Data['taste'];
                     }else{
-                        $MasterGoal['goal_name'] = $ProductMilkName . ' - ' . $SubProductMilkName . ' - ' . $_Data['name']  . ' ' . $_Data['number_of_package'] . ' ' . $_Data['unit'] . ' ' . (empty($_Data['amount']) || $_Data['amount'] == 0?'0.00':$_Data['amount']) . ' ' . $_Data['amount_unit'] . ' ' . $_Data['taste'];
+                        $MasterGoal['goal_name'] = $ProductMilkName . ' - ' . $SubProductMilkName . ' - ' . $_Data['name']  . ' ' . $_Data['number_of_package'] . ' ' . $_Data['unit'] . ' ' . (empty($_Data['amount']) || $_Data['amount'] == 0?'0':$_Data['amount']) . ' ' . $_Data['amount_unit'] . ' ' . $_Data['taste'];
                         $MasterGoal['actives'] = $_Data['actives'];
                     }
 
@@ -155,4 +155,69 @@ class ProductMilkDetailController extends Controller {
         }
     }
 
+    public function deleteMasterGoalData($request, $response, $args) {
+
+        try {
+
+            // Delete all master_goal not in goal_mission
+            $res = MasterGoalService::deleteAllNotInGoalMission();
+           
+            $this->data_result['DATA'] = $res;
+
+            return $this->returnResponse(200, $this->data_result, $response, false);
+        } catch (\Exception $e) {
+            return $this->returnSystemErrorResponse($this->logger, $this->data_result, $e, $response);
+        }
+    }
+
+    public function updateMasterGoalData($request, $response, $args) {
+
+        try {
+
+            $factory_id_list = [1,2,3,4,5];
+            $menuTypeList = ['ข้อมูลการผลิต', 'ข้อมูลการขาย', 'การสูญเสียในกระบวนการ'];
+            // Delete all master_goal not in goal_mission
+            $cnt = 0;
+            foreach ($factory_id_list as $factory_value) {
+                
+                $product_milk_detail_list = ProductMilkDetailService::getAllByFactory($factory_value);
+
+                foreach ($product_milk_detail_list as $key => $value) {
+
+                    foreach ($menuTypeList as $menu_type) {
+                     
+                        $goal_name = $value['proname'] . ' - ' . $value['product_character'] . ' ' . $value['subname'] . ' - ' . $value['name']  . ' ' . $value['number_of_package'] . ' ' . $value['unit'] . ' ' . (empty($value['amount']) || $value['amount'] == 0?'0':$value['amount']). ' ' . $value['amount_unit'] . ' ' . $value['taste'];
+
+                        $MasterGoal = MasterGoalService::getDataByName($goal_name, $menu_type, $factory_value);
+
+                        // Add master goal
+                        if(empty($MasterGoal)){
+
+                            $MasterGoal['id'] = '';
+                            $MasterGoal['goal_type'] = 'II';
+                            $MasterGoal['menu_type'] = $menu_type/*'ข้อมูลการผลิต'*/;
+                            $MasterGoal['actives'] = $value['actives'];    
+                            $MasterGoal['factory_id'] = $factory_value;
+                            $MasterGoal['goal_name'] = $goal_name;
+
+                            $cnt++;
+                            // print_r($MasterGoal);
+                            MasterGoalService::updateData($MasterGoal);
+
+                        }
+                    }
+                }
+
+                // echo "Total of Factory $factory_value : " . $cnt;
+
+            }
+            
+            // exit;
+            $this->data_result['DATA'] = $cnt;
+
+            return $this->returnResponse(200, $this->data_result, $response, false);
+        } catch (\Exception $e) {
+            return $this->returnSystemErrorResponse($this->logger, $this->data_result, $e, $response);
+        }
+    }
 }

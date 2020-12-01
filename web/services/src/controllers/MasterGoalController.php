@@ -46,7 +46,7 @@
                 $params = $request->getParsedBody();
                 $actives = $params['obj']['actives'];
                 $menu_type = $params['obj']['menu_type'];
-                $factory_id = MasterGoalController::checkRegion($params['obj']['factory_id']);
+                $factory_id = $params['obj']['factory_id'];//MasterGoalController::checkRegion($params['obj']['factory_id']);
 
                 $condition = $params['obj']['condition'];
                 $htmlcode = $params['obj']['htmlcode'];
@@ -62,7 +62,7 @@
                 }
                 
                 $_List = MasterGoalService::getList($actives, $menu_type, $condition, '', $factory_id);
-                $this->data_result['DATA']['OldList'] = $_List;
+                // $this->data_result['DATA']['OldList'] = $_List;
                 $Data = [];
 
                 if($htmlcode == 'Y'){

@@ -257,7 +257,7 @@
                 // Delete from master goal
                 $factory_id = $Data['factory_id'];
                 $menu_type = $Data['loss_type'];
-                $goal_name = $LostData['name'] . ' - ' . $ProductMilk['name'] . ' - ' . $SubProductMilk['subname'] . ' - ' . $ProductMilkDetail['name']  . ' ' . $ProductMilkDetail['number_of_package'] . ' ' . $ProductMilkDetail['unit'] . ' ' . (empty($ProductMilkDetail['amount'])?'0.00':$ProductMilkDetail['amount']). ' ' . $ProductMilkDetail['amount_unit'] . ' ' . $ProductMilkDetail['taste'];
+                $goal_name = $LostData['name'] . ' - ' . $ProductMilk['name'] . ' - ' . $SubProductMilk['subname'] . ' - ' . $ProductMilkDetail['name']  . ' ' . $ProductMilkDetail['number_of_package'] . ' ' . $ProductMilkDetail['unit'] . ' ' . (empty($ProductMilkDetail['amount'])?'0':$ProductMilkDetail['amount']). ' ' . $ProductMilkDetail['amount_unit'] . ' ' . $ProductMilkDetail['taste'];
                 // echo "$menu_type, $goal_name, $factory_id";
                 // exit;
                 MasterGoalService::removeDataByCondition($menu_type, $goal_name, $factory_id);
@@ -272,6 +272,53 @@
             }
         }
 
+        public function updateMasterGoalData($request, $response, $args) {
+
+        try {
+
+                
+            $list = MasterLossService::getAllMappingList();
+            // echo 'Size of data : '. count($list);
+            $cnt = 0;
+            foreach ($list as $key => $Data) {
+             
+                $LostData = MasterLossService::getData($Data['loss_id']);
+
+                // get product milk
+                $ProductMilk = ProductMilkService::getData($Data['product_milk_id']);
+
+                // get sub product milk
+                $SubProductMilk = SubProductMilkService::getData($Data['subproduct_milk_id']);
+
+                // get sub product milk
+                $ProductMilkDetail = ProductMilkDetailService::getData($Data['product_milk_detail_id']);
+
+                $MasterGoal = [];
+                $MasterGoal['id'] = '';
+                $MasterGoal['goal_type'] = 'II';
+                $MasterGoal['menu_type'] = $Data['loss_type'];//$value;
+                $MasterGoal['actives'] = 'Y';    
+                $MasterGoal['factory_id'] = $Data['factory_id'];
+                $MasterGoal['goal_name'] = /*$Data['loss_type']. ' - ' . */$LostData['name'] . ' - ' . $ProductMilk['name'] . ' - ' . $SubProductMilk['product_character'] . ' ' . $SubProductMilk['subname'] . ' - ' . $ProductMilkDetail['name']  . ' ' . $ProductMilkDetail['number_of_package'] . ' ' . $ProductMilkDetail['unit'] . ' ' . (empty($ProductMilkDetail['amount'])?'0':$ProductMilkDetail['amount']). ' ' . $ProductMilkDetail['amount_unit'] . ' ' . $ProductMilkDetail['taste'];
+
+                $dup = MasterGoalService::getGoalIDByName($MasterGoal['goal_name'], $MasterGoal['menu_type'], $MasterGoal['factory_id']);
+                
+                if(empty($dup)){
+                    $cnt++;
+                    MasterGoalService::updateData($MasterGoal);    
+                }
+
+            }
+
+            // echo 'Total data to update : ' . $cnt;exit;
+            $this->data_result['DATA'] = $cnt;
+
+            return $this->returnResponse(200, $this->data_result, $response, false);
+                
+            }catch(\Exception $e){
+                return $this->returnSystemErrorResponse($this->logger, $this->data_result, $e, $response);
+            }
+        }
     }
 
     

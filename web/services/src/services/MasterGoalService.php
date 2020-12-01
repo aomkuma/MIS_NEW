@@ -127,7 +127,7 @@ class MasterGoalService {
                         })
                         ->leftJoin('factory', 'factory.id', '=', 'master_goal.factory_id')
                         ->orderBy("update_date", 'DESC')
-                        ->get();
+                        ->get()->toArray();
     }
 
     public static function getListOrderByName($actives = '', $menu_type = '', $condition = [], $sub_goal_type= '', $factory_id = '') {
@@ -228,6 +228,13 @@ class MasterGoalService {
         return MasterGoal::where('goal_name', $name)
                         ->get()
                         ->toArray();
+    }
+
+    public static function deleteAllNotInGoalMission(){
+        return MasterGoal::leftJoin('goal_mission', 'goal_mission.goal_id', '=', 'master_goal.id')
+                        ->where('master_goal.goal_type', 'II')
+                        ->whereNull('goal_mission.id')
+                        ->delete();
     }
 
 }

@@ -13,6 +13,9 @@ use Illuminate\Database\Capsule\Manager as DB;
 
 class MasterLossService {
 
+    public static function getAllMappingList() {
+        return LossMapping::get()->toArray();
+    }
     
     public static function checkDuplicateMapping($Data) {
         return LossMapping::where('factory_id', $Data['factory_id'])

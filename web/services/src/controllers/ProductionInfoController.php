@@ -2148,9 +2148,9 @@ class ProductionInfoController extends Controller {
                     $ProductMilkDetail = ProductMilkDetailService::getListByParent($subproduct_milk_id, 'Y');
                     foreach ($ProductMilkDetail as $key2 => $value2) {
 
-                        if($value2['amount'] == 0){
-                            $value2['amount'] = number_format($value2['amount'], 2);
-                        }
+                        // if($value2['amount'] == 0){
+                        //     $value2['amount'] = number_format($value2['amount'], 2);
+                        // }
 
                         $product_milk_detail_name = $value2['name'] . ' ' .$value2['number_of_package'] . ' ' . $value2['unit'] . ' ' . $value2['amount'] . ' ' . $value2['amount_unit'] . ' ' . $value2['taste'];
 

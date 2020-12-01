@@ -219,6 +219,8 @@ $app->post('/product-milk-detail/list/byparent/', 'ProductMilkDetailController:g
 $app->post('/product-milk-detail/list/byparent2/', 'ProductMilkDetailController:getListByParent2');
 $app->post('/product-milk-detail/get/', 'ProductMilkDetailController:getData');
 $app->post('/product-milk-detail/update/', 'ProductMilkDetailController:updateData');
+$app->get('/product-milk-detail/master-goal/delete/', 'ProductMilkDetailController:deleteMasterGoalData');
+$app->get('/product-milk-detail/master-goal/update/', 'ProductMilkDetailController:updateMasterGoalData');
 
 $app->post('/lost-in-process/list/main/', 'LostInProcessController:getMainList');
 $app->post('/lost-in-process/get/', 'LostInProcessController:getData');
@@ -285,7 +287,7 @@ $app->post('/loss-manage/update/', 'MasterLossController:updateData');
 $app->post('/loss-manage/mapping/list/', 'MasterLossController:getMappingList');
 $app->post('/loss-manage/mapping/update/', 'MasterLossController:updateMappingData');
 $app->post('/loss-manage/mapping/delete/', 'MasterLossController:deleteMappingData');
-
+$app->get('/loss-manage/master-goal/update/', 'MasterLossController:updateMasterGoalData');
 $app->post('/loss-manage/mapping/master-goal/create/', 'MasterLossController:createToMasterGoal');
 
 $app->post('/dip/list/', 'DIPController:getList');
